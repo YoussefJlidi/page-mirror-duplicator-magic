@@ -13,7 +13,7 @@ const sidebarItems = [
   { icon: PhoneIncoming, label: 'Recevoir un appel' },
   { icon: Puzzle, label: 'Integrations' },
   { icon: PhoneCall, label: 'Calls' },
-  { icon: BookOpen, label: 'Knowledge Bases' },
+  { icon: BookOpen, label: 'Instructions' },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ isCollapsed }) => {
