@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Bot, ArrowUpRight, Megaphone, PhoneCall, BookOpen, CreditCard, Zap, PhoneIncoming } from 'lucide-react';
+import { Bot, PhoneOutgoing, Megaphone, PhoneCall, BookOpen, CreditCard, Zap, PhoneIncoming } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface SidebarProps {
@@ -9,7 +9,7 @@ interface SidebarProps {
 
 const sidebarItems = [
   { icon: Bot, label: 'Agents', isActive: true },
-  { icon: ArrowUpRight, label: 'Passer un appel' },
+  { icon: PhoneOutgoing, label: 'Passer un appel' },
   { icon: PhoneIncoming, label: 'Recevoir un appel' },
   { icon: Megaphone, label: 'Campaigns (outbound)' },
   { icon: PhoneCall, label: 'Calls' },
