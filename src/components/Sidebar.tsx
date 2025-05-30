@@ -29,7 +29,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed }) => {
             <span className="text-white font-bold text-sm">R</span>
           </div>
           {!isCollapsed && (
-            <span className="font-semibold text-lg text-gray-900">Rounded</span>
+            <span className="font-semibold text-lg text-gray-900">Trouve un nom</span>
           )}
         </div>
       </div>
