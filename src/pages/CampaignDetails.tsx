@@ -4,6 +4,7 @@ import { ArrowLeft, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, X
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const initialCampaigns = [
   {
@@ -291,70 +292,72 @@ const CampaignDetails = () => {
           </Card>
         </div>
 
-        {/* Section Top appels - Design noir rudimentaire */}
-        <div className="bg-gray-900 rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-white mb-6">Détails des appels</h2>
-          
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-700">
-                  <th className="text-left text-gray-400 font-normal py-3 px-4">Numéro émetteur</th>
-                  <th className="text-left text-gray-400 font-normal py-3 px-4">Numéro destinataire</th>
-                  <th className="text-left text-gray-400 font-normal py-3 px-4">Agent</th>
-                  <th className="text-left text-gray-400 font-normal py-3 px-4">Heure de début</th>
-                  <th className="text-left text-gray-400 font-normal py-3 px-4">Type</th>
-                  <th className="text-left text-gray-400 font-normal py-3 px-4">Durée</th>
-                  <th className="text-left text-gray-400 font-normal py-3 px-4">Coût</th>
-                  <th className="text-left text-gray-400 font-normal py-3 px-4">Statut</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {topCallsExtract.map((call, index) => (
-                  <tr key={index} className="border-b border-gray-800 hover:bg-gray-800">
-                    <td className="text-white py-3 px-4 font-mono">{call.fromNumber}</td>
-                    <td className="text-white py-3 px-4 font-mono">{call.toNumber}</td>
-                    <td className="text-white py-3 px-4">{call.agent}</td>
-                    <td className="py-3 px-4">
-                      <div className="text-white">
-                        <div>{call.startTime}</div>
-                        <div>{call.time}</div>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-2 text-white">
-                        <PhoneIncoming className="h-4 w-4" />
-                        <span>{call.type}</span>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-2 text-white">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        <span>{call.duration}</span>
-                      </div>
-                    </td>
-                    <td className="text-white py-3 px-4">{call.cost}</td>
-                    <td className="text-gray-400 py-3 px-4">{call.status}</td>
-                    <td className="py-3 px-4">
-                      <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white hover:bg-gray-700">
-                        ...
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          
-          <div className="mt-6">
-            <Link to={`/campaign/${campaignId}/calls`}>
-              <Button variant="outline" className="w-full bg-transparent border-gray-600 text-white hover:bg-gray-800">
-                Voir tous les appels
-              </Button>
-            </Link>
-          </div>
-        </div>
+        {/* Section Top appels - Style simplifié comme dans l'image */}
+        <Card>
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg">Détails des appels</CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-b">
+                    <TableHead className="text-gray-500 font-normal text-sm">Numéro émetteur</TableHead>
+                    <TableHead className="text-gray-500 font-normal text-sm">Numéro destinataire</TableHead>
+                    <TableHead className="text-gray-500 font-normal text-sm">Agent</TableHead>
+                    <TableHead className="text-gray-500 font-normal text-sm">Heure de début</TableHead>
+                    <TableHead className="text-gray-500 font-normal text-sm">Type</TableHead>
+                    <TableHead className="text-gray-500 font-normal text-sm">Durée</TableHead>
+                    <TableHead className="text-gray-500 font-normal text-sm">Coût</TableHead>
+                    <TableHead className="text-gray-500 font-normal text-sm">Statut</TableHead>
+                    <TableHead></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {topCallsExtract.map((call, index) => (
+                    <TableRow key={index} className="border-b hover:bg-gray-50">
+                      <TableCell className="text-sm text-gray-900">{call.fromNumber}</TableCell>
+                      <TableCell className="text-sm text-gray-900">{call.toNumber}</TableCell>
+                      <TableCell className="text-sm text-gray-900">{call.agent}</TableCell>
+                      <TableCell>
+                        <div>
+                          <div className="text-sm text-gray-900">{call.startTime}</div>
+                          <div className="text-sm text-gray-900">{call.time}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <PhoneIncoming className="h-4 w-4 text-gray-500" />
+                          <span className="text-sm text-gray-900">{call.type}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <span className="text-sm text-gray-900">{call.duration}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-sm text-gray-900">{call.cost}</TableCell>
+                      <TableCell className="text-sm text-gray-600">{call.status}</TableCell>
+                      <TableCell>
+                        <Button variant="ghost" size="sm" className="text-gray-400">
+                          ...
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            <div className="p-4 border-t">
+              <Link to={`/campaign/${campaignId}/calls`}>
+                <Button variant="outline" className="w-full">
+                  Voir tous les appels
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
