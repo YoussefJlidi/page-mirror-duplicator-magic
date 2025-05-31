@@ -48,24 +48,16 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
     voice: agentData?.voice || 'Anna',
     transcriber: 'Deepgram',
     language: agentData?.language || 'FR',
-    prompt: agentData?.prompt || '#### Rôle:\n\nTu es le réceptionniste téléphonique du restaurant La Table Gourmande, spécialisé dans la prise de commandes et la gestion des réservations. Tu dois être accueillant, professionnel et efficace.\n\n#### Instructions:\n\n1. Accueille chaleureusement les clients\n2. Prends les commandes avec précision\n3. Propose des suggestions pertinentes\n4. Gère les questions sur les allergènes\n5. Confirme toutes les informations importantes',
+    prompt: agentData?.prompt || 'Vous êtes un assistant virtuel pour le restaurant La Table Gourmande. Soyez professionnel et aidant.',
     supportInterruptions: true,
     interruptionSensitivity: 'medium',
     webhookEnabled: false,
-    publicDemo: false,
-    customVocabulary: '',
-    endCallMessage: 'Merci pour votre commande. À bientôt !',
-    fallbackMessage: 'Je suis désolé, je n\'ai pas bien compris. Pouvez-vous répéter ?',
-    maxRetries: 3,
-    responseTime: 'fast',
-    emotionalTone: 'friendly'
+    publicDemo: false
   });
 
   const [expandedSections, setExpandedSections] = useState({
-    advanced: false,
     webhook: false,
-    demo: false,
-    vocabulary: false
+    demo: false
   });
 
   const handleSave = () => {
@@ -86,7 +78,7 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl max-h-[95vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="border-b border-gray-200 pb-4">
           <DialogTitle className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -104,15 +96,12 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-8 pt-6">
+        <div className="space-y-6 pt-4">
           {/* Section Informations générales */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-medium">Informations générales</h3>
-              <div className="h-px bg-gray-200 flex-1"></div>
-            </div>
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium border-b pb-2">Informations générales</h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-sm font-medium">Nom de l'agent</Label>
                 <Input
@@ -120,32 +109,21 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Ex: Assistant Restaurant"
-                  className="transition-all focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               
               <div className="space-y-2">
                 <Label htmlFor="model" className="text-sm font-medium">Modèle IA</Label>
-                <div className="flex gap-2">
-                  <Select value={formData.model} onValueChange={(value) => setFormData({ ...formData, model: value })}>
-                    <SelectTrigger className="flex-1">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="GPT-4O">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          GPT-4O (Recommandé)
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="GPT-3.5">GPT-3.5 Turbo</SelectItem>
-                      <SelectItem value="Claude">Claude 3</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Button size="icon" variant="outline" className="shrink-0">
-                    <Settings className="w-4 h-4" />
-                  </Button>
-                </div>
+                <Select value={formData.model} onValueChange={(value) => setFormData({ ...formData, model: value })}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="GPT-4O">GPT-4O (Recommandé)</SelectItem>
+                    <SelectItem value="GPT-3.5">GPT-3.5 Turbo</SelectItem>
+                    <SelectItem value="Claude">Claude 3</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-2">
@@ -162,17 +140,7 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
                   </SelectContent>
                 </Select>
               </div>
-            </div>
-          </div>
 
-          {/* Section Audio et Voix */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-medium">Configuration audio</h3>
-              <div className="h-px bg-gray-200 flex-1"></div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label htmlFor="voice" className="text-sm font-medium">Voix de l'assistant</Label>
                 <div className="flex gap-2">
@@ -188,67 +156,26 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
                     </SelectContent>
                   </Select>
                   <Button size="icon" variant="outline">
-                    <Volume2 className="w-4 h-4" />
-                  </Button>
-                  <Button size="icon" variant="outline">
                     <Play className="w-4 h-4" />
                   </Button>
                 </div>
               </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="transcriber" className="text-sm font-medium">Service de transcription</Label>
-                <Select value={formData.transcriber} onValueChange={(value) => setFormData({ ...formData, transcriber: value })}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Deepgram">Deepgram (Précis)</SelectItem>
-                    <SelectItem value="AssemblyAI">AssemblyAI (Rapide)</SelectItem>
-                    <SelectItem value="OpenAI">OpenAI Whisper</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="background-audio" className="text-sm font-medium">Audio d'ambiance</Label>
-              <Select value={formData.backgroundAudio} onValueChange={(value) => setFormData({ ...formData, backgroundAudio: value })}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">Aucun</SelectItem>
-                  <SelectItem value="restaurant-ambiance">Ambiance restaurant</SelectItem>
-                  <SelectItem value="cafe-sounds">Sons de café</SelectItem>
-                  <SelectItem value="office-quiet">Bureau silencieux</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </div>
 
-          {/* Messages et Prompts */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-medium">Messages et comportement</h3>
-              <div className="h-px bg-gray-200 flex-1"></div>
-            </div>
+          {/* Section Messages */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium border-b pb-2">Messages et comportement</h3>
 
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="initial-message" className="text-sm font-medium">Message d'accueil</Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="initial-message"
-                    value={formData.initialMessage}
-                    onChange={(e) => setFormData({ ...formData, initialMessage: e.target.value })}
-                    className="flex-1"
-                    placeholder="Première phrase que dira l'agent"
-                  />
-                  <Button size="icon" variant="outline">
-                    <Play className="w-4 h-4" />
-                  </Button>
-                </div>
+                <Input
+                  id="initial-message"
+                  value={formData.initialMessage}
+                  onChange={(e) => setFormData({ ...formData, initialMessage: e.target.value })}
+                  placeholder="Première phrase que dira l'agent"
+                />
               </div>
 
               <div className="space-y-2">
@@ -257,129 +184,55 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
                   id="prompt"
                   value={formData.prompt}
                   onChange={(e) => setFormData({ ...formData, prompt: e.target.value })}
-                  rows={8}
-                  className="resize-none font-mono text-sm"
+                  rows={6}
+                  className="resize-none"
                   placeholder="Décrivez le rôle et les instructions détaillées de votre agent..."
                 />
-                <p className="text-xs text-gray-500">Utilisez Markdown pour formater vos instructions</p>
               </div>
             </div>
           </div>
 
-          {/* Paramètres d'appel */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-medium">Paramètres d'appel</h3>
-              <div className="h-px bg-gray-200 flex-1"></div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label>Durée maximum d'appel</Label>
-                    <span className="text-sm font-medium text-blue-600">{formData.maxCallDuration} min</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="1"
-                    max="60"
-                    value={formData.maxCallDuration}
-                    onChange={(e) => setFormData({ ...formData, maxCallDuration: parseInt(e.target.value) })}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-                  />
-                  <div className="flex justify-between text-xs text-gray-500">
-                    <span>1 min</span>
-                    <span>60 min</span>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="response-time">Vitesse de réponse</Label>
-                  <Select value={formData.responseTime} onValueChange={(value) => setFormData({ ...formData, responseTime: value })}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="fast">Rapide (< 1s)</SelectItem>
-                      <SelectItem value="medium">Modéré (1-2s)</SelectItem>
-                      <SelectItem value="slow">Réfléchi (2-3s)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="emotional-tone">Ton émotionnel</Label>
-                  <Select value={formData.emotionalTone} onValueChange={(value) => setFormData({ ...formData, emotionalTone: value })}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="friendly">Amical</SelectItem>
-                      <SelectItem value="professional">Professionnel</SelectItem>
-                      <SelectItem value="enthusiastic">Enthousiaste</SelectItem>
-                      <SelectItem value="calm">Calme</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="max-retries">Tentatives max en cas d'incompréhension</Label>
-                  <Select value={formData.maxRetries.toString()} onValueChange={(value) => setFormData({ ...formData, maxRetries: parseInt(value) })}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">1 tentative</SelectItem>
-                      <SelectItem value="2">2 tentatives</SelectItem>
-                      <SelectItem value="3">3 tentatives</SelectItem>
-                      <SelectItem value="5">5 tentatives</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Interruptions */}
+          {/* Section Paramètres d'appel */}
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-blue-600" />
-                </div>
-                <div>
-                  <Label htmlFor="interruptions" className="font-medium">Gestion des interruptions</Label>
-                  <p className="text-sm text-gray-500">Permet aux utilisateurs de couper la parole à l'agent</p>
-                </div>
-              </div>
-              <Switch
-                id="interruptions"
-                checked={formData.supportInterruptions}
-                onCheckedChange={(checked) => setFormData({ ...formData, supportInterruptions: checked })}
-              />
-            </div>
-            
-            {formData.supportInterruptions && (
-              <div className="space-y-2 ml-4">
+            <h3 className="text-lg font-medium border-b pb-2">Paramètres d'appel</h3>
+
+            <div className="space-y-4">
+              <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label>Sensibilité aux interruptions</Label>
-                  <span className="text-sm text-gray-500 capitalize">{formData.interruptionSensitivity}</span>
+                  <Label>Durée maximum d'appel</Label>
+                  <span className="text-sm font-medium text-blue-600">{formData.maxCallDuration} min</span>
                 </div>
-                <Select value={formData.interruptionSensitivity} onValueChange={(value) => setFormData({ ...formData, interruptionSensitivity: value })}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="low">Faible (plus de mots requis)</SelectItem>
-                    <SelectItem value="medium">Moyenne (équilibrée)</SelectItem>
-                    <SelectItem value="high">Élevée (interruption rapide)</SelectItem>
-                  </SelectContent>
-                </Select>
+                <input
+                  type="range"
+                  min="1"
+                  max="60"
+                  value={formData.maxCallDuration}
+                  onChange={(e) => setFormData({ ...formData, maxCallDuration: parseInt(e.target.value) })}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+                <div className="flex justify-between text-xs text-gray-500">
+                  <span>1 min</span>
+                  <span>60 min</span>
+                </div>
               </div>
-            )}
+
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <Zap className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <div>
+                    <Label htmlFor="interruptions" className="font-medium">Gestion des interruptions</Label>
+                    <p className="text-sm text-gray-500">Permet aux utilisateurs de couper la parole à l'agent</p>
+                  </div>
+                </div>
+                <Switch
+                  id="interruptions"
+                  checked={formData.supportInterruptions}
+                  onCheckedChange={(checked) => setFormData({ ...formData, supportInterruptions: checked })}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Sections extensibles */}
