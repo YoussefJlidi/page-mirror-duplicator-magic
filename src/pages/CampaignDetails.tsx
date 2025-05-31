@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, FileText, Edit, PhoneIncoming } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import CallDetailsModal from '@/components/CallDetailsModal';
 
 const initialCampaigns = [
   {
@@ -47,6 +48,7 @@ const initialCampaigns = [
 
 const CampaignDetails = () => {
   const { campaignId } = useParams();
+  const [isCallDetailsModalOpen, setIsCallDetailsModalOpen] = useState(false);
   const campaign = initialCampaigns.find(c => c.id === parseInt(campaignId || '1'));
   
   if (!campaign) {
@@ -131,6 +133,14 @@ const CampaignDetails = () => {
     }
   ];
 
+  const handleOpenCallDetails = () => {
+    setIsCallDetailsModalOpen(true);
+  };
+
+  const handleCloseCallDetails = () => {
+    setIsCallDetailsModalOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -165,12 +175,10 @@ const CampaignDetails = () => {
             
             {/* Actions */}
             <div className="flex items-center gap-3">
-              <Link to={`/campaign/${campaignId}/calls`}>
-                <Button variant="outline" size="sm" className="flex items-center gap-2">
-                  <AlertCircle className="h-4 w-4" />
-                  Plus de détails
-                </Button>
-              </Link>
+              <Button variant="outline" size="sm" className="flex items-center gap-2" onClick={handleOpenCallDetails}>
+                <AlertCircle className="h-4 w-4" />
+                Plus de détails
+              </Button>
               <Button variant="outline" size="sm" className="flex items-center gap-2">
                 <FileText className="h-4 w-4" />
                 Télécharger le rapport PDF
@@ -350,14 +358,19 @@ const CampaignDetails = () => {
               </Table>
             </div>
             <div className="p-4 border-t">
-              <Link to={`/campaign/${campaignId}/calls`}>
-                <Button variant="outline" className="w-full">
-                  Voir tous les appels
-                </Button>
-              </Link>
+              <Button variant="outline" className="w-full" onClick={handleOpenCallDetails}>
+                Voir tous les appels
+              </Button>
             </div>
           </CardContent>
         </Card>
+
+        {/* Modal des détails des appels */}
+        <CallDetailsModal 
+          isOpen={isCallDetailsModalOpen}
+          onClose={handleCloseCallDetails}
+          campaignName={campaign.name}
+        />
       </div>
     </div>
   );
