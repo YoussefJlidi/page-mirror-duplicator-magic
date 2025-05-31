@@ -76,7 +76,7 @@ const CampaignDetails = () => {
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 mb-8">
           <Link to="/">
             <Button variant="ghost" size="icon" className="hover:bg-gray-200">
               <ArrowLeft className="h-5 w-5" />
@@ -111,152 +111,132 @@ const CampaignDetails = () => {
           </div>
         </div>
 
-        {/* Vue d'ensemble */}
+        {/* Statistiques principales - Ligne du haut */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <Card className="bg-green-50 border-green-200">
+            <CardContent className="p-6 text-center">
+              <div className="flex items-center justify-center mb-3">
+                <CheckCircle className="h-8 w-8 text-green-600" />
+              </div>
+              <p className="text-sm font-medium text-green-600 mb-1">Appels réussis</p>
+              <p className="text-3xl font-bold text-green-900">{stats.successful}</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-red-50 border-red-200">
+            <CardContent className="p-6 text-center">
+              <div className="flex items-center justify-center mb-3">
+                <XCircle className="h-8 w-8 text-red-600" />
+              </div>
+              <p className="text-sm font-medium text-red-600 mb-1">Appels échoués</p>
+              <p className="text-3xl font-bold text-red-900">{stats.failed}</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-blue-50 border-blue-200">
+            <CardContent className="p-6 text-center">
+              <div className="flex items-center justify-center mb-3">
+                <Phone className="h-8 w-8 text-blue-600" />
+              </div>
+              <p className="text-sm font-medium text-blue-600 mb-1">À appeler</p>
+              <p className="text-3xl font-bold text-blue-900">{stats.toCall}</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-orange-50 border-orange-200">
+            <CardContent className="p-6 text-center">
+              <div className="flex items-center justify-center mb-3">
+                <RotateCcw className="h-8 w-8 text-orange-600" />
+              </div>
+              <p className="text-sm font-medium text-orange-600 mb-1">À relancer</p>
+              <p className="text-3xl font-bold text-orange-900">{stats.toRetry}</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Section principale avec 3 colonnes */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Statistiques principales */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Métriques principales */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Card className="bg-green-50 border-green-200">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-green-600">Appels réussis</p>
-                      <p className="text-2xl font-bold text-green-900">{stats.successful}</p>
-                    </div>
-                    <CheckCircle className="h-8 w-8 text-green-600" />
-                  </div>
-                </CardContent>
-              </Card>
+          {/* Taux de réussite */}
+          <Card>
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-green-600" />
+                Taux de réussite
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <div className="text-4xl font-bold text-green-600 mb-2">{successRate}%</div>
+              <p className="text-sm text-gray-600 mb-4">des appels connectés</p>
+              <Progress value={successRate} className="h-3 mb-4" />
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>{stats.successful} réussis</span>
+                <span>{stats.failed} échoués</span>
+              </div>
+            </CardContent>
+          </Card>
 
-              <Card className="bg-red-50 border-red-200">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-red-600">Appels échoués</p>
-                      <p className="text-2xl font-bold text-red-900">{stats.failed}</p>
-                    </div>
-                    <XCircle className="h-8 w-8 text-red-600" />
-                  </div>
-                </CardContent>
-              </Card>
+          {/* Progression */}
+          <Card>
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <AlertCircle className="h-5 w-5 text-blue-600" />
+                Progression
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <div className="text-4xl font-bold text-blue-600 mb-2">{completionRate}%</div>
+              <p className="text-sm text-gray-600 mb-4">de la campagne</p>
+              <Progress value={completionRate} className="h-3 mb-4" />
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>{stats.successful + stats.failed} traités</span>
+                <span>{stats.total} total</span>
+              </div>
+            </CardContent>
+          </Card>
 
-              <Card className="bg-blue-50 border-blue-200">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-blue-600">À appeler</p>
-                      <p className="text-2xl font-bold text-blue-900">{stats.toCall}</p>
-                    </div>
-                    <Phone className="h-8 w-8 text-blue-600" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-orange-50 border-orange-200">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-orange-600">À relancer</p>
-                      <p className="text-2xl font-bold text-orange-900">{stats.toRetry}</p>
-                    </div>
-                    <RotateCcw className="h-8 w-8 text-orange-600" />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Graphiques de progression */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-green-600" />
-                    Taux de réussite
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-green-600">{successRate}%</div>
-                      <p className="text-sm text-gray-600">des appels connectés</p>
-                    </div>
-                    <Progress value={successRate} className="h-3" />
-                    <div className="flex justify-between text-sm text-gray-600">
-                      <span>{stats.successful} réussis</span>
-                      <span>{stats.failed} échoués</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <AlertCircle className="h-5 w-5 text-blue-600" />
-                    Progression
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-blue-600">{completionRate}%</div>
-                      <p className="text-sm text-gray-600">de la campagne</p>
-                    </div>
-                    <Progress value={completionRate} className="h-3" />
-                    <div className="flex justify-between text-sm text-gray-600">
-                      <span>{stats.successful + stats.failed} traités</span>
-                      <span>{stats.total} total</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-
-          {/* Actions et informations */}
+          {/* Actions et Informations */}
           <div className="space-y-6">
-            {/* Actions rapides */}
+            {/* Actions */}
             <Card>
-              <CardHeader>
+              <CardHeader className="pb-4">
                 <CardTitle className="text-lg">Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full flex items-center gap-2">
+                <Button variant="outline" className="w-full flex items-center gap-2" size="sm">
                   <AlertCircle className="h-4 w-4" />
                   Plus de détails
                 </Button>
-                <Button variant="outline" className="w-full flex items-center gap-2">
+                <Button variant="outline" className="w-full flex items-center gap-2" size="sm">
                   <FileText className="h-4 w-4" />
                   Télécharger le rapport PDF
                 </Button>
-                <Button variant="outline" className="w-full flex items-center gap-2">
+                <Button variant="outline" className="w-full flex items-center gap-2" size="sm">
                   <Edit className="h-4 w-4" />
                   Modifier la campagne
                 </Button>
               </CardContent>
             </Card>
 
-            {/* Détails de la campagne */}
+            {/* Informations */}
             <Card>
-              <CardHeader>
+              <CardHeader className="pb-4">
                 <CardTitle className="text-lg">Informations</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h4 className="font-medium text-gray-900">Agent IA</h4>
+                  <h4 className="font-medium text-gray-900 mb-1">Agent IA</h4>
                   <p className="text-sm text-gray-600">{campaign.agent}</p>
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-900">Numéro de téléphone</h4>
+                  <h4 className="font-medium text-gray-900 mb-1">Numéro de téléphone</h4>
                   <p className="text-sm text-gray-600">{campaign.phoneNumber}</p>
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-900">Durée totale</h4>
+                  <h4 className="font-medium text-gray-900 mb-1">Durée totale</h4>
                   <p className="text-sm text-gray-600">{campaign.duration}</p>
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-900">Prospects total</h4>
+                  <h4 className="font-medium text-gray-900 mb-1">Prospects total</h4>
                   <p className="text-sm text-gray-600">{stats.total}</p>
                 </div>
               </CardContent>
