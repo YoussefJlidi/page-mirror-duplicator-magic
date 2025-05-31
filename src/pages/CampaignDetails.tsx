@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw } from 'lucide-react';
+import { ArrowLeft, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, FileText, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -222,25 +222,16 @@ const CampaignDetails = () => {
                 <CardTitle className="text-lg">Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {campaign.status === 'pending' && (
-                  <Button className="w-full" size="lg">
-                    Démarrer la campagne
-                  </Button>
-                )}
-                {campaign.status === 'active' && (
-                  <Button variant="outline" className="w-full" size="lg">
-                    Mettre en pause
-                  </Button>
-                )}
-                {campaign.status === 'paused' && (
-                  <Button className="w-full" size="lg">
-                    Reprendre
-                  </Button>
-                )}
-                <Button variant="outline" className="w-full">
-                  Télécharger rapport CSV
+                <Button variant="outline" className="w-full flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4" />
+                  Plus de détails
                 </Button>
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  Télécharger le rapport PDF
+                </Button>
+                <Button variant="outline" className="w-full flex items-center gap-2">
+                  <Edit className="h-4 w-4" />
                   Modifier la campagne
                 </Button>
               </CardContent>
@@ -272,52 +263,6 @@ const CampaignDetails = () => {
             </Card>
           </div>
         </div>
-
-        {/* Tableau de bord détaillé */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl">Répartition des appels</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="text-center p-6 bg-green-50 rounded-lg">
-                <CheckCircle className="h-12 w-12 text-green-600 mx-auto mb-3" />
-                <div className="text-2xl font-bold text-green-900">{stats.successful}</div>
-                <div className="text-sm text-green-700">Appels réussis</div>
-                <div className="text-xs text-green-600 mt-1">
-                  {Math.round((stats.successful / stats.total) * 100)}% du total
-                </div>
-              </div>
-
-              <div className="text-center p-6 bg-blue-50 rounded-lg">
-                <Phone className="h-12 w-12 text-blue-600 mx-auto mb-3" />
-                <div className="text-2xl font-bold text-blue-900">{stats.toCall}</div>
-                <div className="text-sm text-blue-700">À appeler</div>
-                <div className="text-xs text-blue-600 mt-1">
-                  {Math.round((stats.toCall / stats.total) * 100)}% restant
-                </div>
-              </div>
-
-              <div className="text-center p-6 bg-orange-50 rounded-lg">
-                <RotateCcw className="h-12 w-12 text-orange-600 mx-auto mb-3" />
-                <div className="text-2xl font-bold text-orange-900">{stats.toRetry}</div>
-                <div className="text-sm text-orange-700">À relancer</div>
-                <div className="text-xs text-orange-600 mt-1">
-                  {Math.round((stats.toRetry / stats.total) * 100)}% à reprendre
-                </div>
-              </div>
-
-              <div className="text-center p-6 bg-red-50 rounded-lg">
-                <XCircle className="h-12 w-12 text-red-600 mx-auto mb-3" />
-                <div className="text-2xl font-bold text-red-900">{stats.failed}</div>
-                <div className="text-sm text-red-700">Appels échoués</div>
-                <div className="text-xs text-red-600 mt-1">
-                  {Math.round((stats.failed / stats.total) * 100)}% d'échec
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
