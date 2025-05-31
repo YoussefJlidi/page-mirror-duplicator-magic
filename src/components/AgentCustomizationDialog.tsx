@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Settings, Play, Volume2, Save, TestTube, Zap, ChevronDown, ChevronUp } from 'lucide-react';
+import { Settings, Play, Volume2, Save, TestTube } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 interface AgentCustomizationDialogProps {
@@ -48,16 +48,11 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
     voice: agentData?.voice || 'Anna',
     transcriber: 'Deepgram',
     language: agentData?.language || 'FR',
-    prompt: agentData?.prompt || 'Vous êtes un assistant virtuel pour le restaurant La Table Gourmande. Soyez professionnel et aidant.',
+    prompt: agentData?.prompt || '#### Rôle:\n\nTu es le réceptionniste téléphonique du restaurant La Table Gourmande, spécialisé dans la prise de commandes et la gestion des réservations. Tu dois être accueillant, professionnel et efficace.\n\n#### Instructions:\n\n1. Accueille chaleureusement les clients\n2. Prends les commandes avec précision\n3. Propose des suggestions pertinentes\n4. Gère les questions sur les allergènes\n5. Confirme toutes les informations importantes',
     supportInterruptions: true,
     interruptionSensitivity: 'medium',
     webhookEnabled: false,
     publicDemo: false
-  });
-
-  const [expandedSections, setExpandedSections] = useState({
-    webhook: false,
-    demo: false
   });
 
   const handleSave = () => {
@@ -69,20 +64,13 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
     console.log('Test de l\'agent en cours...');
   };
 
-  const toggleSection = (section: keyof typeof expandedSections) => {
-    setExpandedSections(prev => ({
-      ...prev,
-      [section]: !prev[section]
-    }));
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="border-b border-gray-200 pb-4">
           <DialogTitle className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-r from-gray-800 to-black rounded-lg flex items-center justify-center">
                 <Settings className="w-5 h-5 text-white" />
               </div>
               <div>
@@ -96,10 +84,10 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6 pt-4">
+        <div className="space-y-6 pt-6">
           {/* Section Informations générales */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium border-b pb-2">Informations générales</h3>
+            <h3 className="text-lg font-medium border-b border-gray-200 pb-2">Informations générales</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -142,17 +130,17 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="voice" className="text-sm font-medium">Voix de l'assistant</Label>
+                <Label htmlFor="voice" className="text-sm font-medium">Voix</Label>
                 <div className="flex gap-2">
                   <Select value={formData.voice} onValueChange={(value) => setFormData({ ...formData, voice: value })}>
                     <SelectTrigger className="flex-1">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Anna">Anna (Féminine, Douce)</SelectItem>
-                      <SelectItem value="Brian">Brian (Masculine, Professionnel)</SelectItem>
-                      <SelectItem value="Emma">Emma (Féminine, Énergique)</SelectItem>
-                      <SelectItem value="Lucas">Lucas (Masculine, Chaleureux)</SelectItem>
+                      <SelectItem value="Anna">Anna (Féminine)</SelectItem>
+                      <SelectItem value="Brian">Brian (Masculine)</SelectItem>
+                      <SelectItem value="Emma">Emma (Énergique)</SelectItem>
+                      <SelectItem value="Lucas">Lucas (Chaleureux)</SelectItem>
                     </SelectContent>
                   </Select>
                   <Button size="icon" variant="outline">
@@ -163,10 +151,10 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
             </div>
           </div>
 
-          {/* Section Messages */}
+          {/* Messages */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium border-b pb-2">Messages et comportement</h3>
-
+            <h3 className="text-lg font-medium border-b border-gray-200 pb-2">Messages</h3>
+            
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="initial-message" className="text-sm font-medium">Message d'accueil</Label>
@@ -185,23 +173,34 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
                   value={formData.prompt}
                   onChange={(e) => setFormData({ ...formData, prompt: e.target.value })}
                   rows={6}
-                  className="resize-none"
+                  className="resize-none font-mono text-sm"
                   placeholder="Décrivez le rôle et les instructions détaillées de votre agent..."
                 />
               </div>
             </div>
           </div>
 
-          {/* Section Paramètres d'appel */}
+          {/* Paramètres avancés */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium border-b pb-2">Paramètres d'appel</h3>
-
-            <div className="space-y-4">
+            <h3 className="text-lg font-medium border-b border-gray-200 pb-2">Paramètres avancés</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label>Durée maximum d'appel</Label>
-                  <span className="text-sm font-medium text-blue-600">{formData.maxCallDuration} min</span>
-                </div>
+                <Label htmlFor="transcriber" className="text-sm font-medium">Service de transcription</Label>
+                <Select value={formData.transcriber} onValueChange={(value) => setFormData({ ...formData, transcriber: value })}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Deepgram">Deepgram</SelectItem>
+                    <SelectItem value="AssemblyAI">AssemblyAI</SelectItem>
+                    <SelectItem value="OpenAI">OpenAI Whisper</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Durée maximum d'appel: {formData.maxCallDuration} min</Label>
                 <input
                   type="range"
                   min="1"
@@ -210,122 +209,39 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
                   onChange={(e) => setFormData({ ...formData, maxCallDuration: parseInt(e.target.value) })}
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 />
-                <div className="flex justify-between text-xs text-gray-500">
-                  <span>1 min</span>
-                  <span>60 min</span>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Zap className="w-4 h-4 text-blue-600" />
-                  </div>
-                  <div>
-                    <Label htmlFor="interruptions" className="font-medium">Gestion des interruptions</Label>
-                    <p className="text-sm text-gray-500">Permet aux utilisateurs de couper la parole à l'agent</p>
-                  </div>
-                </div>
-                <Switch
-                  id="interruptions"
-                  checked={formData.supportInterruptions}
-                  onCheckedChange={(checked) => setFormData({ ...formData, supportInterruptions: checked })}
-                />
               </div>
             </div>
-          </div>
 
-          {/* Sections extensibles */}
-          <div className="space-y-4">
-            {/* Section Webhook */}
-            <div className="border rounded-lg overflow-hidden">
-              <button
-                onClick={() => toggleSection('webhook')}
-                className="w-full p-4 bg-gray-50 hover:bg-gray-100 transition-colors flex items-center justify-between"
-              >
-                <div className="flex items-center gap-3">
-                  <Settings className="w-5 h-5 text-gray-600" />
-                  <div className="text-left">
-                    <h4 className="font-medium">Configuration Webhook</h4>
-                    <p className="text-sm text-gray-500">Recevez des notifications d'événements en temps réel</p>
-                  </div>
-                </div>
-                {expandedSections.webhook ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-              </button>
-              
-              {expandedSections.webhook && (
-                <div className="p-4 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <Label>Activer les webhooks</Label>
-                    <Switch
-                      checked={formData.webhookEnabled}
-                      onCheckedChange={(checked) => setFormData({ ...formData, webhookEnabled: checked })}
-                    />
-                  </div>
-                  {formData.webhookEnabled && (
-                    <div className="space-y-2">
-                      <Label>URL de webhook</Label>
-                      <Input placeholder="https://votre-site.com/webhook" />
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Section Demo publique */}
-            <div className="border rounded-lg overflow-hidden">
-              <button
-                onClick={() => toggleSection('demo')}
-                className="w-full p-4 bg-gray-50 hover:bg-gray-100 transition-colors flex items-center justify-between"
-              >
-                <div className="flex items-center gap-3">
-                  <Play className="w-5 h-5 text-gray-600" />
-                  <div className="text-left">
-                    <h4 className="font-medium">Page de démonstration publique</h4>
-                    <p className="text-sm text-gray-500">Créez une page partageable pour tester votre agent</p>
-                  </div>
-                </div>
-                {expandedSections.demo ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-              </button>
-              
-              {expandedSections.demo && (
-                <div className="p-4 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <Label>Activer la page de démo</Label>
-                    <Switch
-                      checked={formData.publicDemo}
-                      onCheckedChange={(checked) => setFormData({ ...formData, publicDemo: checked })}
-                    />
-                  </div>
-                  {formData.publicDemo && (
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <p className="text-sm text-blue-800">
-                        Votre page de démo sera accessible à l'adresse : 
-                        <br />
-                        <span className="font-mono text-blue-600">demo.votre-agent.com/{formData.name.toLowerCase().replace(/\s+/g, '-')}</span>
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )}
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div>
+                <Label htmlFor="interruptions" className="font-medium">Gestion des interruptions</Label>
+                <p className="text-sm text-gray-500">Permet aux utilisateurs de couper la parole à l'agent</p>
+              </div>
+              <Switch
+                id="interruptions"
+                checked={formData.supportInterruptions}
+                onCheckedChange={(checked) => setFormData({ ...formData, supportInterruptions: checked })}
+              />
             </div>
           </div>
+        </div>
 
-          {/* Actions */}
-          <div className="flex items-center justify-between pt-6 border-t border-gray-200">
+        {/* Footer avec boutons */}
+        <div className="border-t border-gray-200 pt-4 mt-6">
+          <div className="flex justify-between">
+            <Button variant="outline" onClick={handleTest} className="flex items-center gap-2">
+              <TestTube className="w-4 h-4" />
+              Tester l'agent
+            </Button>
             <div className="flex gap-3">
-              <Button variant="outline" onClick={handleTest} className="flex items-center gap-2">
-                <TestTube className="w-4 h-4" />
-                Tester l'agent
-              </Button>
               <Button variant="outline" onClick={onClose}>
                 Annuler
               </Button>
+              <Button onClick={handleSave} className="bg-black hover:bg-gray-800 text-white flex items-center gap-2">
+                <Save className="w-4 h-4" />
+                Sauvegarder
+              </Button>
             </div>
-            <Button onClick={handleSave} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white flex items-center gap-2">
-              <Save className="w-4 h-4" />
-              {agentData ? 'Sauvegarder les modifications' : 'Créer l\'agent'}
-            </Button>
           </div>
         </div>
       </DialogContent>
