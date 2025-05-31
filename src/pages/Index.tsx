@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
-import AgentCard from '@/components/AgentCard';
+import AgentTable from '@/components/AgentTable';
 import AgentCustomizationDialog from '@/components/AgentCustomizationDialog';
 import CallForm from '@/components/CallForm';
+import CampaignCard from '@/components/CampaignCard';
 import { useToast } from '@/hooks/use-toast';
 
 const initialAgents = [
@@ -38,12 +39,52 @@ const initialAgents = [
   }
 ];
 
+const initialCampaigns = [
+  {
+    id: 1,
+    name: 'Campagne Restaurant Midi',
+    status: 'pending' as const,
+    calls: 0,
+    duration: '0m',
+    agent: 'Restaurant Order Taking',
+    phoneNumber: '+33 1 23 45 67 89'
+  },
+  {
+    id: 2,
+    name: 'Support Client Weekend',
+    status: 'active' as const,
+    calls: 15,
+    duration: '2h 30m',
+    agent: 'My new agent',
+    phoneNumber: '+33 1 98 76 54 32'
+  },
+  {
+    id: 3,
+    name: 'Promotion Été 2024',
+    status: 'finished' as const,
+    calls: 45,
+    duration: '8h 15m',
+    agent: '101 conseils',
+    phoneNumber: '+33 1 55 44 33 22'
+  },
+  {
+    id: 4,
+    name: 'Test Nouveau Script',
+    status: 'paused' as const,
+    calls: 3,
+    duration: '15m',
+    agent: 'Restaurant Order Taking',
+    phoneNumber: '+33 1 23 45 67 89'
+  }
+];
+
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState(null);
   const [agents, setAgents] = useState(initialAgents);
-  const [currentView, setCurrentView] = useState('agents'); // 'agents' ou 'call'
+  const [campaigns, setCampaigns] = useState(initialCampaigns);
+  const [currentView, setCurrentView] = useState('agents');
   const { toast } = useToast();
 
   const toggleSidebar = () => {
@@ -103,24 +144,48 @@ const Index = () => {
   const renderContent = () => {
     switch (currentView) {
       case 'call':
-        return <CallForm agents={agents} />;
+        return (
+          <div>
+            <div className="mb-8">
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">Vos campagnes</h1>
+              <p className="text-gray-600">Gérez et suivez vos campagnes d'appels</p>
+            </div>
+            
+            <div className="mb-8">
+              <CallForm agents={agents} />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {campaigns.map((campaign) => (
+                <CampaignCard
+                  key={campaign.id}
+                  id={campaign.id}
+                  name={campaign.name}
+                  status={campaign.status}
+                  calls={campaign.calls}
+                  duration={campaign.duration}
+                  agent={campaign.agent}
+                  phoneNumber={campaign.phoneNumber}
+                />
+              ))}
+            </div>
+          </div>
+        );
       case 'agents':
       default:
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {agents.map((agent) => (
-              <AgentCard
-                key={agent.id}
-                id={agent.id}
-                name={agent.name}
-                calls={agent.calls}
-                timeInCall={agent.timeInCall}
-                status={agent.status}
-                onClick={() => handleAgentClick(agent)}
-                onDelete={handleDeleteAgent}
-                onDuplicate={handleDuplicateAgent}
-              />
-            ))}
+          <div>
+            <div className="mb-8">
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">Vos agents</h1>
+              <p className="text-gray-600">Gérez et configurez vos agents IA</p>
+            </div>
+            
+            <AgentTable 
+              agents={agents}
+              onAgentClick={handleAgentClick}
+              onDelete={handleDeleteAgent}
+              onDuplicate={handleDuplicateAgent}
+            />
           </div>
         );
     }
