@@ -4,6 +4,7 @@ import { ArrowLeft, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, X
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const initialCampaigns = [
   {
@@ -71,14 +72,92 @@ const CampaignDetails = () => {
   const successRate = Math.round((stats.successful / (stats.successful + stats.failed)) * 100);
   const completionRate = Math.round(((stats.successful + stats.failed) / stats.total) * 100);
 
-  // Données simulées pour le classement
-  const topPerformances = [
-    { rank: 1, contact: "Marie Dubois", duration: "8m 30s", outcome: "Commande validée", score: 95 },
-    { rank: 2, contact: "Jean Martin", duration: "6m 15s", outcome: "RDV pris", score: 90 },
-    { rank: 3, contact: "Sophie Laurent", duration: "7m 45s", outcome: "Devis demandé", score: 88 },
-    { rank: 4, contact: "Pierre Dupont", duration: "5m 20s", outcome: "Rappel programmé", score: 85 },
-    { rank: 5, contact: "Claire Moreau", duration: "9m 10s", outcome: "Commande validée", score: 82 }
+  // Données simulées pour le tableau détaillé des appels
+  const callDetails = [
+    { 
+      rank: 1, 
+      contact: "Marie Dubois", 
+      phone: "+33 1 45 67 89 01",
+      duration: "8m 30s", 
+      quality: 95, 
+      outcome: "Commande validée", 
+      comments: "Client très satisfait, commande de 250€",
+      timestamp: "14:30"
+    },
+    { 
+      rank: 2, 
+      contact: "Jean Martin", 
+      phone: "+33 1 23 45 67 89",
+      duration: "6m 15s", 
+      quality: 90, 
+      outcome: "RDV pris", 
+      comments: "Rendez-vous fixé pour demain 10h",
+      timestamp: "14:25"
+    },
+    { 
+      rank: 3, 
+      contact: "Sophie Laurent", 
+      phone: "+33 1 98 76 54 32",
+      duration: "7m 45s", 
+      quality: 88, 
+      outcome: "Devis demandé", 
+      comments: "Intéressée par nos services premium",
+      timestamp: "14:20"
+    },
+    { 
+      rank: 4, 
+      contact: "Pierre Dupont", 
+      phone: "+33 1 11 22 33 44",
+      duration: "5m 20s", 
+      quality: 85, 
+      outcome: "Rappel programmé", 
+      comments: "Pas disponible, rappel vendredi matin",
+      timestamp: "14:15"
+    },
+    { 
+      rank: 5, 
+      contact: "Claire Moreau", 
+      phone: "+33 1 55 66 77 88",
+      duration: "9m 10s", 
+      quality: 82, 
+      outcome: "Commande validée", 
+      comments: "Hésitante au début mais convaincue",
+      timestamp: "14:10"
+    },
+    { 
+      rank: 6, 
+      contact: "Michel Bernard", 
+      phone: "+33 1 77 88 99 00",
+      duration: "3m 45s", 
+      quality: 78, 
+      outcome: "Pas intéressé", 
+      comments: "Déjà équipé chez un concurrent",
+      timestamp: "14:05"
+    },
+    { 
+      rank: 7, 
+      contact: "Anne Petit", 
+      phone: "+33 1 66 55 44 33",
+      duration: "11m 30s", 
+      quality: 92, 
+      outcome: "Information envoyée", 
+      comments: "Demande documentation par email",
+      timestamp: "14:00"
+    }
   ];
+
+  const getQualityColor = (quality: number) => {
+    if (quality >= 90) return "text-green-600";
+    if (quality >= 80) return "text-yellow-600";
+    return "text-red-600";
+  };
+
+  const getOutcomeColor = (outcome: string) => {
+    if (outcome.includes("Commande") || outcome.includes("RDV")) return "text-green-600";
+    if (outcome.includes("Devis") || outcome.includes("Information")) return "text-blue-600";
+    if (outcome.includes("Rappel")) return "text-orange-600";
+    return "text-red-600";
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -239,41 +318,70 @@ const CampaignDetails = () => {
           </Card>
         </div>
 
-        {/* Section Meilleurs appels */}
+        {/* Section Détails des appels */}
         <Card>
           <CardHeader className="pb-4">
             <CardTitle className="text-lg flex items-center gap-2">
               <Award className="h-5 w-5 text-yellow-600" />
-              Meilleurs appels
+              Détails des appels
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            {topPerformances.map((performance) => (
-              <div key={performance.rank} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center justify-center w-8 h-8 bg-yellow-100 text-yellow-800 rounded-full font-bold text-sm">
-                  {performance.rank}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-gray-900 truncate">{performance.contact}</p>
-                  <div className="flex items-center gap-4 text-sm text-gray-600">
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {performance.duration}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Star className="h-3 w-3" />
-                      {performance.score}%
-                    </span>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <span className="text-sm font-medium text-green-600">{performance.outcome}</span>
-                </div>
-              </div>
-            ))}
+          <CardContent>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-16">Rang</TableHead>
+                    <TableHead>Contact</TableHead>
+                    <TableHead>Téléphone</TableHead>
+                    <TableHead>Heure</TableHead>
+                    <TableHead>Durée</TableHead>
+                    <TableHead>Qualité</TableHead>
+                    <TableHead>Résultat</TableHead>
+                    <TableHead>Commentaires</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {callDetails.map((call) => (
+                    <TableRow key={call.rank}>
+                      <TableCell>
+                        <div className="flex items-center justify-center w-8 h-8 bg-yellow-100 text-yellow-800 rounded-full font-bold text-sm">
+                          {call.rank}
+                        </div>
+                      </TableCell>
+                      <TableCell className="font-medium">{call.contact}</TableCell>
+                      <TableCell className="text-sm text-gray-600">{call.phone}</TableCell>
+                      <TableCell className="text-sm text-gray-600">{call.timestamp}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-3 w-3 text-gray-400" />
+                          <span className="text-sm">{call.duration}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <Star className="h-3 w-3 text-gray-400" />
+                          <span className={`text-sm font-medium ${getQualityColor(call.quality)}`}>
+                            {call.quality}%
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <span className={`text-sm font-medium ${getOutcomeColor(call.outcome)}`}>
+                          {call.outcome}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-sm text-gray-600 max-w-xs truncate">
+                        {call.comments}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
             <div className="pt-4">
               <Button variant="outline" className="w-full">
-                Plus de détails
+                Voir tous les appels
               </Button>
             </div>
           </CardContent>
