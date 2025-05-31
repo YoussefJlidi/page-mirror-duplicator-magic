@@ -1,11 +1,11 @@
-
 import React, { useState } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import AgentCard from '@/components/AgentCard';
 import AgentCustomizationDialog from '@/components/AgentCustomizationDialog';
+import { useToast } from '@/hooks/use-toast';
 
-const agents = [
+const initialAgents = [
   {
     id: 1,
     name: 'Restaurant Order Taking',
@@ -40,6 +40,8 @@ const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState(null);
+  const [agents, setAgents] = useState(initialAgents);
+  const { toast } = useToast();
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
@@ -61,6 +63,36 @@ const Index = () => {
     setSelectedAgent(null);
   };
 
+  const handleDeleteAgent = (agentId: number) => {
+    const agentToDelete = agents.find(agent => agent.id === agentId);
+    setAgents(agents.filter(agent => agent.id !== agentId));
+    
+    toast({
+      title: "Agent supprimé",
+      description: `L'agent "${agentToDelete?.name}" a été supprimé avec succès.`,
+    });
+  };
+
+  const handleDuplicateAgent = (agentId: number) => {
+    const agentToDuplicate = agents.find(agent => agent.id === agentId);
+    if (agentToDuplicate) {
+      const newAgent = {
+        ...agentToDuplicate,
+        id: Math.max(...agents.map(a => a.id)) + 1,
+        name: `${agentToDuplicate.name} (Copie)`,
+        status: 'pending' as const,
+        calls: 0,
+        timeInCall: '0s in call'
+      };
+      setAgents([...agents, newAgent]);
+      
+      toast({
+        title: "Agent dupliqué",
+        description: `L'agent "${newAgent.name}" a été créé avec succès.`,
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <Sidebar isCollapsed={sidebarCollapsed} />
@@ -73,11 +105,14 @@ const Index = () => {
             {agents.map((agent) => (
               <AgentCard
                 key={agent.id}
+                id={agent.id}
                 name={agent.name}
                 calls={agent.calls}
                 timeInCall={agent.timeInCall}
                 status={agent.status}
                 onClick={() => handleAgentClick(agent)}
+                onDelete={handleDeleteAgent}
+                onDuplicate={handleDuplicateAgent}
               />
             ))}
           </div>
