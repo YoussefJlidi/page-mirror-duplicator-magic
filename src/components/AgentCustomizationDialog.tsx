@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Dialog,
@@ -57,6 +56,17 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
     publicDemo: false
   });
 
+  const [touched, setTouched] = useState({
+    name: false,
+    initialMessage: false,
+    prompt: false
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData({ ...formData, [field]: value });
+    setTouched({ ...touched, [field]: true });
+  };
+
   const handleSave = () => {
     console.log('Configuration sauvegardée:', formData);
     onClose();
@@ -108,11 +118,11 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
                 <Input
                   id="name"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
                   placeholder={isCreating ? "Ex: Assistant Restaurant" : "Nom de l'agent"}
-                  className={isCreating && !formData.name ? "border-red-300" : ""}
+                  className={isCreating && touched.name && !formData.name ? "border-red-300" : ""}
                 />
-                {isCreating && !formData.name && (
+                {isCreating && touched.name && !formData.name && (
                   <p className="text-xs text-red-500">Le nom de l'agent est requis</p>
                 )}
               </div>
@@ -180,11 +190,11 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
                 <Input
                   id="initial-message"
                   value={formData.initialMessage}
-                  onChange={(e) => setFormData({ ...formData, initialMessage: e.target.value })}
+                  onChange={(e) => handleInputChange('initialMessage', e.target.value)}
                   placeholder={isCreating ? "Ex: Bonjour, que puis-je faire pour vous ?" : "Première phrase que dira l'agent"}
-                  className={isCreating && !formData.initialMessage ? "border-red-300" : ""}
+                  className={isCreating && touched.initialMessage && !formData.initialMessage ? "border-red-300" : ""}
                 />
-                {isCreating && !formData.initialMessage && (
+                {isCreating && touched.initialMessage && !formData.initialMessage && (
                   <p className="text-xs text-red-500">Le message d'accueil est requis</p>
                 )}
               </div>
@@ -196,15 +206,15 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
                 <Textarea
                   id="prompt"
                   value={formData.prompt}
-                  onChange={(e) => setFormData({ ...formData, prompt: e.target.value })}
+                  onChange={(e) => handleInputChange('prompt', e.target.value)}
                   rows={6}
-                  className={`resize-none font-mono text-sm ${isCreating && !formData.prompt ? "border-red-300" : ""}`}
+                  className={`resize-none font-mono text-sm ${isCreating && touched.prompt && !formData.prompt ? "border-red-300" : ""}`}
                   placeholder={isCreating 
                     ? "Décrivez le rôle et les comportements de votre agent...\n\nEx:\nTu es un assistant pour...\n- Comportement 1\n- Comportement 2" 
                     : "Décrivez le rôle et les instructions détaillées de votre agent..."
                   }
                 />
-                {isCreating && !formData.prompt && (
+                {isCreating && touched.prompt && !formData.prompt && (
                   <p className="text-xs text-red-500">Les instructions sont requises</p>
                 )}
                 <p className="text-xs text-gray-500">
