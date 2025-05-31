@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, FileText, Edit, Award, Star } from 'lucide-react';
@@ -193,10 +194,12 @@ const CampaignDetails = () => {
             
             {/* Actions */}
             <div className="flex items-center gap-3">
-              <Button variant="outline" size="sm" className="flex items-center gap-2">
-                <AlertCircle className="h-4 w-4" />
-                Plus de détails
-              </Button>
+              <Link to={`/campaign/${campaignId}/calls`}>
+                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4" />
+                  Plus de détails
+                </Button>
+              </Link>
               <Button variant="outline" size="sm" className="flex items-center gap-2">
                 <FileText className="h-4 w-4" />
                 Télécharger le rapport PDF
