@@ -9,25 +9,29 @@ const agents = [
     id: 1,
     name: 'Restaurant Order Taking',
     calls: 0,
-    timeInCall: '0s in call'
+    timeInCall: '0s in call',
+    status: 'pending' as const
   },
   {
     id: 2,
     name: 'Restaurant Order Taking',
     calls: 0,
-    timeInCall: '0s in call'
+    timeInCall: '0s in call',
+    status: 'inactive' as const
   },
   {
     id: 3,
     name: 'My new agent',
     calls: 3,
-    timeInCall: '12s in call'
+    timeInCall: '12s in call',
+    status: 'active' as const
   },
   {
     id: 4,
     name: '101 conseils',
     calls: 19,
-    timeInCall: '9m 8s in call'
+    timeInCall: '9m 8s in call',
+    status: 'finished' as const
   }
 ];
 
@@ -53,6 +57,7 @@ const Index = () => {
                 name={agent.name}
                 calls={agent.calls}
                 timeInCall={agent.timeInCall}
+                status={agent.status}
               />
             ))}
           </div>
