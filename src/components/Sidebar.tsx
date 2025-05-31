@@ -5,18 +5,26 @@ import { cn } from '@/lib/utils';
 
 interface SidebarProps {
   isCollapsed: boolean;
+  onViewChange?: (view: string) => void;
+  currentView?: string;
 }
 
 const sidebarItems = [
-  { icon: Bot, label: 'Agents', isActive: true },
-  { icon: PhoneOutgoing, label: 'Passer un appel' },
-  { icon: PhoneIncoming, label: 'Recevoir un appel' },
-  { icon: Puzzle, label: 'Integrations' },
-  { icon: LayoutDashboard, label: 'Dashboard' },
-  { icon: BookOpen, label: 'Instructions' },
+  { icon: Bot, label: 'Agents', view: 'agents' },
+  { icon: PhoneOutgoing, label: 'Passer un appel', view: 'call' },
+  { icon: PhoneIncoming, label: 'Recevoir un appel', view: 'receive' },
+  { icon: Puzzle, label: 'Integrations', view: 'integrations' },
+  { icon: LayoutDashboard, label: 'Dashboard', view: 'dashboard' },
+  { icon: BookOpen, label: 'Instructions', view: 'instructions' },
 ];
 
-const Sidebar: React.FC<SidebarProps> = ({ isCollapsed }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentView = 'agents' }) => {
+  const handleItemClick = (view: string) => {
+    if (onViewChange) {
+      onViewChange(view);
+    }
+  };
+
   return (
     <div className={cn(
       "bg-white border-r border-gray-200 h-screen flex flex-col transition-all duration-300",
@@ -39,18 +47,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed }) => {
         <ul className="space-y-1 px-3">
           {sidebarItems.map((item, index) => (
             <li key={index}>
-              <a
-                href="#"
+              <button
+                onClick={() => handleItemClick(item.view)}
                 className={cn(
-                  "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                  item.isActive
+                  "w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left",
+                  currentView === item.view
                     ? "bg-gray-100 text-gray-900"
                     : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                 )}
               >
-                <item.icon className="w-5 h-5" />
+                <item.icon className="w-5 h-5 flex-shrink-0" />
                 {!isCollapsed && <span>{item.label}</span>}
-              </a>
+              </button>
             </li>
           ))}
         </ul>

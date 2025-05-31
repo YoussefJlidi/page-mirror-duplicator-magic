@@ -1,8 +1,10 @@
+
 import React, { useState } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import AgentCard from '@/components/AgentCard';
 import AgentCustomizationDialog from '@/components/AgentCustomizationDialog';
+import CallForm from '@/components/CallForm';
 import { useToast } from '@/hooks/use-toast';
 
 const initialAgents = [
@@ -41,6 +43,7 @@ const Index = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState(null);
   const [agents, setAgents] = useState(initialAgents);
+  const [currentView, setCurrentView] = useState('agents'); // 'agents' ou 'call'
   const { toast } = useToast();
 
   const toggleSidebar = () => {
@@ -93,14 +96,17 @@ const Index = () => {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <Sidebar isCollapsed={sidebarCollapsed} />
-      
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header onToggleSidebar={toggleSidebar} onNewAgent={handleNewAgent} />
-        
-        <main className="flex-1 p-6">
+  const handleViewChange = (view: string) => {
+    setCurrentView(view);
+  };
+
+  const renderContent = () => {
+    switch (currentView) {
+      case 'call':
+        return <CallForm agents={agents} />;
+      case 'agents':
+      default:
+        return (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {agents.map((agent) => (
               <AgentCard
@@ -116,6 +122,23 @@ const Index = () => {
               />
             ))}
           </div>
+        );
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex">
+      <Sidebar 
+        isCollapsed={sidebarCollapsed} 
+        onViewChange={handleViewChange}
+        currentView={currentView}
+      />
+      
+      <div className="flex-1 flex flex-col min-w-0">
+        <Header onToggleSidebar={toggleSidebar} onNewAgent={handleNewAgent} />
+        
+        <main className="flex-1 p-6">
+          {renderContent()}
         </main>
       </div>
 
