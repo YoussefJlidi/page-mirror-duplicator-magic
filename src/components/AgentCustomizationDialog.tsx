@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Settings, Play, Volume2, Save, TestTube } from 'lucide-react';
+import { Settings, Play, Volume2, Save, TestTube, Plus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 interface AgentCustomizationDialogProps {
@@ -39,16 +39,18 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
   onClose,
   agentData
 }) => {
+  const isCreating = !agentData;
+  
   const [formData, setFormData] = useState({
-    name: agentData?.name || 'Restaurant Order Taking',
+    name: agentData?.name || '',
     model: agentData?.model || 'GPT-4O',
     backgroundAudio: 'Select a background audio',
     maxCallDuration: 5,
-    initialMessage: agentData?.initialMessage || 'La Table Gourmande bonjour, que puis-je faire pour vous ?',
+    initialMessage: agentData?.initialMessage || '',
     voice: agentData?.voice || 'Anna',
     transcriber: 'Deepgram',
     language: agentData?.language || 'FR',
-    prompt: agentData?.prompt || '#### Rôle:\n\nTu es le réceptionniste téléphonique du restaurant La Table Gourmande, spécialisé dans la prise de commandes et la gestion des réservations. Tu dois être accueillant, professionnel et efficace.\n\n#### Instructions:\n\n1. Accueille chaleureusement les clients\n2. Prends les commandes avec précision\n3. Propose des suggestions pertinentes\n4. Gère les questions sur les allergènes\n5. Confirme toutes les informations importantes',
+    prompt: agentData?.prompt || '',
     supportInterruptions: true,
     interruptionSensitivity: 'medium',
     webhookEnabled: false,
@@ -71,15 +73,26 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
           <DialogTitle className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-r from-gray-800 to-black rounded-lg flex items-center justify-center">
-                <Settings className="w-5 h-5 text-white" />
+                {isCreating ? (
+                  <Plus className="w-5 h-5 text-white" />
+                ) : (
+                  <Settings className="w-5 h-5 text-white" />
+                )}
               </div>
               <div>
-                <h2 className="text-xl font-semibold">Configuration de l'agent</h2>
-                <p className="text-sm text-gray-500">Personnalisez votre assistant vocal intelligent</p>
+                <h2 className="text-xl font-semibold">
+                  {isCreating ? 'Créer un nouvel agent' : 'Configuration de l\'agent'}
+                </h2>
+                <p className="text-sm text-gray-500">
+                  {isCreating 
+                    ? 'Configurez votre nouveau assistant vocal intelligent' 
+                    : 'Modifiez votre assistant vocal intelligent'
+                  }
+                </p>
               </div>
             </div>
             <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-              {agentData ? 'Modification' : 'Création'}
+              {isCreating ? 'Création' : 'Modification'}
             </Badge>
           </DialogTitle>
         </DialogHeader>
@@ -91,13 +104,17 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-sm font-medium">Nom de l'agent</Label>
+                <Label htmlFor="name" className="text-sm font-medium">Nom de l'agent *</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Ex: Assistant Restaurant"
+                  placeholder={isCreating ? "Ex: Assistant Restaurant" : "Nom de l'agent"}
+                  className={isCreating && !formData.name ? "border-red-300" : ""}
                 />
+                {isCreating && !formData.name && (
+                  <p className="text-xs text-red-500">Le nom de l'agent est requis</p>
+                )}
               </div>
               
               <div className="space-y-2">
@@ -157,25 +174,45 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
             
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="initial-message" className="text-sm font-medium">Message d'accueil</Label>
+                <Label htmlFor="initial-message" className="text-sm font-medium">
+                  Message d'accueil {isCreating ? '*' : ''}
+                </Label>
                 <Input
                   id="initial-message"
                   value={formData.initialMessage}
                   onChange={(e) => setFormData({ ...formData, initialMessage: e.target.value })}
-                  placeholder="Première phrase que dira l'agent"
+                  placeholder={isCreating ? "Ex: Bonjour, que puis-je faire pour vous ?" : "Première phrase que dira l'agent"}
+                  className={isCreating && !formData.initialMessage ? "border-red-300" : ""}
                 />
+                {isCreating && !formData.initialMessage && (
+                  <p className="text-xs text-red-500">Le message d'accueil est requis</p>
+                )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="prompt" className="text-sm font-medium">Instructions de l'agent</Label>
+                <Label htmlFor="prompt" className="text-sm font-medium">
+                  Instructions de l'agent {isCreating ? '*' : ''}
+                </Label>
                 <Textarea
                   id="prompt"
                   value={formData.prompt}
                   onChange={(e) => setFormData({ ...formData, prompt: e.target.value })}
                   rows={6}
-                  className="resize-none font-mono text-sm"
-                  placeholder="Décrivez le rôle et les instructions détaillées de votre agent..."
+                  className={`resize-none font-mono text-sm ${isCreating && !formData.prompt ? "border-red-300" : ""}`}
+                  placeholder={isCreating 
+                    ? "Décrivez le rôle et les comportements de votre agent...\n\nEx:\nTu es un assistant pour...\n- Comportement 1\n- Comportement 2" 
+                    : "Décrivez le rôle et les instructions détaillées de votre agent..."
+                  }
                 />
+                {isCreating && !formData.prompt && (
+                  <p className="text-xs text-red-500">Les instructions sont requises</p>
+                )}
+                <p className="text-xs text-gray-500">
+                  {isCreating 
+                    ? "Définissez clairement le rôle et les comportements attendus de votre agent"
+                    : "Utilisez Markdown pour formater vos instructions"
+                  }
+                </p>
               </div>
             </div>
           </div>
@@ -237,9 +274,13 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
               <Button variant="outline" onClick={onClose}>
                 Annuler
               </Button>
-              <Button onClick={handleSave} className="bg-black hover:bg-gray-800 text-white flex items-center gap-2">
+              <Button 
+                onClick={handleSave} 
+                className="bg-black hover:bg-gray-800 text-white flex items-center gap-2"
+                disabled={isCreating && (!formData.name || !formData.initialMessage || !formData.prompt)}
+              >
                 <Save className="w-4 h-4" />
-                Sauvegarder
+                {isCreating ? 'Créer l\'agent' : 'Sauvegarder'}
               </Button>
             </div>
           </div>
