@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 const CallDetails = () => {
   const { campaignId } = useParams();
 
-  // Données des statistiques détaillées
+  // Données des statistiques correspondant à l'image
   const callStats = {
     totalCalls: 23,
     totalMinutes: 9.6,
@@ -19,7 +19,7 @@ const CallDetails = () => {
     calleeCount: 1
   };
 
-  // Données détaillées des appels avec plus d'informations
+  // Données détaillées des appels selon l'image
   const detailedCalls = [
     {
       fromNumber: '+33 6 46 67 36 34',
@@ -27,10 +27,10 @@ const CallDetails = () => {
       agent: '101 conseils',
       startTime: '13/04',
       time: '14:34',
-      type: 'inbound',
+      type: 'entrant',
       duration: '0\'11',
       cost: '€ 0.03',
-      status: 'completed'
+      status: 'terminé'
     },
     {
       fromNumber: '+33 6 46 67 36 34',
@@ -38,10 +38,10 @@ const CallDetails = () => {
       agent: '101 conseils',
       startTime: '11/04',
       time: '19:20',
-      type: 'inbound',
+      type: 'entrant',
       duration: '0\'43',
       cost: '€ 0.11',
-      status: 'completed'
+      status: 'terminé'
     },
     {
       fromNumber: '+33 6 46 67 36 34',
@@ -49,10 +49,10 @@ const CallDetails = () => {
       agent: '101 conseils',
       startTime: '11/04',
       time: '19:05',
-      type: 'inbound',
+      type: 'entrant',
       duration: '0\'24',
       cost: '€ 0.06',
-      status: 'completed'
+      status: 'terminé'
     },
     {
       fromNumber: '+33 6 35 48 51 72',
@@ -60,10 +60,10 @@ const CallDetails = () => {
       agent: '101 conseils',
       startTime: '11/04',
       time: '19:05',
-      type: 'inbound',
+      type: 'entrant',
       duration: '0\'16',
       cost: '€ 0.04',
-      status: 'completed'
+      status: 'terminé'
     },
     {
       fromNumber: '+33 6 50 76 71 18',
@@ -71,10 +71,10 @@ const CallDetails = () => {
       agent: '101 conseils',
       startTime: '11/04',
       time: '11:01',
-      type: 'inbound',
+      type: 'entrant',
       duration: '0\'49',
       cost: '€ 0.13',
-      status: 'completed'
+      status: 'terminé'
     },
     {
       fromNumber: '+33 6 50 76 71 18',
@@ -82,61 +82,17 @@ const CallDetails = () => {
       agent: '101 conseils',
       startTime: '11/04',
       time: '11:00',
-      type: 'inbound',
+      type: 'entrant',
       duration: '0\'22',
       cost: '€ 0.06',
-      status: 'completed'
-    },
-    {
-      fromNumber: '+33 6 50 76 71 18',
-      toNumber: '+33 9 74 99 66 73',
-      agent: '101 conseils',
-      startTime: '11/04',
-      time: '10:59',
-      type: 'inbound',
-      duration: '0\'51',
-      cost: '€ 0.14',
-      status: 'completed'
-    },
-    {
-      fromNumber: '+33 6 46 67 36 34',
-      toNumber: '+33 9 74 99 66 73',
-      agent: '101 conseils',
-      startTime: '10/04',
-      time: '23:56',
-      type: 'inbound',
-      duration: '0\'43',
-      cost: '€ 0.12',
-      status: 'completed'
-    },
-    {
-      fromNumber: '+33 6 50 76 71 18',
-      toNumber: '+33 9 74 99 66 73',
-      agent: '101 conseils',
-      startTime: '10/04',
-      time: '22:56',
-      type: 'inbound',
-      duration: '2\'13',
-      cost: '€ 0.35',
-      status: 'completed'
-    },
-    {
-      fromNumber: '+33 6 50 76 71 18',
-      toNumber: '+33 9 74 99 66 73',
-      agent: '101 conseils',
-      startTime: '10/04',
-      time: '22:46',
-      type: 'inbound',
-      duration: '0\'06',
-      cost: '€ 0.02',
-      status: 'completed'
+      status: 'terminé'
     }
   ];
 
   const filters = [
     { label: 'Agent', active: false },
     { label: 'Campagne', active: false },
-    { label: 'Heure de début', active: false },
+    { label: 'Heure de début', active: true },
     { label: 'Numéro émetteur', active: false },
     { label: 'Numéro destinataire', active: false },
     { label: 'Durée', active: false },
@@ -156,67 +112,67 @@ const CallDetails = () => {
           <h1 className="text-3xl font-bold text-gray-900">Appels</h1>
         </div>
 
-        {/* Statistiques en haut */}
+        {/* Statistiques en haut - style cards avec icônes */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <PhoneCall className="h-4 w-4 text-gray-500" />
+          <Card className="bg-white border">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <PhoneCall className="h-5 w-5 text-gray-500" />
                 <span className="text-sm text-gray-600">Total des appels</span>
               </div>
-              <p className="text-2xl font-bold">{callStats.totalCalls}</p>
+              <p className="text-3xl font-bold text-gray-900">{callStats.totalCalls}</p>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Clock className="h-4 w-4 text-gray-500" />
+          <Card className="bg-white border">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <Clock className="h-5 w-5 text-gray-500" />
                 <span className="text-sm text-gray-600">Total des minutes</span>
               </div>
-              <p className="text-2xl font-bold">{callStats.totalMinutes}</p>
+              <p className="text-3xl font-bold text-gray-900">{callStats.totalMinutes}</p>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="h-4 w-4 text-gray-500" />
+          <Card className="bg-white border">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <TrendingUp className="h-5 w-5 text-gray-500" />
                 <span className="text-sm text-gray-600">Durée moyenne</span>
               </div>
-              <p className="text-2xl font-bold">{callStats.averageDuration}</p>
+              <p className="text-3xl font-bold text-gray-900">{callStats.averageDuration}</p>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Phone className="h-4 w-4 text-gray-500" />
+          <Card className="bg-white border">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <Phone className="h-5 w-5 text-gray-500" />
                 <span className="text-sm text-gray-600">Nombre d'appelants</span>
               </div>
-              <p className="text-2xl font-bold">{callStats.callerCount}</p>
+              <p className="text-3xl font-bold text-gray-900">{callStats.callerCount}</p>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <PhoneIncoming className="h-4 w-4 text-gray-500" />
+          <Card className="bg-white border">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <PhoneIncoming className="h-5 w-5 text-gray-500" />
                 <span className="text-sm text-gray-600">Nombre d'appelés</span>
               </div>
-              <p className="text-2xl font-bold">{callStats.calleeCount}</p>
+              <p className="text-3xl font-bold text-gray-900">{callStats.calleeCount}</p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Filtres */}
+        {/* Filtres - style boutons horizontaux */}
         <div className="flex flex-wrap gap-2 mb-6">
           {filters.map((filter, index) => (
             <Button
               key={index}
               variant={filter.active ? "default" : "outline"}
               size="sm"
-              className="text-sm"
+              className="text-sm bg-white border"
             >
               {filter.label}
             </Button>
@@ -224,58 +180,56 @@ const CallDetails = () => {
         </div>
 
         {/* Tableau détaillé des appels */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Détails des appels</CardTitle>
+        <Card className="bg-white">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-xl font-semibold text-gray-900">Détails des appels</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0">
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>Numéro émetteur</TableHead>
-                    <TableHead>Numéro destinataire</TableHead>
-                    <TableHead>Agent</TableHead>
-                    <TableHead>Heure de début</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Durée</TableHead>
-                    <TableHead>Coût</TableHead>
-                    <TableHead>Statut</TableHead>
+                  <TableRow className="border-b">
+                    <TableHead className="text-gray-600 font-medium">Numéro émetteur</TableHead>
+                    <TableHead className="text-gray-600 font-medium">Numéro destinataire</TableHead>
+                    <TableHead className="text-gray-600 font-medium">Agent</TableHead>
+                    <TableHead className="text-gray-600 font-medium">Heure de début</TableHead>
+                    <TableHead className="text-gray-600 font-medium">Type</TableHead>
+                    <TableHead className="text-gray-600 font-medium">Durée</TableHead>
+                    <TableHead className="text-gray-600 font-medium">Coût</TableHead>
+                    <TableHead className="text-gray-600 font-medium">Statut</TableHead>
                     <TableHead></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {detailedCalls.map((call, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="font-mono text-sm">{call.fromNumber}</TableCell>
-                      <TableCell className="font-mono text-sm">{call.toNumber}</TableCell>
-                      <TableCell>{call.agent}</TableCell>
+                    <TableRow key={index} className="border-b hover:bg-gray-50">
+                      <TableCell className="font-mono text-sm text-gray-900">{call.fromNumber}</TableCell>
+                      <TableCell className="font-mono text-sm text-gray-900">{call.toNumber}</TableCell>
+                      <TableCell className="text-sm text-gray-900">{call.agent}</TableCell>
                       <TableCell>
                         <div>
-                          <div className="text-sm">{call.startTime}</div>
-                          <div className="text-sm font-medium">{call.time}</div>
+                          <div className="text-sm text-gray-900">{call.startTime}</div>
+                          <div className="text-sm text-gray-900">{call.time}</div>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-1">
-                          <PhoneIncoming className="h-3 w-3" />
-                          <span className="text-sm">entrant</span>
+                        <div className="flex items-center gap-2">
+                          <PhoneIncoming className="h-4 w-4 text-gray-500" />
+                          <span className="text-sm text-gray-900">{call.type}</span>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          <span className="text-sm font-medium">{call.duration}</span>
+                          <span className="text-sm font-medium text-gray-900">{call.duration}</span>
                         </div>
                       </TableCell>
-                      <TableCell className="text-sm">{call.cost}</TableCell>
+                      <TableCell className="text-sm text-gray-900">{call.cost}</TableCell>
                       <TableCell>
-                        <Badge variant="secondary" className="text-xs">
-                          terminé
-                        </Badge>
+                        <span className="text-sm text-gray-600">{call.status}</span>
                       </TableCell>
                       <TableCell>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" className="text-gray-400">
                           ...
                         </Button>
                       </TableCell>
@@ -283,15 +237,6 @@ const CallDetails = () => {
                   ))}
                 </TableBody>
               </Table>
-            </div>
-
-            <div className="flex items-center justify-between pt-4 border-t">
-              <Button variant="outline" size="sm">
-                Précédent
-              </Button>
-              <Button variant="outline" size="sm">
-                Suivant
-              </Button>
             </div>
           </CardContent>
         </Card>
