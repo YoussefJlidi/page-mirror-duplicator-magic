@@ -5,10 +5,11 @@ import { Plus, Menu } from 'lucide-react';
 interface HeaderProps {
   onToggleSidebar: () => void;
   onNewAgent: () => void;
+  onNewCampaign?: () => void;
   currentView: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onNewAgent, currentView }) => {
+const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onNewAgent, onNewCampaign, currentView }) => {
   const getTitle = () => {
     switch (currentView) {
       case 'call':
@@ -39,6 +40,16 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onNewAgent, currentVie
           >
             <Plus className="w-4 h-4" />
             <span>New agent</span>
+          </button>
+        )}
+
+        {currentView === 'call' && onNewCampaign && (
+          <button 
+            onClick={onNewCampaign}
+            className="bg-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors flex items-center space-x-2"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Créer une campagne</span>
           </button>
         )}
       </div>

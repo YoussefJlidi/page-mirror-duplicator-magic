@@ -94,6 +94,14 @@ const Index = () => {
     setIsDialogOpen(true);
   };
 
+  const handleNewCampaign = () => {
+    console.log('Nouvelle campagne demandée');
+    toast({
+      title: "Nouvelle campagne",
+      description: "Fonctionnalité de création de campagne à venir.",
+    });
+  };
+
   const handleAgentClick = (agent) => {
     console.log('Agent clicked:', agent.name);
     setSelectedAgent(agent);
@@ -197,6 +205,7 @@ const Index = () => {
         <Header 
           onToggleSidebar={toggleSidebar} 
           onNewAgent={handleNewAgent}
+          onNewCampaign={handleNewCampaign}
           currentView={currentView}
         />
         
