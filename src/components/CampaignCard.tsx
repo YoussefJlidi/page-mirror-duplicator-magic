@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Phone, Clock, Users, MoreVertical } from 'lucide-react';
 
@@ -28,6 +29,7 @@ const statusLabels = {
 };
 
 const CampaignCard: React.FC<CampaignCardProps> = ({
+  id,
   name,
   status,
   calls,
@@ -89,9 +91,11 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
               Reprendre
             </Button>
           )}
-          <Button size="sm" variant="outline">
-            Voir détails
-          </Button>
+          <Link to={`/campaign/${id}`}>
+            <Button size="sm" variant="outline">
+              Voir détails
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
