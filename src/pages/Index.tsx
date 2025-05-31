@@ -1,10 +1,8 @@
-
 import React, { useState } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import AgentTable from '@/components/AgentTable';
 import AgentCustomizationDialog from '@/components/AgentCustomizationDialog';
-import CallForm from '@/components/CallForm';
 import CampaignCard from '@/components/CampaignCard';
 import { useToast } from '@/hooks/use-toast';
 
@@ -151,10 +149,6 @@ const Index = () => {
               <p className="text-gray-600">Gérez et suivez vos campagnes d'appels</p>
             </div>
             
-            <div className="mb-8">
-              <CallForm agents={agents} />
-            </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {campaigns.map((campaign) => (
                 <CampaignCard
@@ -200,7 +194,11 @@ const Index = () => {
       />
       
       <div className="flex-1 flex flex-col min-w-0">
-        <Header onToggleSidebar={toggleSidebar} onNewAgent={handleNewAgent} />
+        <Header 
+          onToggleSidebar={toggleSidebar} 
+          onNewAgent={handleNewAgent}
+          currentView={currentView}
+        />
         
         <main className="flex-1 p-6">
           {renderContent()}
