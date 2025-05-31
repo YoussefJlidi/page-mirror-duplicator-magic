@@ -14,9 +14,10 @@ interface AgentCardProps {
   calls: number;
   timeInCall: string;
   status: 'pending' | 'active' | 'finished' | 'inactive';
+  onClick?: () => void;
 }
 
-const AgentCard: React.FC<AgentCardProps> = ({ name, calls, timeInCall, status }) => {
+const AgentCard: React.FC<AgentCardProps> = ({ name, calls, timeInCall, status, onClick }) => {
   const handleDuplicate = () => {
     console.log('Dupliquer l\'agent:', name);
   };
@@ -43,7 +44,10 @@ const AgentCard: React.FC<AgentCardProps> = ({ name, calls, timeInCall, status }
   const statusConfig = getStatusConfig(status);
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div 
+      className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md hover:bg-gray-50 transition-all cursor-pointer"
+      onClick={onClick}
+    >
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">{name}</h3>
@@ -53,7 +57,10 @@ const AgentCard: React.FC<AgentCardProps> = ({ name, calls, timeInCall, status }
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded">
+            <button 
+              className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded"
+              onClick={(e) => e.stopPropagation()}
+            >
               <MoreHorizontal className="w-5 h-5" />
             </button>
           </DropdownMenuTrigger>

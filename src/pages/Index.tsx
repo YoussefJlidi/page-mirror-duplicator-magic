@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import AgentCard from '@/components/AgentCard';
+import AgentCustomizationDialog from '@/components/AgentCustomizationDialog';
 
 const agents = [
   {
@@ -37,9 +38,27 @@ const agents = [
 
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState(null);
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
+  };
+
+  const handleNewAgent = () => {
+    setSelectedAgent(null);
+    setIsDialogOpen(true);
+  };
+
+  const handleAgentClick = (agent) => {
+    console.log('Agent clicked:', agent.name);
+    setSelectedAgent(agent);
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    setSelectedAgent(null);
   };
 
   return (
@@ -47,7 +66,7 @@ const Index = () => {
       <Sidebar isCollapsed={sidebarCollapsed} />
       
       <div className="flex-1 flex flex-col min-w-0">
-        <Header onToggleSidebar={toggleSidebar} />
+        <Header onToggleSidebar={toggleSidebar} onNewAgent={handleNewAgent} />
         
         <main className="flex-1 p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -58,11 +77,18 @@ const Index = () => {
                 calls={agent.calls}
                 timeInCall={agent.timeInCall}
                 status={agent.status}
+                onClick={() => handleAgentClick(agent)}
               />
             ))}
           </div>
         </main>
       </div>
+
+      <AgentCustomizationDialog
+        isOpen={isDialogOpen}
+        onClose={handleCloseDialog}
+        agentData={selectedAgent}
+      />
     </div>
   );
 };
