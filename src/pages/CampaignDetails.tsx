@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, FileText, Edit, Award, Star } from 'lucide-react';
+import { ArrowLeft, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, FileText, Edit, PhoneIncoming } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -70,75 +69,67 @@ const CampaignDetails = () => {
     toRetry: 65
   };
 
-  const successRate = Math.round((stats.successful / (stats.successful + stats.failed)) * 100);
+  const successRate = Math.round((stats.successful / (stats.failed + stats.successful)) * 100);
   const completionRate = Math.round(((stats.successful + stats.failed) / stats.total) * 100);
 
-  // Extrait des top 5 appels basé sur la qualité
-  const topCalls = [
-    { 
-      rank: 1, 
-      contact: "Marie Dubois", 
-      phone: "+33 1 45 67 89 01",
-      duration: "8m 30s", 
-      quality: 95, 
-      outcome: "Commande validée", 
-      comments: "Client très satisfait, commande de 250€",
-      timestamp: "14:30"
+  // Extrait des appels pour la section Top appels (simplifié)
+  const topCallsExtract = [
+    {
+      fromNumber: '+33 6 46 67 36 34',
+      toNumber: '+33 9 74 99 66 73',
+      agent: '101 conseils',
+      startTime: '13/04',
+      time: '14:34',
+      type: 'entrant',
+      duration: '0\'11',
+      cost: '€ 0.03',
+      status: 'terminé'
     },
-    { 
-      rank: 2, 
-      contact: "Anne Petit", 
-      phone: "+33 1 66 55 44 33",
-      duration: "11m 30s", 
-      quality: 92, 
-      outcome: "Information envoyée", 
-      comments: "Demande documentation par email",
-      timestamp: "14:00"
+    {
+      fromNumber: '+33 6 46 67 36 34',
+      toNumber: '+33 9 74 99 66 73',
+      agent: '101 conseils',
+      startTime: '11/04',
+      time: '19:20',
+      type: 'entrant',
+      duration: '0\'43',
+      cost: '€ 0.11',
+      status: 'terminé'
     },
-    { 
-      rank: 3, 
-      contact: "Jean Martin", 
-      phone: "+33 1 23 45 67 89",
-      duration: "6m 15s", 
-      quality: 90, 
-      outcome: "RDV pris", 
-      comments: "Rendez-vous fixé pour demain 10h",
-      timestamp: "14:25"
+    {
+      fromNumber: '+33 6 46 67 36 34',
+      toNumber: '+33 9 74 99 66 73',
+      agent: '101 conseils',
+      startTime: '11/04',
+      time: '19:05',
+      type: 'entrant',
+      duration: '0\'24',
+      cost: '€ 0.06',
+      status: 'terminé'
     },
-    { 
-      rank: 4, 
-      contact: "Sophie Laurent", 
-      phone: "+33 1 98 76 54 32",
-      duration: "7m 45s", 
-      quality: 88, 
-      outcome: "Devis demandé", 
-      comments: "Intéressée par nos services premium",
-      timestamp: "14:20"
+    {
+      fromNumber: '+33 6 35 48 51 72',
+      toNumber: '+33 9 74 99 66 73',
+      agent: '101 conseils',
+      startTime: '11/04',
+      time: '19:05',
+      type: 'entrant',
+      duration: '0\'16',
+      cost: '€ 0.04',
+      status: 'terminé'
     },
-    { 
-      rank: 5, 
-      contact: "Pierre Dupont", 
-      phone: "+33 1 11 22 33 44",
-      duration: "5m 20s", 
-      quality: 85, 
-      outcome: "Rappel programmé", 
-      comments: "Pas disponible, rappel vendredi matin",
-      timestamp: "14:15"
+    {
+      fromNumber: '+33 6 50 76 71 18',
+      toNumber: '+33 9 74 99 66 73',
+      agent: '101 conseils',
+      startTime: '11/04',
+      time: '11:01',
+      type: 'entrant',
+      duration: '0\'49',
+      cost: '€ 0.13',
+      status: 'terminé'
     }
   ];
-
-  const getQualityColor = (quality: number) => {
-    if (quality >= 90) return "text-green-600";
-    if (quality >= 80) return "text-yellow-600";
-    return "text-red-600";
-  };
-
-  const getOutcomeColor = (outcome: string) => {
-    if (outcome.includes("Commande") || outcome.includes("RDV")) return "text-green-600";
-    if (outcome.includes("Devis") || outcome.includes("Information")) return "text-blue-600";
-    if (outcome.includes("Rappel")) return "text-orange-600";
-    return "text-red-600";
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -301,68 +292,64 @@ const CampaignDetails = () => {
           </Card>
         </div>
 
-        {/* Section Top appels */}
+        {/* Section Top appels - Style simplifié comme dans l'image */}
         <Card>
           <CardHeader className="pb-4">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Award className="h-5 w-5 text-yellow-600" />
-              Top appels
-            </CardTitle>
+            <CardTitle className="text-lg">Détails des appels</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0">
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-16">Rang</TableHead>
-                    <TableHead>Contact</TableHead>
-                    <TableHead>Téléphone</TableHead>
-                    <TableHead>Heure</TableHead>
-                    <TableHead>Durée</TableHead>
-                    <TableHead>Qualité</TableHead>
-                    <TableHead>Résultat</TableHead>
-                    <TableHead>Commentaires</TableHead>
+                  <TableRow className="border-b">
+                    <TableHead className="text-gray-500 font-normal text-sm">Numéro émetteur</TableHead>
+                    <TableHead className="text-gray-500 font-normal text-sm">Numéro destinataire</TableHead>
+                    <TableHead className="text-gray-500 font-normal text-sm">Agent</TableHead>
+                    <TableHead className="text-gray-500 font-normal text-sm">Heure de début</TableHead>
+                    <TableHead className="text-gray-500 font-normal text-sm">Type</TableHead>
+                    <TableHead className="text-gray-500 font-normal text-sm">Durée</TableHead>
+                    <TableHead className="text-gray-500 font-normal text-sm">Coût</TableHead>
+                    <TableHead className="text-gray-500 font-normal text-sm">Statut</TableHead>
+                    <TableHead></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {topCalls.map((call) => (
-                    <TableRow key={call.rank}>
+                  {topCallsExtract.map((call, index) => (
+                    <TableRow key={index} className="border-b hover:bg-gray-50">
+                      <TableCell className="text-sm text-gray-900">{call.fromNumber}</TableCell>
+                      <TableCell className="text-sm text-gray-900">{call.toNumber}</TableCell>
+                      <TableCell className="text-sm text-gray-900">{call.agent}</TableCell>
                       <TableCell>
-                        <div className="flex items-center justify-center w-8 h-8 bg-yellow-100 text-yellow-800 rounded-full font-bold text-sm">
-                          {call.rank}
-                        </div>
-                      </TableCell>
-                      <TableCell className="font-medium">{call.contact}</TableCell>
-                      <TableCell className="text-sm text-gray-600">{call.phone}</TableCell>
-                      <TableCell className="text-sm text-gray-600">{call.timestamp}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-3 w-3 text-gray-400" />
-                          <span className="text-sm">{call.duration}</span>
+                        <div>
+                          <div className="text-sm text-gray-900">{call.startTime}</div>
+                          <div className="text-sm text-gray-900">{call.time}</div>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Star className="h-3 w-3 text-gray-400" />
-                          <span className={`text-sm font-medium ${getQualityColor(call.quality)}`}>
-                            {call.quality}%
-                          </span>
+                        <div className="flex items-center gap-2">
+                          <PhoneIncoming className="h-4 w-4 text-gray-500" />
+                          <span className="text-sm text-gray-900">{call.type}</span>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className={`text-sm font-medium ${getOutcomeColor(call.outcome)}`}>
-                          {call.outcome}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <span className="text-sm text-gray-900">{call.duration}</span>
+                        </div>
                       </TableCell>
-                      <TableCell className="text-sm text-gray-600 max-w-xs truncate">
-                        {call.comments}
+                      <TableCell className="text-sm text-gray-900">{call.cost}</TableCell>
+                      <TableCell className="text-sm text-gray-600">{call.status}</TableCell>
+                      <TableCell>
+                        <Button variant="ghost" size="sm" className="text-gray-400">
+                          ...
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </div>
-            <div className="pt-4">
+            <div className="p-4 border-t">
               <Link to={`/campaign/${campaignId}/calls`}>
                 <Button variant="outline" className="w-full">
                   Voir tous les appels
