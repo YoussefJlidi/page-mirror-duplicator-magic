@@ -73,8 +73,8 @@ const CampaignDetails = () => {
   const successRate = Math.round((stats.successful / (stats.successful + stats.failed)) * 100);
   const completionRate = Math.round(((stats.successful + stats.failed) / stats.total) * 100);
 
-  // Données simulées pour le tableau détaillé des appels
-  const callDetails = [
+  // Extrait des top 5 appels basé sur la qualité
+  const topCalls = [
     { 
       rank: 1, 
       contact: "Marie Dubois", 
@@ -87,6 +87,16 @@ const CampaignDetails = () => {
     },
     { 
       rank: 2, 
+      contact: "Anne Petit", 
+      phone: "+33 1 66 55 44 33",
+      duration: "11m 30s", 
+      quality: 92, 
+      outcome: "Information envoyée", 
+      comments: "Demande documentation par email",
+      timestamp: "14:00"
+    },
+    { 
+      rank: 3, 
       contact: "Jean Martin", 
       phone: "+33 1 23 45 67 89",
       duration: "6m 15s", 
@@ -96,7 +106,7 @@ const CampaignDetails = () => {
       timestamp: "14:25"
     },
     { 
-      rank: 3, 
+      rank: 4, 
       contact: "Sophie Laurent", 
       phone: "+33 1 98 76 54 32",
       duration: "7m 45s", 
@@ -106,7 +116,7 @@ const CampaignDetails = () => {
       timestamp: "14:20"
     },
     { 
-      rank: 4, 
+      rank: 5, 
       contact: "Pierre Dupont", 
       phone: "+33 1 11 22 33 44",
       duration: "5m 20s", 
@@ -114,36 +124,6 @@ const CampaignDetails = () => {
       outcome: "Rappel programmé", 
       comments: "Pas disponible, rappel vendredi matin",
       timestamp: "14:15"
-    },
-    { 
-      rank: 5, 
-      contact: "Claire Moreau", 
-      phone: "+33 1 55 66 77 88",
-      duration: "9m 10s", 
-      quality: 82, 
-      outcome: "Commande validée", 
-      comments: "Hésitante au début mais convaincue",
-      timestamp: "14:10"
-    },
-    { 
-      rank: 6, 
-      contact: "Michel Bernard", 
-      phone: "+33 1 77 88 99 00",
-      duration: "3m 45s", 
-      quality: 78, 
-      outcome: "Pas intéressé", 
-      comments: "Déjà équipé chez un concurrent",
-      timestamp: "14:05"
-    },
-    { 
-      rank: 7, 
-      contact: "Anne Petit", 
-      phone: "+33 1 66 55 44 33",
-      duration: "11m 30s", 
-      quality: 92, 
-      outcome: "Information envoyée", 
-      comments: "Demande documentation par email",
-      timestamp: "14:00"
     }
   ];
 
@@ -321,12 +301,12 @@ const CampaignDetails = () => {
           </Card>
         </div>
 
-        {/* Section Détails des appels */}
+        {/* Section Top appels */}
         <Card>
           <CardHeader className="pb-4">
             <CardTitle className="text-lg flex items-center gap-2">
               <Award className="h-5 w-5 text-yellow-600" />
-              Détails des appels
+              Top appels
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -345,7 +325,7 @@ const CampaignDetails = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {callDetails.map((call) => (
+                  {topCalls.map((call) => (
                     <TableRow key={call.rank}>
                       <TableCell>
                         <div className="flex items-center justify-center w-8 h-8 bg-yellow-100 text-yellow-800 rounded-full font-bold text-sm">
@@ -383,9 +363,11 @@ const CampaignDetails = () => {
               </Table>
             </div>
             <div className="pt-4">
-              <Button variant="outline" className="w-full">
-                Voir tous les appels
-              </Button>
+              <Link to={`/campaign/${campaignId}/calls`}>
+                <Button variant="outline" className="w-full">
+                  Voir tous les appels
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
