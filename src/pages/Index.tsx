@@ -3,6 +3,7 @@ import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import AgentTable from '@/components/AgentTable';
 import AgentCustomizationDialog from '@/components/AgentCustomizationDialog';
+import CampaignCreationDialog from '@/components/CampaignCreationDialog';
 import CampaignCard from '@/components/CampaignCard';
 import { useToast } from '@/hooks/use-toast';
 
@@ -79,6 +80,7 @@ const initialCampaigns = [
 const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isCampaignDialogOpen, setIsCampaignDialogOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState(null);
   const [agents, setAgents] = useState(initialAgents);
   const [campaigns, setCampaigns] = useState(initialCampaigns);
@@ -95,11 +97,11 @@ const Index = () => {
   };
 
   const handleNewCampaign = () => {
-    console.log('Nouvelle campagne demandée');
-    toast({
-      title: "Nouvelle campagne",
-      description: "Fonctionnalité de création de campagne à venir.",
-    });
+    setIsCampaignDialogOpen(true);
+  };
+
+  const handleCloseCampaignDialog = () => {
+    setIsCampaignDialogOpen(false);
   };
 
   const handleAgentClick = (agent) => {
@@ -218,6 +220,12 @@ const Index = () => {
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}
         agentData={selectedAgent}
+      />
+
+      <CampaignCreationDialog
+        isOpen={isCampaignDialogOpen}
+        onClose={handleCloseCampaignDialog}
+        agents={agents}
       />
     </div>
   );
