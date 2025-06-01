@@ -66,10 +66,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">R</span>
+            <span className="text-white font-bold text-sm">V</span>
           </div>
           {!isCollapsed && (
-            <span className="font-semibold text-lg text-gray-900">Trouve un nom</span>
+            <span className="font-semibold text-lg text-gray-900">Voxama</span>
           )}
         </div>
       </div>
