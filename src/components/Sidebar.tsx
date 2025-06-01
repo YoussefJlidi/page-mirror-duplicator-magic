@@ -26,14 +26,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
   const handleItemClick = (view: string, route: string) => {
     console.log(`Navigation vers: ${view} - ${route}`);
     
-    // Toujours naviguer vers la route spécifiée
-    if (route !== location.pathname) {
-      navigate(route);
-    }
-    
-    // Si on est sur la page d'accueil et qu'on a un callback pour changer la vue
+    // Si on est sur la page d'accueil, changer la vue d'abord
     if (route === '/' && onViewChange) {
       onViewChange(view);
+    }
+    
+    // Ensuite naviguer si nécessaire
+    if (route !== location.pathname) {
+      navigate(route);
     }
   };
 
@@ -42,7 +42,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
     if (location.pathname === '/inbound-calls') return 'receive';
     if (location.pathname === '/integrations') return 'integrations';
     if (location.pathname === '/instructions') return 'instructions';
-    return currentView || 'agents';
+    // Pour la page d'accueil, utiliser la vue actuelle passée en props
+    if (location.pathname === '/') return currentView || 'agents';
+    return 'agents';
   };
 
   const activeView = getActiveView();
