@@ -1,9 +1,15 @@
-
 import React, { useState } from 'react';
-import { Bot, PhoneOutgoing, Puzzle, LayoutDashboard, BookOpen, CreditCard, Zap, PhoneIncoming } from 'lucide-react';
+import { Bot, PhoneOutgoing, Puzzle, LayoutDashboard, BookOpen, CreditCard, Zap, PhoneIncoming, LogOut, Settings, User, ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useNavigate, useLocation } from 'react-router-dom';
 import RechargeModal from './RechargeModal';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -57,6 +63,21 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
   const handleRecharge = () => {
     console.log('Ouverture de la modal de recharge');
     setIsRechargeModalOpen(true);
+  };
+
+  const handleLogout = () => {
+    console.log('Déconnexion');
+    // Logique de déconnexion ici
+  };
+
+  const handleProfile = () => {
+    console.log('Profil utilisateur');
+    // Navigation vers le profil
+  };
+
+  const handleSettings = () => {
+    console.log('Paramètres');
+    // Navigation vers les paramètres
   };
 
   return (
@@ -124,17 +145,41 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
             </button>
           </div>
 
-          {/* User info */}
-          <div className="mt-4 flex items-center space-x-3">
-            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-              <span className="text-white font-medium text-sm">Y</span>
-            </div>
-            {!isCollapsed && (
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">Youssef Jlidi</p>
-                <p className="text-xs text-gray-500 truncate">jlidi.youssef@gmail.com</p>
-              </div>
-            )}
+          {/* User Dropdown Section */}
+          <div className="mt-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="w-full flex items-center space-x-3 hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                    <span className="text-white font-medium text-sm">Y</span>
+                  </div>
+                  {!isCollapsed && (
+                    <>
+                      <div className="flex-1 min-w-0 text-left">
+                        <p className="text-sm font-medium text-gray-900 truncate">Youssef Jlidi</p>
+                        <p className="text-xs text-gray-500 truncate">jlidi.youssef@gmail.com</p>
+                      </div>
+                      <ChevronUp className="w-4 h-4 text-gray-400" />
+                    </>
+                  )}
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 mb-2">
+                <DropdownMenuItem onClick={handleProfile} className="cursor-pointer">
+                  <User className="w-4 h-4 mr-2" />
+                  Profil
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSettings} className="cursor-pointer">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Paramètres
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600">
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Se déconnecter
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
