@@ -198,7 +198,7 @@ const CallDetailsModal: React.FC<CallDetailsModalProps> = ({ isOpen, onClose, ca
             ))}
           </div>
 
-          {/* Tableau détaillé des appels */}
+          {/* Tableau détaillé des appels avec police plus petite */}
           <Card className="bg-white">
             <CardHeader className="pb-4">
               <CardTitle className="text-xl font-semibold text-gray-900">Détails des appels</CardTitle>
@@ -208,58 +208,57 @@ const CallDetailsModal: React.FC<CallDetailsModalProps> = ({ isOpen, onClose, ca
                 <Table>
                   <TableHeader>
                     <TableRow className="border-b">
-                      <TableHead className="text-gray-600 font-medium">Numéro émetteur</TableHead>
-                      <TableHead className="text-gray-600 font-medium">Numéro destinataire</TableHead>
-                      <TableHead className="text-gray-600 font-medium">Agent</TableHead>
-                      <TableHead className="text-gray-600 font-medium">Heure de début</TableHead>
-                      <TableHead className="text-gray-600 font-medium">Type</TableHead>
-                      <TableHead className="text-gray-600 font-medium">Durée</TableHead>
-                      <TableHead className="text-gray-600 font-medium">Coût</TableHead>
-                      <TableHead className="text-gray-600 font-medium">Statut</TableHead>
-                      <TableHead className="text-gray-600 font-medium">Écouter l'appel</TableHead>
+                      <TableHead className="text-gray-600 font-medium text-xs">Numéro émetteur</TableHead>
+                      <TableHead className="text-gray-600 font-medium text-xs">Numéro destinataire</TableHead>
+                      <TableHead className="text-gray-600 font-medium text-xs">Agent</TableHead>
+                      <TableHead className="text-gray-600 font-medium text-xs">Heure de début</TableHead>
+                      <TableHead className="text-gray-600 font-medium text-xs">Type</TableHead>
+                      <TableHead className="text-gray-600 font-medium text-xs">Durée</TableHead>
+                      <TableHead className="text-gray-600 font-medium text-xs">Coût</TableHead>
+                      <TableHead className="text-gray-600 font-medium text-xs">Statut</TableHead>
+                      <TableHead className="text-gray-600 font-medium text-xs">Écouter l'appel</TableHead>
                       <TableHead></TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {detailedCalls.map((call, index) => (
                       <TableRow key={index} className="border-b hover:bg-gray-50">
-                        <TableCell className="font-mono text-sm text-gray-900">{call.fromNumber}</TableCell>
-                        <TableCell className="font-mono text-sm text-gray-900">{call.toNumber}</TableCell>
-                        <TableCell className="text-sm text-gray-900">{call.agent}</TableCell>
-                        <TableCell>
-                          <div>
-                            <div className="text-sm text-gray-900">{call.startTime}</div>
-                            <div className="text-sm text-gray-900">{call.time}</div>
+                        <TableCell className="font-mono text-xs text-gray-900 px-2 py-2 whitespace-nowrap">{call.fromNumber}</TableCell>
+                        <TableCell className="font-mono text-xs text-gray-900 px-2 py-2 whitespace-nowrap">{call.toNumber}</TableCell>
+                        <TableCell className="text-xs text-gray-900 px-2 py-2 whitespace-nowrap">{call.agent}</TableCell>
+                        <TableCell className="px-2 py-2">
+                          <div className="text-xs text-gray-900 whitespace-nowrap">
+                            {call.startTime} {call.time}
                           </div>
                         </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <PhoneIncoming className="h-4 w-4 text-gray-500" />
-                            <span className="text-sm text-gray-900">{call.type}</span>
+                        <TableCell className="px-2 py-2">
+                          <div className="flex items-center gap-1">
+                            <PhoneIncoming className="h-3 w-3 text-gray-500" />
+                            <span className="text-xs text-gray-900">{call.type}</span>
                           </div>
                         </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
+                        <TableCell className="px-2 py-2">
+                          <div className="flex items-center gap-1">
                             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                            <span className="text-sm font-medium text-gray-900">{call.duration}</span>
+                            <span className="text-xs font-medium text-gray-900">{call.duration}</span>
                           </div>
                         </TableCell>
-                        <TableCell className="text-sm text-gray-900">{call.cost}</TableCell>
-                        <TableCell>
-                          <span className="text-sm text-gray-600">{call.status}</span>
+                        <TableCell className="text-xs text-gray-900 px-2 py-2 whitespace-nowrap">{call.cost}</TableCell>
+                        <TableCell className="px-2 py-2">
+                          <span className="text-xs text-gray-600">{call.status}</span>
                         </TableCell>
-                        <TableCell className="text-center">
+                        <TableCell className="text-center px-2 py-2">
                           <Button
                             size="sm"
                             variant="ghost"
-                            className={`p-2 rounded-full ${playingCallIndex === index ? 'bg-green-100 text-green-600' : 'text-gray-600 hover:bg-gray-100'}`}
+                            className={`p-1 rounded-full ${playingCallIndex === index ? 'bg-green-100 text-green-600' : 'text-gray-600 hover:bg-gray-100'}`}
                             onClick={() => handlePlayCall(index)}
                           >
-                            <Play className={`h-4 w-4 ${playingCallIndex === index ? 'animate-pulse' : ''}`} />
+                            <Play className={`h-3 w-3 ${playingCallIndex === index ? 'animate-pulse' : ''}`} />
                           </Button>
                         </TableCell>
-                        <TableCell>
-                          <Button variant="ghost" size="sm" className="text-gray-400">
+                        <TableCell className="px-2 py-2">
+                          <Button variant="ghost" size="sm" className="text-gray-400 text-xs">
                             ...
                           </Button>
                         </TableCell>
