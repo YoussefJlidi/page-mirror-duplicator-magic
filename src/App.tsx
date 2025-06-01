@@ -9,6 +9,7 @@ import CampaignDetails from "./pages/CampaignDetails";
 import CallDetails from "./pages/CallDetails";
 import InboundCalls from "./pages/InboundCalls";
 import Integrations from "./pages/Integrations";
+import Instructions from "./pages/Instructions";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/campaign/:campaignId/calls" element={<CallDetails />} />
           <Route path="/inbound-calls" element={<InboundCalls />} />
           <Route path="/integrations" element={<Integrations />} />
+          <Route path="/instructions" element={<Instructions />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

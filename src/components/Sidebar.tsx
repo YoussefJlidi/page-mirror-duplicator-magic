@@ -2,6 +2,7 @@
 import React from 'react';
 import { Bot, PhoneOutgoing, Puzzle, LayoutDashboard, BookOpen, CreditCard, Zap, PhoneIncoming } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -10,18 +11,24 @@ interface SidebarProps {
 }
 
 const sidebarItems = [
-  { icon: Bot, label: 'Agents', view: 'agents' },
-  { icon: PhoneOutgoing, label: 'Passer un appel', view: 'call' },
-  { icon: PhoneIncoming, label: 'Recevoir un appel', view: 'receive' },
-  { icon: Puzzle, label: 'Integrations', view: 'integrations' },
-  { icon: LayoutDashboard, label: 'Dashboard', view: 'dashboard' },
-  { icon: BookOpen, label: 'Instructions', view: 'instructions' },
+  { icon: Bot, label: 'Agents', view: 'agents', route: '/' },
+  { icon: PhoneOutgoing, label: 'Passer un appel', view: 'call', route: '/' },
+  { icon: PhoneIncoming, label: 'Recevoir un appel', view: 'receive', route: '/inbound-calls' },
+  { icon: Puzzle, label: 'Integrations', view: 'integrations', route: '/integrations' },
+  { icon: LayoutDashboard, label: 'Dashboard', view: 'dashboard', route: '/' },
+  { icon: BookOpen, label: 'Instructions', view: 'instructions', route: '/instructions' },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentView = 'agents' }) => {
-  const handleItemClick = (view: string) => {
-    if (onViewChange) {
-      onViewChange(view);
+  const navigate = useNavigate();
+
+  const handleItemClick = (view: string, route: string) => {
+    if (route === '/') {
+      if (onViewChange) {
+        onViewChange(view);
+      }
+    } else {
+      navigate(route);
     }
   };
 
@@ -48,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
           {sidebarItems.map((item, index) => (
             <li key={index}>
               <button
-                onClick={() => handleItemClick(item.view)}
+                onClick={() => handleItemClick(item.view, item.route)}
                 className={cn(
                   "w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left",
                   currentView === item.view
