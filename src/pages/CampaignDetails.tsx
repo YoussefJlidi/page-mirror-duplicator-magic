@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, FileText, Edit, PhoneIncoming } from 'lucide-react';
@@ -343,65 +342,47 @@ const CampaignDetails = () => {
               </Card>
             </div>
 
-            {/* Section Top appels - Tableau responsive */}
+            {/* Section Top appels - Design clair et responsive avec boutons en noir */}
             <Card>
               <CardHeader className="pb-4">
-                <CardTitle className="text-lg">Détails des appels</CardTitle>
+                <CardTitle className="text-lg">Top appels</CardTitle>
               </CardHeader>
-              <CardContent className="p-0">
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="border-b">
-                        <TableHead className="text-gray-500 font-normal text-sm min-w-[140px]">Numéro émetteur</TableHead>
-                        <TableHead className="text-gray-500 font-normal text-sm min-w-[140px]">Numéro destinataire</TableHead>
-                        <TableHead className="text-gray-500 font-normal text-sm">Agent</TableHead>
-                        <TableHead className="text-gray-500 font-normal text-sm">Heure de début</TableHead>
-                        <TableHead className="text-gray-500 font-normal text-sm">Type</TableHead>
-                        <TableHead className="text-gray-500 font-normal text-sm">Durée</TableHead>
-                        <TableHead className="text-gray-500 font-normal text-sm">Coût</TableHead>
-                        <TableHead className="text-gray-500 font-normal text-sm">Statut</TableHead>
-                        <TableHead></TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {topCallsExtract.map((call, index) => (
-                        <TableRow key={index} className="border-b hover:bg-gray-50">
-                          <TableCell className="text-sm text-gray-900 font-mono">{call.fromNumber}</TableCell>
-                          <TableCell className="text-sm text-gray-900 font-mono">{call.toNumber}</TableCell>
-                          <TableCell className="text-sm text-gray-900">{call.agent}</TableCell>
-                          <TableCell>
-                            <div>
-                              <div className="text-sm text-gray-900">{call.startTime}</div>
-                              <div className="text-sm text-gray-900">{call.time}</div>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <PhoneIncoming className="h-4 w-4 text-gray-500 flex-shrink-0" />
-                              <span className="text-sm text-gray-900">{call.type}</span>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0"></div>
-                              <span className="text-sm text-gray-900">{call.duration}</span>
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-sm text-gray-900">{call.cost}</TableCell>
-                          <TableCell className="text-sm text-gray-600">{call.status}</TableCell>
-                          <TableCell>
-                            <Button variant="ghost" size="sm" className="text-gray-400">
-                              ...
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+              <CardContent className="space-y-4">
+                {/* Grille responsive des appels */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {topCallsExtract.map((call, index) => (
+                    <div key={index} className="bg-gray-50 rounded-lg p-4 border">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <span className="text-xs text-gray-600">{call.startTime} - {call.time}</span>
+                        </div>
+                        <span className="text-xs font-medium text-gray-900">{call.duration}</span>
+                      </div>
+                      <div className="space-y-1 mb-3">
+                        <p className="text-sm font-mono text-gray-900">{call.fromNumber}</p>
+                        <p className="text-xs text-gray-600">→ {call.toNumber}</p>
+                        <p className="text-xs text-gray-600">{call.agent}</p>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-gray-900">{call.cost}</span>
+                        <Button 
+                          size="sm" 
+                          className="bg-black text-white hover:bg-gray-800 text-xs px-3 py-1"
+                        >
+                          Détails
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="p-4 border-t">
-                  <Button variant="outline" className="w-full" onClick={handleOpenCallDetails}>
+                
+                {/* Bouton voir tous les appels */}
+                <div className="mt-6 text-center">
+                  <Button 
+                    className="bg-black text-white hover:bg-gray-800 px-6 py-2"
+                    onClick={handleOpenCallDetails}
+                  >
                     Voir tous les appels
                   </Button>
                 </div>
