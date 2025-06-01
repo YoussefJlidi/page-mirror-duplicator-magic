@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Phone, Clock, Users, TrendingUp, PhoneCall, PhoneIncoming, Play } from 'lucide-react';
@@ -209,7 +210,7 @@ const InboundCampaignCalls = () => {
                         <TableHead className="text-gray-600 font-medium">Numéro émetteur</TableHead>
                         <TableHead className="text-gray-600 font-medium">Numéro destinataire</TableHead>
                         <TableHead className="text-gray-600 font-medium">Agent</TableHead>
-                        <TableHead className="text-gray-600 font-medium">Heure de début</TableHead>
+                        <TableHead className="text-black font-medium">Heure de début</TableHead>
                         <TableHead className="text-gray-600 font-medium">Type</TableHead>
                         <TableHead className="text-gray-600 font-medium">Durée</TableHead>
                         <TableHead className="text-gray-600 font-medium">Coût</TableHead>
