@@ -6,12 +6,23 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 
 const InboundCalls = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
+  const [selectedNumber, setSelectedNumber] = useState('');
+  const [campaignName, setCampaignName] = useState('');
+  const [context, setContext] = useState('');
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   // Données pour les campagnes d'appels entrants configurées
   const configuredInboundCampaigns = [
@@ -41,13 +52,42 @@ const InboundCalls = () => {
     }
   ];
 
+  const availableNumbers = [
+    '+33 1 23 45 67 89',
+    '+33 1 98 76 54 32',
+    '+33 1 55 44 33 22',
+    '+33 1 11 22 33 44',
+    '+33 1 77 88 99 00'
+  ];
+
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
   const handleConfigureCalls = () => {
-    console.log('Configuration des appels');
-    // Ici vous pouvez ajouter la logique pour ouvrir un modal ou naviguer vers une page de configuration
+    setIsConfigDialogOpen(true);
+  };
+
+  const handleSaveConfiguration = () => {
+    if (!selectedNumber || !campaignName || !context) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez remplir tous les champs.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Configuration sauvegardée",
+      description: `La campagne "${campaignName}" a été configurée avec succès.`,
+    });
+
+    // Reset form
+    setSelectedNumber('');
+    setCampaignName('');
+    setContext('');
+    setIsConfigDialogOpen(false);
   };
 
   const handleCampaignSettings = (campaignId: number) => {
@@ -90,15 +130,81 @@ const InboundCalls = () => {
               </div>
             </div>
 
-            {/* Bouton Configurer des appels */}
+            {/* Bouton Configurer des appels avec modal */}
             <div className="flex justify-end mb-6">
-              <Button 
-                onClick={handleConfigureCalls}
-                className="bg-black hover:bg-gray-800 text-white flex items-center gap-2"
-              >
-                <Settings className="h-4 w-4" />
-                Configurer des appels
-              </Button>
+              <Dialog open={isConfigDialogOpen} onOpenChange={setIsConfigDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button 
+                    onClick={handleConfigureCalls}
+                    className="bg-black hover:bg-gray-800 text-white flex items-center gap-2"
+                  >
+                    <Settings className="h-4 w-4" />
+                    Configurer des appels
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md">
+                  <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2">
+                      <Settings className="h-5 w-5" />
+                      Configuration des appels entrants
+                    </DialogTitle>
+                  </DialogHeader>
+                  
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="number">Numéro de téléphone</Label>
+                      <Select value={selectedNumber} onValueChange={setSelectedNumber}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sélectionner un numéro" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {availableNumbers.map((number) => (
+                            <SelectItem key={number} value={number}>
+                              {number}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="campaign">Nom de la campagne</Label>
+                      <Input
+                        id="campaign"
+                        value={campaignName}
+                        onChange={(e) => setCampaignName(e.target.value)}
+                        placeholder="Ex: Support Client"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="context">Contexte et instructions</Label>
+                      <Textarea
+                        id="context"
+                        value={context}
+                        onChange={(e) => setContext(e.target.value)}
+                        placeholder="Décrivez le contexte de cette campagne et les instructions pour l'agent..."
+                        rows={4}
+                      />
+                    </div>
+
+                    <div className="flex justify-end gap-2 pt-4">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setIsConfigDialogOpen(false)}
+                      >
+                        Annuler
+                      </Button>
+                      <Button 
+                        onClick={handleSaveConfiguration}
+                        className="bg-black hover:bg-gray-800 text-white"
+                      >
+                        Sauvegarder
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
 
             {/* Vignettes des campagnes configurées */}
