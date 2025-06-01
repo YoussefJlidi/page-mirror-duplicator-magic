@@ -23,6 +23,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
   const navigate = useNavigate();
 
   const handleItemClick = (view: string, route: string) => {
+    console.log(`Navigation vers: ${view} - ${route}`);
     if (route === '/') {
       if (onViewChange) {
         onViewChange(view);
@@ -30,6 +31,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
     } else {
       navigate(route);
     }
+  };
+
+  const handleRecharge = () => {
+    console.log('Recharge des crédits');
+    // Ici vous pouvez ajouter la logique pour recharger les crédits
+    alert('Fonctionnalité de recharge à venir');
   };
 
   return (
@@ -57,10 +64,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
               <button
                 onClick={() => handleItemClick(item.view, item.route)}
                 className={cn(
-                  "w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left",
+                  "w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left hover:bg-gray-50 active:bg-gray-100",
                   currentView === item.view
                     ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    : "text-gray-600 hover:text-gray-900"
                 )}
               >
                 <item.icon className="w-5 h-5 flex-shrink-0" />
@@ -84,10 +91,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
             )}
           </div>
           
-          <button className={cn(
-            "flex items-center space-x-2 bg-black text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors w-full justify-center",
-            isCollapsed && "px-2"
-          )}>
+          <button 
+            onClick={handleRecharge}
+            className={cn(
+              "flex items-center space-x-2 bg-black text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 active:bg-gray-900 transition-colors w-full justify-center",
+              isCollapsed && "px-2"
+            )}
+          >
             <Zap className="w-4 h-4" />
             {!isCollapsed && <span>Recharge</span>}
           </button>

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, PhoneIncoming, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, Play, Phone, Settings, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,6 +11,7 @@ import Header from '@/components/Header';
 
 const InboundCalls = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const navigate = useNavigate();
 
   // Données pour les campagnes d'appels entrants configurées
   const configuredInboundCampaigns = [
@@ -42,6 +43,21 @@ const InboundCalls = () => {
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
+  };
+
+  const handleConfigureCalls = () => {
+    console.log('Configuration des appels');
+    // Ici vous pouvez ajouter la logique pour ouvrir un modal ou naviguer vers une page de configuration
+  };
+
+  const handleCampaignSettings = (campaignId: number) => {
+    console.log(`Configuration de la campagne ${campaignId}`);
+    // Ici vous pouvez ajouter la logique pour configurer une campagne spécifique
+  };
+
+  const handleCreateNewCampaign = () => {
+    console.log('Création d\'une nouvelle campagne');
+    // Ici vous pouvez ajouter la logique pour créer une nouvelle campagne
   };
 
   return (
@@ -76,7 +92,10 @@ const InboundCalls = () => {
 
             {/* Bouton Configurer des appels */}
             <div className="flex justify-end mb-6">
-              <Button className="bg-black hover:bg-gray-800 text-white flex items-center gap-2">
+              <Button 
+                onClick={handleConfigureCalls}
+                className="bg-black hover:bg-gray-800 text-white flex items-center gap-2"
+              >
                 <Settings className="h-4 w-4" />
                 Configurer des appels
               </Button>
@@ -96,7 +115,12 @@ const InboundCalls = () => {
                             {campaign.status === 'active' ? 'Actif' : 'Inactif'}
                           </span>
                         </div>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-8 w-8"
+                          onClick={() => handleCampaignSettings(campaign.id)}
+                        >
                           <Settings className="h-4 w-4" />
                         </Button>
                       </div>
@@ -122,8 +146,11 @@ const InboundCalls = () => {
                 ))}
                 
                 {/* Carte pour ajouter une nouvelle campagne */}
-                <Card className="border-dashed border-2 border-gray-300 hover:border-gray-400 transition-colors">
-                  <CardContent className="p-6 flex flex-col items-center justify-center text-center min-h-[200px]">
+                <Card className="border-dashed border-2 border-gray-300 hover:border-gray-400 transition-colors cursor-pointer">
+                  <CardContent 
+                    className="p-6 flex flex-col items-center justify-center text-center min-h-[200px]"
+                    onClick={handleCreateNewCampaign}
+                  >
                     <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
                       <Plus className="h-6 w-6 text-gray-400" />
                     </div>
