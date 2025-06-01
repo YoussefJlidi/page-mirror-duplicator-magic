@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -25,12 +26,16 @@ interface AgentCustomizationDialogProps {
   isOpen: boolean;
   onClose: () => void;
   agentData?: {
+    id?: number;
     name: string;
-    model: string;
-    voice: string;
-    language: string;
-    initialMessage: string;
-    prompt: string;
+    model?: string;
+    voice?: string;
+    language?: string;
+    initialMessage?: string;
+    prompt?: string;
+    status?: string;
+    calls?: number;
+    timeInCall?: string;
   };
 }
 
@@ -43,15 +48,15 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
   const [isTestDialogOpen, setIsTestDialogOpen] = useState(false);
   
   const [formData, setFormData] = useState({
-    name: agentData?.name || '',
-    model: agentData?.model || 'GPT-4O',
+    name: '',
+    model: 'GPT-4O',
     backgroundAudio: 'Select a background audio',
     maxCallDuration: 5,
-    initialMessage: agentData?.initialMessage || '',
-    voice: agentData?.voice || 'Anna',
+    initialMessage: '',
+    voice: 'Anna',
     transcriber: 'Deepgram',
-    language: agentData?.language || 'FR',
-    prompt: agentData?.prompt || '',
+    language: 'FR',
+    prompt: '',
     supportInterruptions: true,
     interruptionSensitivity: 'medium',
     webhookEnabled: false,
@@ -63,6 +68,59 @@ const AgentCustomizationDialog: React.FC<AgentCustomizationDialogProps> = ({
     initialMessage: false,
     prompt: false
   });
+
+  // Update form data when agentData changes or dialog opens
+  useEffect(() => {
+    if (agentData && isOpen) {
+      setFormData({
+        name: agentData.name || '',
+        model: agentData.model || 'GPT-4O',
+        backgroundAudio: 'Select a background audio',
+        maxCallDuration: 5,
+        initialMessage: agentData.initialMessage || 'Bonjour, je suis votre assistant IA. Comment puis-je vous aider aujourd\'hui ?',
+        voice: agentData.voice || 'Anna',
+        transcriber: 'Deepgram',
+        language: agentData.language || 'FR',
+        prompt: agentData.prompt || `Vous êtes un assistant IA professionnel et serviable.
+
+Votre rôle :
+- Répondre aux questions de manière claire et précise
+- Être courtois et patient avec les utilisateurs
+- Fournir des informations utiles et pertinentes
+
+Instructions :
+- Utilisez un ton professionnel mais chaleureux
+- Soyez concis dans vos réponses
+- Si vous ne connaissez pas la réponse, dites-le honnêtement`,
+        supportInterruptions: true,
+        interruptionSensitivity: 'medium',
+        webhookEnabled: false,
+        publicDemo: false
+      });
+    } else if (isCreating && isOpen) {
+      // Reset form for new agent creation
+      setFormData({
+        name: '',
+        model: 'GPT-4O',
+        backgroundAudio: 'Select a background audio',
+        maxCallDuration: 5,
+        initialMessage: '',
+        voice: 'Anna',
+        transcriber: 'Deepgram',
+        language: 'FR',
+        prompt: '',
+        supportInterruptions: true,
+        interruptionSensitivity: 'medium',
+        webhookEnabled: false,
+        publicDemo: false
+      });
+      setTouched({
+        name: false,
+        initialMessage: false,
+        prompt: false
+      });
+    }
+  }, [agentData, isOpen, isCreating]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData({ ...formData, [field]: value });
