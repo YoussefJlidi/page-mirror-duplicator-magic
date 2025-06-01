@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Phone, Clock, Users, TrendingUp, PhoneCall, PhoneIncoming, Play } from 'lucide-react';
+import { X, Phone, Clock, Users, TrendingUp, PhoneCall, PhoneIncoming, Play, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -118,6 +118,11 @@ const CallDetailsModal: React.FC<CallDetailsModalProps> = ({ isOpen, onClose, ca
     }
   };
 
+  const handleAddContacts = () => {
+    console.log('Ouverture du formulaire d\'ajout de contacts');
+    // Logique pour ajouter des contacts
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg w-full max-w-7xl max-h-[90vh] overflow-hidden">
@@ -198,10 +203,20 @@ const CallDetailsModal: React.FC<CallDetailsModalProps> = ({ isOpen, onClose, ca
             ))}
           </div>
 
-          {/* Tableau détaillé des appels avec police plus petite */}
+          {/* Tableau détaillé des appels avec bouton ajouter des contacts */}
           <Card className="bg-white">
             <CardHeader className="pb-4">
-              <CardTitle className="text-xl font-semibold text-gray-900">Détails des appels</CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-xl font-semibold text-gray-900">Détails des appels</CardTitle>
+                <Button 
+                  onClick={handleAddContacts}
+                  className="bg-black text-white hover:bg-gray-800 flex items-center gap-2"
+                  size="sm"
+                >
+                  <UserPlus className="h-4 w-4" />
+                  Ajouter des contacts
+                </Button>
+              </div>
             </CardHeader>
             <CardContent className="p-0">
               <div className="overflow-x-auto">
