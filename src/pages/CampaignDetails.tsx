@@ -348,7 +348,7 @@ const CampaignDetails = () => {
               </Card>
             </div>
 
-            {/* Section Top appels - Tableau responsive */}
+            {/* Section Top appels - Tableau responsive avec police plus petite */}
             <Card>
               <CardHeader className="pb-4">
                 <CardTitle className="text-lg">Top appels</CardTitle>
@@ -358,43 +358,43 @@ const CampaignDetails = () => {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead className="text-left">Date/Heure</TableHead>
-                        <TableHead className="text-left">Numéro appelant</TableHead>
-                        <TableHead className="text-left">Numéro appelé</TableHead>
-                        <TableHead className="text-left">Agent</TableHead>
-                        <TableHead className="text-center">Durée</TableHead>
-                        <TableHead className="text-center">Coût</TableHead>
-                        <TableHead className="text-center">Actions</TableHead>
+                        <TableHead className="text-left text-gray-500 font-medium">Date/Heure</TableHead>
+                        <TableHead className="text-left text-gray-500 font-medium">Numéro appelant</TableHead>
+                        <TableHead className="text-left text-gray-500 font-medium">Numéro appelé</TableHead>
+                        <TableHead className="text-left text-gray-500 font-medium">Agent</TableHead>
+                        <TableHead className="text-center text-gray-500 font-medium">Durée</TableHead>
+                        <TableHead className="text-center text-gray-500 font-medium">Coût</TableHead>
+                        <TableHead className="text-center text-gray-500 font-medium">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {topCallsExtract.map((call, index) => (
-                        <TableRow key={index}>
+                        <TableRow key={index} className="border-b">
                           <TableCell>
                             <div className="flex items-center gap-2">
                               <div className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0"></div>
-                              <span className="text-sm font-medium">{call.startTime} - {call.time}</span>
+                              <span className="text-xs font-medium text-gray-900">{call.startTime} - {call.time}</span>
                             </div>
                           </TableCell>
                           <TableCell>
-                            <span className="font-mono text-sm">{call.fromNumber}</span>
+                            <span className="text-xs text-gray-900">{call.fromNumber}</span>
                           </TableCell>
                           <TableCell>
-                            <span className="font-mono text-sm text-gray-600">{call.toNumber}</span>
+                            <span className="text-xs text-gray-900">{call.toNumber}</span>
                           </TableCell>
                           <TableCell>
-                            <span className="text-sm text-gray-600">{call.agent}</span>
+                            <span className="text-xs text-gray-900">{call.agent}</span>
                           </TableCell>
                           <TableCell className="text-center">
-                            <span className="font-medium text-sm">{call.duration}</span>
+                            <span className="text-xs font-medium text-gray-900">{call.duration}</span>
                           </TableCell>
                           <TableCell className="text-center">
-                            <span className="font-medium text-sm">{call.cost}</span>
+                            <span className="text-xs text-gray-900">{call.cost}</span>
                           </TableCell>
                           <TableCell className="text-center">
                             <Button 
                               size="sm" 
-                              className="bg-black text-white hover:bg-gray-800 text-xs px-3 py-1"
+                              className="bg-black text-white hover:bg-gray-800 text-xs px-3 py-1 rounded-md"
                             >
                               Détails
                             </Button>
