@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, PhoneIncoming, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, Play, Phone, Settings, Plus } from 'lucide-react';
@@ -147,7 +148,7 @@ const InboundCalls = () => {
                 </Button>
               </Link>
               <div className="flex items-center gap-3">
-                <PhoneIncoming className="h-8 w-8 text-blue-600" />
+                <PhoneIncoming className="h-8 w-8 text-black" />
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Recevoir un appel</h1>
               </div>
             </div>
