@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Phone, Clock, Users, TrendingUp, PhoneCall, PhoneIncoming } from 'lucide-react';
+import { ArrowLeft, Phone, Clock, Users, TrendingUp, PhoneCall, PhoneIncoming, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -15,6 +14,11 @@ const InboundCampaignCalls = () => {
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
+  };
+
+  const handlePlayCall = (callIndex: number) => {
+    console.log(`Playing call ${callIndex}`);
+    // Ici on pourrait implémenter la logique pour écouter l'appel
   };
 
   // Données de synthèse pour la campagne entrante
@@ -210,6 +214,7 @@ const InboundCampaignCalls = () => {
                         <TableHead className="text-gray-600 font-medium">Durée</TableHead>
                         <TableHead className="text-gray-600 font-medium">Coût</TableHead>
                         <TableHead className="text-gray-600 font-medium">Statut</TableHead>
+                        <TableHead className="text-gray-600 font-medium">Écouter</TableHead>
                         <TableHead></TableHead>
                       </TableRow>
                     </TableHeader>
@@ -242,6 +247,18 @@ const InboundCampaignCalls = () => {
                             <Badge variant={call.status === 'terminé' ? 'default' : 'destructive'}>
                               {call.status}
                             </Badge>
+                          </TableCell>
+                          <TableCell>
+                            {call.status === 'terminé' && (
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                onClick={() => handlePlayCall(index)}
+                                className="hover:bg-blue-50"
+                              >
+                                <Play className="h-4 w-4 text-blue-600" />
+                              </Button>
+                            )}
                           </TableCell>
                           <TableCell>
                             <Button variant="ghost" size="sm" className="text-gray-400">
