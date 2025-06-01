@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Phone, Clock, Users, MoreVertical } from 'lucide-react';
 
@@ -11,7 +12,7 @@ interface CampaignCardProps {
   duration: string;
   agent: string;
   phoneNumber: string;
-  onViewDetails: (campaign: any) => void;
+  onViewDetails?: (campaign: any) => void;
 }
 
 const statusColors = {
@@ -35,19 +36,12 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
   calls,
   duration,
   agent,
-  phoneNumber,
-  onViewDetails
+  phoneNumber
 }) => {
+  const navigate = useNavigate();
+
   const handleViewDetails = () => {
-    onViewDetails({
-      id,
-      name,
-      status,
-      calls,
-      duration,
-      agent,
-      phoneNumber
-    });
+    navigate(`/campaign/${id}`);
   };
 
   return (
