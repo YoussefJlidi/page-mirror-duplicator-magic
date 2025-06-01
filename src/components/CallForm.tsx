@@ -13,7 +13,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 
 interface CallFormProps {
-  agents: Array<{ id: number; name: string; status: string }>;
+  agents: Array<{ id: number; name: string; status: string; calls: number; timeInCall: string; }>;
 }
 
 const CallForm: React.FC<CallFormProps> = ({ agents }) => {
