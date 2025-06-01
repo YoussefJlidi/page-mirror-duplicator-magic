@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, PhoneIncoming, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, Play, Phone, Settings, Plus } from 'lucide-react';
@@ -269,27 +268,8 @@ const InboundCalls = () => {
               </Card>
             </div>
 
-            {/* Section avec 2 colonnes */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Taux de réponse */}
-              <Card>
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-green-600" />
-                    Taux de réponse
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <div className="text-3xl sm:text-4xl font-bold text-green-600 mb-2">{answerRate}%</div>
-                  <p className="text-sm text-gray-600 mb-4">des appels répondus</p>
-                  <Progress value={answerRate} className="h-3 mb-4" />
-                  <div className="flex justify-between text-sm text-gray-600">
-                    <span>{inboundStats.answered} répondus</span>
-                    <span>{inboundStats.missed} manqués</span>
-                  </div>
-                </CardContent>
-              </Card>
-
+            {/* Section avec 2 colonnes au lieu de 3 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Configuration actuelle */}
               <Card>
                 <CardHeader className="pb-4">
