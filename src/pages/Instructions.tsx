@@ -5,29 +5,39 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
 import { useForm } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 
 interface InstructionsFormData {
-  companyData: string;
-  productService: string;
-  commercialArguments: string;
-  pricing: string;
+  agentName: string;
+  profession: string;
+  communicationTone: string;
+  companyInfo: string;
+  products: string;
+  targetAudience: string;
+  objectives: string;
+  additionalInfo: string;
 }
 
 const Instructions = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const { toast } = useToast();
   
   const form = useForm<InstructionsFormData>({
     defaultValues: {
-      companyData: '',
-      productService: '',
-      commercialArguments: '',
-      pricing: ''
+      agentName: '',
+      profession: '',
+      communicationTone: '',
+      companyInfo: '',
+      products: '',
+      targetAudience: '',
+      objectives: '',
+      additionalInfo: ''
     }
   });
 
@@ -35,41 +45,26 @@ const Instructions = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
-  const handleStepValidation = (step: number) => {
-    const fieldMap = {
-      1: 'companyData',
-      2: 'productService', 
-      3: 'commercialArguments',
-      4: 'pricing'
-    };
-    
-    const fieldName = fieldMap[step as keyof typeof fieldMap] as keyof InstructionsFormData;
-    const value = form.getValues(fieldName);
-    
-    if (!value || value.trim() === '') {
-      toast({
-        title: "Champ requis",
-        description: "Veuillez remplir ce champ avant de continuer.",
-        variant: "destructive"
-      });
-      return;
-    }
+  const communicationStyles = [
+    'Conversationnel', 'Plein d\'esprit', 'Franc', 'Motivant',
+    'Génération Z', 'Sceptique', 'Traditionnel', 'Visionnaire', 'Poétique'
+  ];
 
-    if (step < 4) {
-      setCurrentStep(step + 1);
-    } else {
-      // Final submission
-      toast({
-        title: "Instructions sauvegardées",
-        description: "Toutes les instructions ont été enregistrées avec succès.",
-      });
-    }
+  const toggleStyle = (style: string) => {
+    setSelectedStyles(prev => 
+      prev.includes(style) 
+        ? prev.filter(s => s !== style)
+        : [...prev, style]
+    );
   };
 
-  const collectCompanyData = () => {
+  const handleSubmit = (data: InstructionsFormData) => {
+    console.log('Form data:', data);
+    console.log('Selected styles:', selectedStyles);
+    
     toast({
-      title: "Collecte des données",
-      description: "Démarrage de la collecte automatique des données de l'entreprise...",
+      title: "Instructions sauvegardées",
+      description: "Les instructions générales ont été enregistrées avec succès.",
     });
   };
 
@@ -91,29 +86,28 @@ const Instructions = () => {
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
               <h1 className="text-2xl font-bold text-gray-900 mb-2">Instructions générales</h1>
-              <p className="text-gray-600">Configurez les instructions relatives à votre entreprise</p>
+              <p className="text-gray-600">Présentez-vous et votre entreprise pour obtenir des réponses plus personnalisées.</p>
             </div>
 
             <Form {...form}>
-              <div className="space-y-6">
-                {/* Étape 1: Données sur votre entreprise */}
-                <Card className={`transition-all ${currentStep >= 1 ? 'border-blue-500' : 'border-gray-200'}`}>
+              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+                
+                {/* Comment l'IA doit-elle s'adresser à vous */}
+                <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg font-medium text-gray-700">
-                      Données sur votre entreprises
+                    <CardTitle className="text-lg font-medium text-gray-900">
+                      Comment l'IA doit-elle s'adresser à vous ?
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent>
                     <FormField
                       control={form.control}
-                      name="companyData"
+                      name="agentName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Informations sur l'entreprise</FormLabel>
                           <FormControl>
-                            <Textarea
-                              placeholder="Décrivez votre entreprise, son secteur d'activité, ses valeurs, son histoire..."
-                              className="min-h-[120px]"
+                            <Input
+                              placeholder="Nom de l'agent ou alias"
                               {...field}
                             />
                           </FormControl>
@@ -121,145 +115,217 @@ const Instructions = () => {
                         </FormItem>
                       )}
                     />
-                    <div className="flex gap-3">
-                      <Button 
-                        type="button" 
-                        onClick={collectCompanyData}
-                        variant="outline"
-                        className="bg-gray-600 text-white hover:bg-gray-700"
-                      >
-                        Collecter des données
-                      </Button>
-                      {currentStep === 1 && (
-                        <Button 
-                          type="button" 
-                          onClick={() => handleStepValidation(1)}
-                          className="bg-gray-600 text-white hover:bg-gray-700"
-                        >
-                          Valider
-                        </Button>
+                  </CardContent>
+                </Card>
+
+                {/* Que faites-vous dans la vie */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg font-medium text-gray-900">
+                      Que faites-vous dans la vie ?
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <FormField
+                      control={form.control}
+                      name="profession"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              placeholder="Votre profession ou secteur d'activité"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
                       )}
+                    />
+                  </CardContent>
+                </Card>
+
+                {/* Informations sur votre entreprise */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg font-medium text-gray-900">
+                      Informations sur votre entreprise
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <FormField
+                      control={form.control}
+                      name="companyInfo"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Décrivez votre entreprise, son secteur d'activité, ses valeurs, son histoire..."
+                              className="min-h-[100px]"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </CardContent>
+                </Card>
+
+                {/* Produits et services */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg font-medium text-gray-900">
+                      Vos produits et services
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <FormField
+                      control={form.control}
+                      name="products"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Décrivez en détail les produits ou services que vous proposez..."
+                              className="min-h-[100px]"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </CardContent>
+                </Card>
+
+                {/* Public cible */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg font-medium text-gray-900">
+                      Votre public cible
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <FormField
+                      control={form.control}
+                      name="targetAudience"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Décrivez votre clientèle cible, leurs besoins, leurs préoccupations..."
+                              className="min-h-[100px]"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </CardContent>
+                </Card>
+
+                {/* Ton de communication */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg font-medium text-gray-900">
+                      Quel ton ou style l'IA doit-elle adopter ?
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <p className="text-sm text-gray-600">Sélectionnez un ou plusieurs styles :</p>
+                      <div className="flex flex-wrap gap-2">
+                        {communicationStyles.map((style) => (
+                          <Badge
+                            key={style}
+                            variant={selectedStyles.includes(style) ? "default" : "outline"}
+                            className={`cursor-pointer transition-colors ${
+                              selectedStyles.includes(style) 
+                                ? 'bg-black text-white hover:bg-gray-800' 
+                                : 'hover:bg-gray-100'
+                            }`}
+                            onClick={() => toggleStyle(style)}
+                          >
+                            {selectedStyles.includes(style) ? '− ' : '+ '}{style}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
 
-                {/* Étape 2: Ce que vous voulez vendre */}
-                {currentStep >= 2 && (
-                  <Card className={`transition-all ${currentStep >= 2 ? 'border-blue-500' : 'border-gray-200'}`}>
-                    <CardHeader>
-                      <CardTitle className="text-lg font-medium text-gray-700">
-                        Ce que vous voulez vendre via iapulsion.com
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <FormField
-                        control={form.control}
-                        name="productService"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Produits et services</FormLabel>
-                            <FormControl>
-                              <Textarea
-                                placeholder="Décrivez en détail les produits ou services que vous souhaitez promouvoir..."
-                                className="min-h-[120px]"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      {currentStep === 2 && (
-                        <Button 
-                          type="button" 
-                          onClick={() => handleStepValidation(2)}
-                          className="bg-gray-600 text-white hover:bg-gray-700"
-                        >
-                          Valider
-                        </Button>
+                {/* Objectifs */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg font-medium text-gray-900">
+                      Vos objectifs commerciaux
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <FormField
+                      control={form.control}
+                      name="objectives"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Quels sont vos objectifs ? Vendre, informer, fidéliser, générer des leads..."
+                              className="min-h-[100px]"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
                       )}
-                    </CardContent>
-                  </Card>
-                )}
+                    />
+                  </CardContent>
+                </Card>
 
-                {/* Étape 3: Arguments commerciaux */}
-                {currentStep >= 3 && (
-                  <Card className={`transition-all ${currentStep >= 3 ? 'border-blue-500' : 'border-gray-200'}`}>
-                    <CardHeader>
-                      <CardTitle className="text-lg font-medium text-gray-700">
-                        Arguments commerciaux
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <FormField
-                        control={form.control}
-                        name="commercialArguments"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Arguments de vente</FormLabel>
-                            <FormControl>
-                              <Textarea
-                                placeholder="Listez vos principaux arguments de vente, avantages concurrentiels, points forts..."
-                                className="min-h-[120px]"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      {currentStep === 3 && (
-                        <Button 
-                          type="button" 
-                          onClick={() => handleStepValidation(3)}
-                          className="bg-gray-600 text-white hover:bg-gray-700"
-                        >
-                          Valider
-                        </Button>
+                {/* Informations supplémentaires */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg font-medium text-gray-900">
+                      Avez-vous d'autres informations à fournir à l'IA ?
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <FormField
+                      control={form.control}
+                      name="additionalInfo"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Des centres d'intérêt, des valeurs ou des préférences à prendre en compte..."
+                              className="min-h-[100px]"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
                       )}
-                    </CardContent>
-                  </Card>
-                )}
+                    />
+                  </CardContent>
+                </Card>
 
-                {/* Étape 4: Prix */}
-                {currentStep >= 4 && (
-                  <Card className={`transition-all ${currentStep >= 4 ? 'border-blue-500' : 'border-gray-200'}`}>
-                    <CardHeader>
-                      <CardTitle className="text-lg font-medium text-gray-700">
-                        Prix
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <FormField
-                        control={form.control}
-                        name="pricing"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Stratégie tarifaire</FormLabel>
-                            <FormControl>
-                              <Textarea
-                                placeholder="Décrivez votre grille tarifaire, les offres spéciales, les conditions de prix..."
-                                className="min-h-[120px]"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      {currentStep === 4 && (
-                        <Button 
-                          type="button" 
-                          onClick={() => handleStepValidation(4)}
-                          className="bg-gray-600 text-white hover:bg-gray-700"
-                        >
-                          Valider
-                        </Button>
-                      )}
-                    </CardContent>
-                  </Card>
-                )}
-              </div>
+                {/* Boutons d'action */}
+                <div className="flex justify-end space-x-4 pt-6">
+                  <Button 
+                    type="button" 
+                    variant="outline"
+                    className="px-8"
+                  >
+                    Annuler
+                  </Button>
+                  <Button 
+                    type="submit"
+                    className="bg-black text-white hover:bg-gray-800 px-8"
+                  >
+                    Enregistrer
+                  </Button>
+                </div>
+              </form>
             </Form>
           </div>
         </main>
