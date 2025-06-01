@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, FileText, Edit, PhoneIncoming, Play } from 'lucide-react';
@@ -139,7 +138,7 @@ const CampaignDetails = () => {
       startTime: '11/04',
       time: '19:05',
       type: 'entrant',
-      duration: '0\'16',
+4 duration: '0\'16',
       cost: '€ 0.04',
       status: 'terminé'
     },
@@ -380,7 +379,6 @@ const CampaignDetails = () => {
                         <TableHead className="text-center text-gray-500 font-medium">Durée</TableHead>
                         <TableHead className="text-center text-gray-500 font-medium">Coût</TableHead>
                         <TableHead className="text-center text-gray-500 font-medium">Écouter l'appel</TableHead>
-                        <TableHead className="text-center text-gray-500 font-medium">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -415,14 +413,6 @@ const CampaignDetails = () => {
                               onClick={() => handlePlayCall(index)}
                             >
                               <Play className={`h-4 w-4 ${playingCallIndex === index ? 'animate-pulse' : ''}`} />
-                            </Button>
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <Button 
-                              size="sm" 
-                              className="bg-black text-white hover:bg-gray-800 text-xs px-3 py-1 rounded-md"
-                            >
-                              Détails
                             </Button>
                           </TableCell>
                         </TableRow>
