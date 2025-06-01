@@ -348,39 +348,61 @@ const CampaignDetails = () => {
               </Card>
             </div>
 
-            {/* Section Top appels - Design clair et responsive avec boutons en noir */}
+            {/* Section Top appels - Tableau responsive */}
             <Card>
               <CardHeader className="pb-4">
                 <CardTitle className="text-lg">Top appels</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                {/* Grille responsive des appels */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {topCallsExtract.map((call, index) => (
-                    <div key={index} className="bg-gray-50 rounded-lg p-4 border">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          <span className="text-xs text-gray-600">{call.startTime} - {call.time}</span>
-                        </div>
-                        <span className="text-xs font-medium text-gray-900">{call.duration}</span>
-                      </div>
-                      <div className="space-y-1 mb-3">
-                        <p className="text-sm font-mono text-gray-900">{call.fromNumber}</p>
-                        <p className="text-xs text-gray-600">→ {call.toNumber}</p>
-                        <p className="text-xs text-gray-600">{call.agent}</p>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-900">{call.cost}</span>
-                        <Button 
-                          size="sm" 
-                          className="bg-black text-white hover:bg-gray-800 text-xs px-3 py-1"
-                        >
-                          Détails
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="text-left">Date/Heure</TableHead>
+                        <TableHead className="text-left">Numéro appelant</TableHead>
+                        <TableHead className="text-left">Numéro appelé</TableHead>
+                        <TableHead className="text-left">Agent</TableHead>
+                        <TableHead className="text-center">Durée</TableHead>
+                        <TableHead className="text-center">Coût</TableHead>
+                        <TableHead className="text-center">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {topCallsExtract.map((call, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <div className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0"></div>
+                              <span className="text-sm font-medium">{call.startTime} - {call.time}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <span className="font-mono text-sm">{call.fromNumber}</span>
+                          </TableCell>
+                          <TableCell>
+                            <span className="font-mono text-sm text-gray-600">{call.toNumber}</span>
+                          </TableCell>
+                          <TableCell>
+                            <span className="text-sm text-gray-600">{call.agent}</span>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <span className="font-medium text-sm">{call.duration}</span>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <span className="font-medium text-sm">{call.cost}</span>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Button 
+                              size="sm" 
+                              className="bg-black text-white hover:bg-gray-800 text-xs px-3 py-1"
+                            >
+                              Détails
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </div>
                 
                 {/* Bouton voir tous les appels */}
