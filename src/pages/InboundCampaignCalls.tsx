@@ -221,8 +221,8 @@ const InboundCampaignCalls = () => {
                     <TableBody>
                       {inboundCalls.map((call, index) => (
                         <TableRow key={index} className="border-b hover:bg-gray-50">
-                          <TableCell className="font-mono text-sm text-gray-900">{call.fromNumber}</TableCell>
-                          <TableCell className="font-mono text-sm text-gray-900">{call.toNumber}</TableCell>
+                          <TableCell className="font-mono text-xs text-gray-900 whitespace-nowrap">{call.fromNumber}</TableCell>
+                          <TableCell className="font-mono text-xs text-gray-900 whitespace-nowrap">{call.toNumber}</TableCell>
                           <TableCell className="text-sm text-gray-900">{call.agent}</TableCell>
                           <TableCell>
                             <div>
