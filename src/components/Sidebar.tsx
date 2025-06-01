@@ -15,8 +15,8 @@ const sidebarItems = [
   { icon: PhoneOutgoing, label: 'Passer un appel', view: 'call', route: '/' },
   { icon: PhoneIncoming, label: 'Recevoir un appel', view: 'receive', route: '/inbound-calls' },
   { icon: Puzzle, label: 'Integrations', view: 'integrations', route: '/integrations' },
-  { icon: LayoutDashboard, label: 'Dashboard', view: 'dashboard', route: '/' },
   { icon: BookOpen, label: 'Instructions', view: 'instructions', route: '/instructions' },
+  { icon: LayoutDashboard, label: 'Dashboard', view: 'dashboard', route: '/' },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentView = 'agents' }) => {
