@@ -2,7 +2,7 @@
 import React from 'react';
 import { Bot, PhoneOutgoing, Puzzle, LayoutDashboard, BookOpen, CreditCard, Zap, PhoneIncoming } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -21,21 +21,34 @@ const sidebarItems = [
 
 const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentView = 'agents' }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleItemClick = (view: string, route: string) => {
     console.log(`Navigation vers: ${view} - ${route}`);
-    if (route === '/') {
-      if (onViewChange) {
-        onViewChange(view);
-      }
-    } else {
+    
+    // Toujours naviguer vers la route spécifiée
+    if (route !== location.pathname) {
       navigate(route);
+    }
+    
+    // Si on est sur la page d'accueil et qu'on a un callback pour changer la vue
+    if (route === '/' && onViewChange) {
+      onViewChange(view);
     }
   };
 
+  // Déterminer la vue active basée sur l'URL actuelle
+  const getActiveView = () => {
+    if (location.pathname === '/inbound-calls') return 'receive';
+    if (location.pathname === '/integrations') return 'integrations';
+    if (location.pathname === '/instructions') return 'instructions';
+    return currentView || 'agents';
+  };
+
+  const activeView = getActiveView();
+
   const handleRecharge = () => {
     console.log('Recharge des crédits');
-    // Ici vous pouvez ajouter la logique pour recharger les crédits
     alert('Fonctionnalité de recharge à venir');
   };
 
@@ -65,7 +78,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
                 onClick={() => handleItemClick(item.view, item.route)}
                 className={cn(
                   "w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left hover:bg-gray-50 active:bg-gray-100",
-                  currentView === item.view
+                  activeView === item.view
                     ? "bg-gray-100 text-gray-900"
                     : "text-gray-600 hover:text-gray-900"
                 )}
