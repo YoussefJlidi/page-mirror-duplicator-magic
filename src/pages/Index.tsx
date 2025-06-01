@@ -6,6 +6,7 @@ import AgentTable from '@/components/AgentTable';
 import AgentCustomizationDialog from '@/components/AgentCustomizationDialog';
 import CampaignCreationDialog from '@/components/CampaignCreationDialog';
 import CampaignCard from '@/components/CampaignCard';
+import Dashboard from '@/components/Dashboard';
 import { useToast } from '@/hooks/use-toast';
 
 const initialAgents = [
@@ -157,6 +158,8 @@ const Index = () => {
 
   const renderContent = () => {
     switch (currentView) {
+      case 'dashboard':
+        return <Dashboard />;
       case 'call':
         return (
           <div>
