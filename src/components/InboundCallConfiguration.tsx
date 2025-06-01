@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,9 +12,16 @@ import { Phone, Settings, MessageSquare, Clock, CheckCircle, ArrowLeft, ArrowRig
 interface InboundCallConfigurationProps {
   onClose: () => void;
   onSave: (config: any) => void;
+  initialData?: any;
+  isEditing?: boolean;
 }
 
-const InboundCallConfiguration: React.FC<InboundCallConfigurationProps> = ({ onClose, onSave }) => {
+const InboundCallConfiguration: React.FC<InboundCallConfigurationProps> = ({ 
+  onClose, 
+  onSave, 
+  initialData,
+  isEditing = false 
+}) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     // Étape 1: Numéro et nom
@@ -43,6 +49,13 @@ const InboundCallConfiguration: React.FC<InboundCallConfigurationProps> = ({ onC
   });
 
   const { toast } = useToast();
+
+  // Initialiser avec les données existantes si en mode édition
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
+    }
+  }, [initialData]);
 
   const availableNumbers = [
     '+33 1 23 45 67 89',
@@ -121,10 +134,6 @@ const InboundCallConfiguration: React.FC<InboundCallConfigurationProps> = ({ onC
     }
 
     onSave(formData);
-    toast({
-      title: "Configuration sauvegardée",
-      description: `La campagne "${formData.campaignName}" a été configurée avec succès.`,
-    });
     onClose();
   };
 
@@ -378,7 +387,7 @@ const InboundCallConfiguration: React.FC<InboundCallConfigurationProps> = ({ onC
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2">
               <Settings className="h-5 w-5" />
-              Configuration des appels entrants
+              {isEditing ? 'Modifier la campagne' : 'Configuration des appels entrants'}
             </CardTitle>
             <span className="text-sm text-gray-500">Étape {currentStep}/4</span>
           </div>
@@ -419,7 +428,7 @@ const InboundCallConfiguration: React.FC<InboundCallConfigurationProps> = ({ onC
                   className="bg-black hover:bg-gray-800 text-white flex items-center gap-2"
                 >
                   <CheckCircle className="h-4 w-4" />
-                  Finaliser
+                  {isEditing ? 'Modifier' : 'Finaliser'}
                 </Button>
               )}
             </div>

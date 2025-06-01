@@ -12,14 +12,24 @@ import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import InboundCallConfiguration from '@/components/InboundCallConfiguration';
 
+interface InboundCampaign {
+  id: number;
+  title: string;
+  number: string;
+  agent: string;
+  status: 'active' | 'inactive';
+  callsToday: number;
+}
+
 const InboundCalls = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
+  const [editingCampaignId, setEditingCampaignId] = useState<number | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Données pour les campagnes d'appels entrants configurées
-  const configuredInboundCampaigns = [
+  // État pour les campagnes d'appels entrants configurées
+  const [configuredInboundCampaigns, setConfiguredInboundCampaigns] = useState<InboundCampaign[]>([
     {
       id: 1,
       title: 'Support Client',
@@ -44,28 +54,95 @@ const InboundCalls = () => {
       status: 'active',
       callsToday: 15
     }
-  ];
+  ]);
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
   const handleConfigureCalls = () => {
+    setEditingCampaignId(null);
     setIsConfigDialogOpen(true);
   };
 
   const handleSaveConfiguration = (config: any) => {
     console.log('Configuration sauvegardée:', config);
-    // Ici vous pouvez ajouter la logique pour sauvegarder la configuration
+    
+    if (editingCampaignId) {
+      // Modification d'une campagne existante
+      setConfiguredInboundCampaigns(prev => 
+        prev.map(campaign => 
+          campaign.id === editingCampaignId 
+            ? {
+                ...campaign,
+                title: config.campaignName,
+                number: config.selectedNumber,
+                agent: `Agent ${config.campaignName}`,
+                status: 'active' as const
+              }
+            : campaign
+        )
+      );
+      toast({
+        title: "Campagne modifiée",
+        description: `La campagne "${config.campaignName}" a été mise à jour avec succès.`,
+      });
+    } else {
+      // Création d'une nouvelle campagne
+      const newCampaign: InboundCampaign = {
+        id: Math.max(...configuredInboundCampaigns.map(c => c.id)) + 1,
+        title: config.campaignName,
+        number: config.selectedNumber,
+        agent: `Agent ${config.campaignName}`,
+        status: 'active',
+        callsToday: 0
+      };
+      
+      setConfiguredInboundCampaigns(prev => [...prev, newCampaign]);
+      toast({
+        title: "Campagne créée",
+        description: `La campagne "${config.campaignName}" a été créée avec succès.`,
+      });
+    }
+    
+    setIsConfigDialogOpen(false);
   };
 
   const handleCampaignSettings = (campaignId: number) => {
     console.log(`Configuration de la campagne ${campaignId}`);
-    // Ici vous pouvez ajouter la logique pour configurer une campagne spécifique
+    setEditingCampaignId(campaignId);
+    setIsConfigDialogOpen(true);
   };
 
   const handleCreateNewCampaign = () => {
+    setEditingCampaignId(null);
     setIsConfigDialogOpen(true);
+  };
+
+  const getCurrentCampaignData = () => {
+    if (editingCampaignId) {
+      const campaign = configuredInboundCampaigns.find(c => c.id === editingCampaignId);
+      if (campaign) {
+        return {
+          selectedNumber: campaign.number,
+          campaignName: campaign.title,
+          context: '',
+          greeting: '',
+          tone: 'professional',
+          workingHours: {
+            start: '09:00',
+            end: '18:00',
+            days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+          },
+          maxCallDuration: '10',
+          transferNumber: '',
+          afterHoursMessage: '',
+          busyMessage: '',
+          endCallMessage: ''
+        };
+      }
+    }
+    return undefined;
   };
 
   return (
@@ -115,6 +192,8 @@ const InboundCalls = () => {
                 <InboundCallConfiguration 
                   onClose={() => setIsConfigDialogOpen(false)}
                   onSave={handleSaveConfiguration}
+                  initialData={getCurrentCampaignData()}
+                  isEditing={editingCampaignId !== null}
                 />
               </DialogContent>
             </Dialog>
