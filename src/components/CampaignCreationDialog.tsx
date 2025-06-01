@@ -23,7 +23,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, Settings, Users, Target, FileText, Puzzle, Clock, Upload } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
@@ -94,27 +94,42 @@ const CampaignCreationDialog: React.FC<CampaignCreationDialogProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl">
-            Paramétrer campagne &lt;&lt;Nom de la campagne&gt;&gt;
-          </DialogTitle>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Settings className="h-6 w-6 text-blue-600" />
+            </div>
+            <div>
+              <DialogTitle className="text-2xl font-bold text-gray-900">
+                Paramétrer campagne &lt;&lt;Nom de la campagne&gt;&gt;
+              </DialogTitle>
+              <p className="text-gray-600">Configurez votre nouvelle campagne d'appels</p>
+            </div>
+          </div>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="name">Nom</Label>
+              <Label htmlFor="name" className="text-lg font-medium text-gray-700 flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                Nom
+              </Label>
               <Input
                 id="name"
                 value={campaignName}
                 onChange={(e) => setCampaignName(e.target.value)}
                 placeholder="<<Nom de la campagne>>"
+                className="h-12"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="agent">Sélectionner agent</Label>
+              <Label htmlFor="agent" className="text-lg font-medium text-gray-700 flex items-center gap-2">
+                <Users className="h-4 w-4" />
+                Sélectionner agent
+              </Label>
               <Select value={selectedAgent} onValueChange={setSelectedAgent}>
-                <SelectTrigger>
+                <SelectTrigger className="h-12">
                   <SelectValue placeholder="Choisir un agent" />
                 </SelectTrigger>
                 <SelectContent>
@@ -129,7 +144,10 @@ const CampaignCreationDialog: React.FC<CampaignCreationDialogProps> = ({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="context">Décrivez le contexte de campagne</Label>
+            <Label htmlFor="context" className="text-lg font-medium text-gray-700 flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Décrivez le contexte de campagne
+            </Label>
             <Textarea
               id="context"
               value={campaignContext}
@@ -139,7 +157,10 @@ const CampaignCreationDialog: React.FC<CampaignCreationDialogProps> = ({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="objectives">Décrivez vos objectifs de campagnes</Label>
+            <Label htmlFor="objectives" className="text-lg font-medium text-gray-700 flex items-center gap-2">
+              <Target className="h-4 w-4" />
+              Décrivez vos objectifs de campagnes
+            </Label>
             <Textarea
               id="objectives"
               value={campaignObjectives}
@@ -149,7 +170,10 @@ const CampaignCreationDialog: React.FC<CampaignCreationDialogProps> = ({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="instructions">Renseigner les instructions générales</Label>
+            <Label htmlFor="instructions" className="text-lg font-medium text-gray-700 flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Renseigner les instructions générales
+            </Label>
             <Textarea
               id="instructions"
               value={generalInstructions}
@@ -160,7 +184,10 @@ const CampaignCreationDialog: React.FC<CampaignCreationDialogProps> = ({
           </div>
 
           <div className="space-y-4">
-            <Label>Choisir les intégrations</Label>
+            <Label className="text-lg font-medium text-gray-700 flex items-center gap-2">
+              <Puzzle className="h-4 w-4" />
+              Choisir les intégrations
+            </Label>
             <div className="grid grid-cols-3 gap-3">
               {integrations.map((integration) => (
                 <Button
@@ -177,7 +204,10 @@ const CampaignCreationDialog: React.FC<CampaignCreationDialogProps> = ({
           </div>
 
           <div className="space-y-4">
-            <Label>Choisissez quand démarrer la campagne d'appels</Label>
+            <Label className="text-lg font-medium text-gray-700 flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              Choisissez quand démarrer la campagne d'appels
+            </Label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Date</Label>
@@ -220,7 +250,10 @@ const CampaignCreationDialog: React.FC<CampaignCreationDialogProps> = ({
           </div>
 
           <div className="space-y-4">
-            <Label>Ajouter vos prospects :</Label>
+            <Label className="text-lg font-medium text-gray-700 flex items-center gap-2">
+              <Upload className="h-4 w-4" />
+              Ajouter vos prospects :
+            </Label>
             <div className="flex gap-4">
               <Button type="button" variant="outline" className="h-12">
                 Csv file
