@@ -1,0 +1,23 @@
+
+@keyframes pulse-record {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+.animate-pulse-record {
+  animation: pulse-record 1s ease-in-out infinite;
+}
