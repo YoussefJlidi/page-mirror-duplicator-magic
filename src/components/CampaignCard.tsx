@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Phone, Clock, Users, MoreVertical } from 'lucide-react';
 
@@ -12,6 +11,7 @@ interface CampaignCardProps {
   duration: string;
   agent: string;
   phoneNumber: string;
+  onViewDetails: (campaign: any) => void;
 }
 
 const statusColors = {
@@ -35,8 +35,21 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
   calls,
   duration,
   agent,
-  phoneNumber
+  phoneNumber,
+  onViewDetails
 }) => {
+  const handleViewDetails = () => {
+    onViewDetails({
+      id,
+      name,
+      status,
+      calls,
+      duration,
+      agent,
+      phoneNumber
+    });
+  };
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between mb-4">
@@ -91,11 +104,9 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
               Reprendre
             </Button>
           )}
-          <Link to={`/campaign/${id}`}>
-            <Button size="sm" variant="outline">
-              Voir détails
-            </Button>
-          </Link>
+          <Button size="sm" variant="outline" onClick={handleViewDetails}>
+            Voir détails
+          </Button>
         </div>
       </div>
     </div>

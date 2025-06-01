@@ -5,6 +5,7 @@ import AgentTable from '@/components/AgentTable';
 import AgentCustomizationDialog from '@/components/AgentCustomizationDialog';
 import CampaignCreationDialog from '@/components/CampaignCreationDialog';
 import CampaignCard from '@/components/CampaignCard';
+import CampaignDetailsModal from '@/components/CampaignDetailsModal';
 import { useToast } from '@/hooks/use-toast';
 
 const initialAgents = [
@@ -81,7 +82,9 @@ const Index = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isCampaignDialogOpen, setIsCampaignDialogOpen] = useState(false);
+  const [isCampaignDetailsModalOpen, setIsCampaignDetailsModalOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState(null);
+  const [selectedCampaign, setSelectedCampaign] = useState(null);
   const [agents, setAgents] = useState(initialAgents);
   const [campaigns, setCampaigns] = useState(initialCampaigns);
   const [currentView, setCurrentView] = useState('agents');
@@ -102,6 +105,16 @@ const Index = () => {
 
   const handleCloseCampaignDialog = () => {
     setIsCampaignDialogOpen(false);
+  };
+
+  const handleViewCampaignDetails = (campaign) => {
+    setSelectedCampaign(campaign);
+    setIsCampaignDetailsModalOpen(true);
+  };
+
+  const handleCloseCampaignDetailsModal = () => {
+    setIsCampaignDetailsModalOpen(false);
+    setSelectedCampaign(null);
   };
 
   const handleAgentClick = (agent) => {
@@ -170,6 +183,7 @@ const Index = () => {
                   duration={campaign.duration}
                   agent={campaign.agent}
                   phoneNumber={campaign.phoneNumber}
+                  onViewDetails={handleViewCampaignDetails}
                 />
               ))}
             </div>
@@ -226,6 +240,12 @@ const Index = () => {
         isOpen={isCampaignDialogOpen}
         onClose={handleCloseCampaignDialog}
         agents={agents}
+      />
+
+      <CampaignDetailsModal
+        isOpen={isCampaignDetailsModalOpen}
+        onClose={handleCloseCampaignDetailsModal}
+        campaign={selectedCampaign}
       />
     </div>
   );
