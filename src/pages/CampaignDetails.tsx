@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, FileText, Edit, PhoneIncoming } from 'lucide-react';
+import { ArrowLeft, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, FileText, Edit, PhoneIncoming, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -53,6 +52,7 @@ const CampaignDetails = () => {
   const { campaignId } = useParams();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isCallDetailsModalOpen, setIsCallDetailsModalOpen] = useState(false);
+  const [playingCallIndex, setPlayingCallIndex] = useState<number | null>(null);
   const campaign = initialCampaigns.find(c => c.id === parseInt(campaignId || '1'));
   
   if (!campaign) {
@@ -154,6 +154,20 @@ const CampaignDetails = () => {
       status: 'terminé'
     }
   ];
+
+  const handlePlayCall = (index: number) => {
+    if (playingCallIndex === index) {
+      setPlayingCallIndex(null);
+      console.log(`Arrêt de la lecture de l'appel ${index + 1}`);
+    } else {
+      setPlayingCallIndex(index);
+      console.log(`Lecture de l'appel ${index + 1}`);
+      // Simuler l'arrêt automatique après quelques secondes
+      setTimeout(() => {
+        setPlayingCallIndex(null);
+      }, 3000);
+    }
+  };
 
   const handleOpenCallDetails = () => {
     setIsCallDetailsModalOpen(true);
@@ -348,7 +362,7 @@ const CampaignDetails = () => {
               </Card>
             </div>
 
-            {/* Section Top appels - Tableau responsive avec police plus petite */}
+            {/* Section Top appels - Tableau responsive avec bouton play */}
             <Card>
               <CardHeader className="pb-4">
                 <CardTitle className="text-lg">Top appels</CardTitle>
@@ -364,6 +378,7 @@ const CampaignDetails = () => {
                         <TableHead className="text-left text-gray-500 font-medium">Agent</TableHead>
                         <TableHead className="text-center text-gray-500 font-medium">Durée</TableHead>
                         <TableHead className="text-center text-gray-500 font-medium">Coût</TableHead>
+                        <TableHead className="text-center text-gray-500 font-medium">Écouter l'appel</TableHead>
                         <TableHead className="text-center text-gray-500 font-medium">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -390,6 +405,16 @@ const CampaignDetails = () => {
                           </TableCell>
                           <TableCell className="text-center">
                             <span className="text-xs text-gray-900">{call.cost}</span>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className={`p-2 rounded-full ${playingCallIndex === index ? 'bg-green-100 text-green-600' : 'text-gray-600 hover:bg-gray-100'}`}
+                              onClick={() => handlePlayCall(index)}
+                            >
+                              <Play className={`h-4 w-4 ${playingCallIndex === index ? 'animate-pulse' : ''}`} />
+                            </Button>
                           </TableCell>
                           <TableCell className="text-center">
                             <Button 
