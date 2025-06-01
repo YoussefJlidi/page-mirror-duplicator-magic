@@ -182,7 +182,7 @@ const CampaignDetails = () => {
           currentView="call"
         />
         
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-4 sm:p-6">
           <div className="max-w-7xl mx-auto space-y-6">
             {/* Header avec bouton retour */}
             <div className="flex items-center gap-4 mb-8">
@@ -191,90 +191,93 @@ const CampaignDetails = () => {
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
               </Link>
-              <h1 className="text-3xl font-bold text-gray-900">{campaign.name}</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 truncate">{campaign.name}</h1>
             </div>
 
-            {/* Section en haut avec informations agent et actions */}
-            <div className="bg-white rounded-lg border p-6 mb-6">
-              <div className="flex items-center justify-between">
+            {/* Section en haut avec informations agent et actions - Responsive */}
+            <div className="bg-white rounded-lg border p-4 sm:p-6 mb-6">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                 {/* Informations de l'agent */}
-                <div className="flex items-center gap-8">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
                   <div className="flex items-center gap-2">
-                    <Users className="h-5 w-5 text-gray-600" />
-                    <span className="font-medium">{campaign.agent}</span>
+                    <Users className="h-5 w-5 text-gray-600 flex-shrink-0" />
+                    <span className="font-medium text-sm sm:text-base truncate">{campaign.agent}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Phone className="h-5 w-5 text-gray-600" />
-                    <span>{campaign.phoneNumber}</span>
+                    <Phone className="h-5 w-5 text-gray-600 flex-shrink-0" />
+                    <span className="text-sm sm:text-base">{campaign.phoneNumber}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-gray-600" />
-                    <span>{campaign.duration}</span>
+                    <Clock className="h-5 w-5 text-gray-600 flex-shrink-0" />
+                    <span className="text-sm sm:text-base">{campaign.duration}</span>
                   </div>
                 </div>
                 
-                {/* Actions */}
-                <div className="flex items-center gap-3">
-                  <Button variant="outline" size="sm" className="flex items-center gap-2" onClick={handleOpenCallDetails}>
+                {/* Actions - Stack on mobile, horizontal on desktop */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+                  <Button variant="outline" size="sm" className="flex items-center justify-center gap-2 text-xs sm:text-sm" onClick={handleOpenCallDetails}>
                     <AlertCircle className="h-4 w-4" />
-                    Plus de détails
+                    <span className="hidden sm:inline">Plus de détails</span>
+                    <span className="sm:hidden">Détails</span>
                   </Button>
-                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" className="flex items-center justify-center gap-2 text-xs sm:text-sm">
                     <FileText className="h-4 w-4" />
-                    Télécharger le rapport PDF
+                    <span className="hidden lg:inline">Télécharger le rapport PDF</span>
+                    <span className="lg:hidden">PDF</span>
                   </Button>
-                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" className="flex items-center justify-center gap-2 text-xs sm:text-sm">
                     <Edit className="h-4 w-4" />
-                    Modifier la campagne
+                    <span className="hidden sm:inline">Modifier la campagne</span>
+                    <span className="sm:hidden">Modifier</span>
                   </Button>
                 </div>
               </div>
             </div>
 
             {/* Statistiques principales */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <Card className="bg-green-50 border-green-200">
-                <CardContent className="p-6 text-center">
+                <CardContent className="p-4 sm:p-6 text-center">
                   <div className="flex items-center justify-center mb-3">
-                    <CheckCircle className="h-8 w-8 text-green-600" />
+                    <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8 text-green-600" />
                   </div>
-                  <p className="text-sm font-medium text-green-600 mb-1">Appels réussis</p>
-                  <p className="text-3xl font-bold text-green-900">{stats.successful}</p>
+                  <p className="text-xs sm:text-sm font-medium text-green-600 mb-1">Appels réussis</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-green-900">{stats.successful}</p>
                 </CardContent>
               </Card>
 
               <Card className="bg-red-50 border-red-200">
-                <CardContent className="p-6 text-center">
+                <CardContent className="p-4 sm:p-6 text-center">
                   <div className="flex items-center justify-center mb-3">
-                    <XCircle className="h-8 w-8 text-red-600" />
+                    <XCircle className="h-6 w-6 sm:h-8 sm:w-8 text-red-600" />
                   </div>
-                  <p className="text-sm font-medium text-red-600 mb-1">Appels échoués</p>
-                  <p className="text-3xl font-bold text-red-900">{stats.failed}</p>
+                  <p className="text-xs sm:text-sm font-medium text-red-600 mb-1">Appels échoués</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-red-900">{stats.failed}</p>
                 </CardContent>
               </Card>
 
               <Card className="bg-blue-50 border-blue-200">
-                <CardContent className="p-6 text-center">
+                <CardContent className="p-4 sm:p-6 text-center">
                   <div className="flex items-center justify-center mb-3">
-                    <Phone className="h-8 w-8 text-blue-600" />
+                    <Phone className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
                   </div>
-                  <p className="text-sm font-medium text-blue-600 mb-1">À appeler</p>
-                  <p className="text-3xl font-bold text-blue-900">{stats.toCall}</p>
+                  <p className="text-xs sm:text-sm font-medium text-blue-600 mb-1">À appeler</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-blue-900">{stats.toCall}</p>
                 </CardContent>
               </Card>
 
               <Card className="bg-orange-50 border-orange-200">
-                <CardContent className="p-6 text-center">
+                <CardContent className="p-4 sm:p-6 text-center">
                   <div className="flex items-center justify-center mb-3">
-                    <RotateCcw className="h-8 w-8 text-orange-600" />
+                    <RotateCcw className="h-6 w-6 sm:h-8 sm:w-8 text-orange-600" />
                   </div>
-                  <p className="text-sm font-medium text-orange-600 mb-1">À relancer</p>
-                  <p className="text-3xl font-bold text-orange-900">{stats.toRetry}</p>
+                  <p className="text-xs sm:text-sm font-medium text-orange-600 mb-1">À relancer</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-orange-900">{stats.toRetry}</p>
                 </CardContent>
               </Card>
             </div>
 
-            {/* Section principale avec 3 colonnes */}
+            {/* Section principale avec 3 colonnes - Stack on mobile */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Colonne 1 - Taux de réussite */}
               <Card>
@@ -285,7 +288,7 @@ const CampaignDetails = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <div className="text-4xl font-bold text-green-600 mb-2">{successRate}%</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-green-600 mb-2">{successRate}%</div>
                   <p className="text-sm text-gray-600 mb-4">des appels connectés</p>
                   <Progress value={successRate} className="h-3 mb-4" />
                   <div className="flex justify-between text-sm text-gray-600">
@@ -304,7 +307,7 @@ const CampaignDetails = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <div className="text-4xl font-bold text-blue-600 mb-2">{completionRate}%</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">{completionRate}%</div>
                   <p className="text-sm text-gray-600 mb-4">de la campagne</p>
                   <Progress value={completionRate} className="h-3 mb-4" />
                   <div className="flex justify-between text-sm text-gray-600">
@@ -322,11 +325,11 @@ const CampaignDetails = () => {
                 <CardContent className="space-y-4">
                   <div>
                     <h4 className="font-medium text-gray-900 mb-1">Agent IA</h4>
-                    <p className="text-sm text-gray-600">{campaign.agent}</p>
+                    <p className="text-sm text-gray-600 break-words">{campaign.agent}</p>
                   </div>
                   <div>
                     <h4 className="font-medium text-gray-900 mb-1">Numéro de téléphone</h4>
-                    <p className="text-sm text-gray-600">{campaign.phoneNumber}</p>
+                    <p className="text-sm text-gray-600 break-words">{campaign.phoneNumber}</p>
                   </div>
                   <div>
                     <h4 className="font-medium text-gray-900 mb-1">Durée totale</h4>
@@ -340,7 +343,7 @@ const CampaignDetails = () => {
               </Card>
             </div>
 
-            {/* Section Top appels - Style simplifié comme dans l'image */}
+            {/* Section Top appels - Tableau responsive */}
             <Card>
               <CardHeader className="pb-4">
                 <CardTitle className="text-lg">Détails des appels</CardTitle>
@@ -350,8 +353,8 @@ const CampaignDetails = () => {
                   <Table>
                     <TableHeader>
                       <TableRow className="border-b">
-                        <TableHead className="text-gray-500 font-normal text-sm">Numéro émetteur</TableHead>
-                        <TableHead className="text-gray-500 font-normal text-sm">Numéro destinataire</TableHead>
+                        <TableHead className="text-gray-500 font-normal text-sm min-w-[140px]">Numéro émetteur</TableHead>
+                        <TableHead className="text-gray-500 font-normal text-sm min-w-[140px]">Numéro destinataire</TableHead>
                         <TableHead className="text-gray-500 font-normal text-sm">Agent</TableHead>
                         <TableHead className="text-gray-500 font-normal text-sm">Heure de début</TableHead>
                         <TableHead className="text-gray-500 font-normal text-sm">Type</TableHead>
@@ -364,8 +367,8 @@ const CampaignDetails = () => {
                     <TableBody>
                       {topCallsExtract.map((call, index) => (
                         <TableRow key={index} className="border-b hover:bg-gray-50">
-                          <TableCell className="text-sm text-gray-900">{call.fromNumber}</TableCell>
-                          <TableCell className="text-sm text-gray-900">{call.toNumber}</TableCell>
+                          <TableCell className="text-sm text-gray-900 font-mono">{call.fromNumber}</TableCell>
+                          <TableCell className="text-sm text-gray-900 font-mono">{call.toNumber}</TableCell>
                           <TableCell className="text-sm text-gray-900">{call.agent}</TableCell>
                           <TableCell>
                             <div>
@@ -375,13 +378,13 @@ const CampaignDetails = () => {
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
-                              <PhoneIncoming className="h-4 w-4 text-gray-500" />
+                              <PhoneIncoming className="h-4 w-4 text-gray-500 flex-shrink-0" />
                               <span className="text-sm text-gray-900">{call.type}</span>
                             </div>
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                              <div className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0"></div>
                               <span className="text-sm text-gray-900">{call.duration}</span>
                             </div>
                           </TableCell>
