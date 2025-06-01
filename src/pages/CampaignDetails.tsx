@@ -138,7 +138,7 @@ const CampaignDetails = () => {
       startTime: '11/04',
       time: '19:05',
       type: 'entrant',
-4 duration: '0\'16',
+      duration: '0\'16',
       cost: '€ 0.04',
       status: 'terminé'
     },
