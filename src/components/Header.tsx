@@ -14,6 +14,8 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onNewAgent, onNewCampa
     switch (currentView) {
       case 'call':
         return 'Campagnes';
+      case 'integrations':
+        return 'Intégrations';
       case 'agents':
       default:
         return 'Agents';

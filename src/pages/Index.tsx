@@ -147,6 +147,11 @@ const Index = () => {
   };
 
   const handleViewChange = (view: string) => {
+    if (view === 'integrations') {
+      // Navigate to integrations page
+      window.location.href = '/integrations';
+      return;
+    }
     setCurrentView(view);
   };
 
