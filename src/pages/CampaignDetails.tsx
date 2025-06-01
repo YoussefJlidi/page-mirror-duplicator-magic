@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, FileText, Edit, PhoneIncoming } from 'lucide-react';
@@ -193,43 +194,48 @@ const CampaignDetails = () => {
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 truncate">{campaign.name}</h1>
             </div>
 
-            {/* Section en haut avec informations agent et actions - Responsive */}
+            {/* Section en haut avec informations agent et actions - 2 lignes responsive */}
             <div className="bg-white rounded-lg border p-4 sm:p-6 mb-6">
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                {/* Informations de l'agent */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
-                  <div className="flex items-center gap-2">
-                    <Users className="h-5 w-5 text-gray-600 flex-shrink-0" />
-                    <span className="font-medium text-sm sm:text-base truncate">{campaign.agent}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Phone className="h-5 w-5 text-gray-600 flex-shrink-0" />
-                    <span className="text-sm sm:text-base">{campaign.phoneNumber}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-gray-600 flex-shrink-0" />
-                    <span className="text-sm sm:text-base">{campaign.duration}</span>
-                  </div>
+              {/* Première ligne - Informations de l'agent */}
+              <div className="flex flex-wrap items-center gap-4 sm:gap-8 mb-4">
+                <div className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-gray-600 flex-shrink-0" />
+                  <span className="font-medium text-sm sm:text-base">{campaign.agent}</span>
                 </div>
-                
-                {/* Actions - Stack on mobile, horizontal on desktop */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-                  <Button variant="outline" size="sm" className="flex items-center justify-center gap-2 text-xs sm:text-sm" onClick={handleOpenCallDetails}>
-                    <AlertCircle className="h-4 w-4" />
-                    <span className="hidden sm:inline">Plus de détails</span>
-                    <span className="sm:hidden">Détails</span>
-                  </Button>
-                  <Button variant="outline" size="sm" className="flex items-center justify-center gap-2 text-xs sm:text-sm">
-                    <FileText className="h-4 w-4" />
-                    <span className="hidden lg:inline">Télécharger le rapport PDF</span>
-                    <span className="lg:hidden">PDF</span>
-                  </Button>
-                  <Button variant="outline" size="sm" className="flex items-center justify-center gap-2 text-xs sm:text-sm">
-                    <Edit className="h-4 w-4" />
-                    <span className="hidden sm:inline">Modifier la campagne</span>
-                    <span className="sm:hidden">Modifier</span>
-                  </Button>
+                <div className="flex items-center gap-2">
+                  <Phone className="h-5 w-5 text-gray-600 flex-shrink-0" />
+                  <span className="text-sm sm:text-base">{campaign.phoneNumber}</span>
                 </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-gray-600 flex-shrink-0" />
+                  <span className="text-sm sm:text-base">{campaign.duration}</span>
+                </div>
+              </div>
+              
+              {/* Deuxième ligne - Actions avec boutons noirs */}
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <Button 
+                  className="bg-black text-white hover:bg-gray-800 text-xs sm:text-sm px-3 py-2"
+                  size="sm" 
+                  onClick={handleOpenCallDetails}
+                >
+                  <AlertCircle className="h-4 w-4 mr-1" />
+                  Plus de détails
+                </Button>
+                <Button 
+                  className="bg-black text-white hover:bg-gray-800 text-xs sm:text-sm px-3 py-2"
+                  size="sm"
+                >
+                  <FileText className="h-4 w-4 mr-1" />
+                  Télécharger le rapport PDF
+                </Button>
+                <Button 
+                  className="bg-black text-white hover:bg-gray-800 text-xs sm:text-sm px-3 py-2"
+                  size="sm"
+                >
+                  <Edit className="h-4 w-4 mr-1" />
+                  Modifier la campagne
+                </Button>
               </div>
             </div>
 
