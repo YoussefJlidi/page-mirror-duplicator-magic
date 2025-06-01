@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { X, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, FileText, Edit, PhoneIncoming } from 'lucide-react';
+import { X, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, FileText, Edit, PhoneIncoming, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -23,6 +22,7 @@ interface CampaignDetailsModalProps {
 
 const CampaignDetailsModal: React.FC<CampaignDetailsModalProps> = ({ isOpen, onClose, campaign }) => {
   const [isCallDetailsModalOpen, setIsCallDetailsModalOpen] = useState(false);
+  const [playingCallIndex, setPlayingCallIndex] = useState<number | null>(null);
 
   if (!isOpen || !campaign) return null;
 
@@ -103,6 +103,20 @@ const CampaignDetailsModal: React.FC<CampaignDetailsModalProps> = ({ isOpen, onC
       status: 'terminé'
     }
   ];
+
+  const handlePlayCall = (index: number) => {
+    if (playingCallIndex === index) {
+      setPlayingCallIndex(null);
+      console.log(`Arrêt de la lecture de l'appel ${index + 1}`);
+    } else {
+      setPlayingCallIndex(index);
+      console.log(`Lecture de l'appel ${index + 1}`);
+      // Simuler l'arrêt automatique après quelques secondes
+      setTimeout(() => {
+        setPlayingCallIndex(null);
+      }, 3000);
+    }
+  };
 
   const handleOpenCallDetails = () => {
     setIsCallDetailsModalOpen(true);
@@ -276,20 +290,49 @@ const CampaignDetailsModal: React.FC<CampaignDetailsModalProps> = ({ isOpen, onC
             <div className="mt-6">
               <div className="bg-black text-white rounded-lg p-6">
                 <h3 className="text-xl font-bold mb-4">Top appels</h3>
-                <div className="space-y-3">
-                  {topCallsExtract.map((call, index) => (
-                    <div key={index} className="flex items-center justify-between py-2 border-b border-gray-700 last:border-b-0">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                        <span className="text-sm font-mono">{call.fromNumber}</span>
-                        <span className="text-sm text-gray-300">{call.time}</span>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <span className="text-sm">{call.duration}</span>
-                        <span className="text-sm text-gray-300">{call.cost}</span>
-                      </div>
-                    </div>
-                  ))}
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-gray-700">
+                        <th className="text-left text-sm font-medium text-gray-300 pb-2">Date/Heure</th>
+                        <th className="text-left text-sm font-medium text-gray-300 pb-2">Numéro</th>
+                        <th className="text-left text-sm font-medium text-gray-300 pb-2">Durée</th>
+                        <th className="text-left text-sm font-medium text-gray-300 pb-2">Coût</th>
+                        <th className="text-center text-sm font-medium text-gray-300 pb-2">Écouter</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {topCallsExtract.map((call, index) => (
+                        <tr key={index} className="border-b border-gray-700 last:border-b-0">
+                          <td className="py-2">
+                            <div className="flex items-center space-x-2">
+                              <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                              <span className="text-xs text-white">{call.startTime} - {call.time}</span>
+                            </div>
+                          </td>
+                          <td className="py-2">
+                            <span className="text-xs font-mono text-white">{call.fromNumber}</span>
+                          </td>
+                          <td className="py-2">
+                            <span className="text-xs text-white">{call.duration}</span>
+                          </td>
+                          <td className="py-2">
+                            <span className="text-xs text-gray-300">{call.cost}</span>
+                          </td>
+                          <td className="py-2 text-center">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className={`p-2 rounded-full ${playingCallIndex === index ? 'bg-green-600 text-white' : 'text-gray-300 hover:bg-gray-700'}`}
+                              onClick={() => handlePlayCall(index)}
+                            >
+                              <Play className={`h-3 w-3 ${playingCallIndex === index ? 'animate-pulse' : ''}`} />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
                 <div className="mt-4">
                   <Button variant="outline" className="w-full bg-transparent border-gray-600 text-white hover:bg-gray-800" onClick={handleOpenCallDetails}>

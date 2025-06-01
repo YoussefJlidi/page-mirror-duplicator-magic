@@ -1,6 +1,5 @@
-
-import React from 'react';
-import { X, Phone, Clock, Users, TrendingUp, PhoneCall, PhoneIncoming } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Phone, Clock, Users, TrendingUp, PhoneCall, PhoneIncoming, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -12,6 +11,8 @@ interface CallDetailsModalProps {
 }
 
 const CallDetailsModal: React.FC<CallDetailsModalProps> = ({ isOpen, onClose, campaignName }) => {
+  const [playingCallIndex, setPlayingCallIndex] = useState<number | null>(null);
+
   if (!isOpen) return null;
 
   // Données des statistiques correspondant à l'image
@@ -102,6 +103,20 @@ const CallDetailsModal: React.FC<CallDetailsModalProps> = ({ isOpen, onClose, ca
     { label: 'Durée', active: false },
     { label: 'Variable', active: false }
   ];
+
+  const handlePlayCall = (index: number) => {
+    if (playingCallIndex === index) {
+      setPlayingCallIndex(null);
+      console.log(`Arrêt de la lecture de l'appel ${index + 1}`);
+    } else {
+      setPlayingCallIndex(index);
+      console.log(`Lecture de l'appel ${index + 1}`);
+      // Simuler l'arrêt automatique après quelques secondes
+      setTimeout(() => {
+        setPlayingCallIndex(null);
+      }, 3000);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -201,6 +216,7 @@ const CallDetailsModal: React.FC<CallDetailsModalProps> = ({ isOpen, onClose, ca
                       <TableHead className="text-gray-600 font-medium">Durée</TableHead>
                       <TableHead className="text-gray-600 font-medium">Coût</TableHead>
                       <TableHead className="text-gray-600 font-medium">Statut</TableHead>
+                      <TableHead className="text-gray-600 font-medium">Écouter l'appel</TableHead>
                       <TableHead></TableHead>
                     </TableRow>
                   </TableHeader>
@@ -231,6 +247,16 @@ const CallDetailsModal: React.FC<CallDetailsModalProps> = ({ isOpen, onClose, ca
                         <TableCell className="text-sm text-gray-900">{call.cost}</TableCell>
                         <TableCell>
                           <span className="text-sm text-gray-600">{call.status}</span>
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className={`p-2 rounded-full ${playingCallIndex === index ? 'bg-green-100 text-green-600' : 'text-gray-600 hover:bg-gray-100'}`}
+                            onClick={() => handlePlayCall(index)}
+                          >
+                            <Play className={`h-4 w-4 ${playingCallIndex === index ? 'animate-pulse' : ''}`} />
+                          </Button>
                         </TableCell>
                         <TableCell>
                           <Button variant="ghost" size="sm" className="text-gray-400">
