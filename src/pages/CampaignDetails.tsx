@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Phone, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, FileText, Edit, PhoneIncoming, Play } from 'lucide-react';
@@ -253,7 +254,7 @@ const CampaignDetails = () => {
               </div>
             </div>
 
-            {/* Statistiques principales - Couleurs neutres */}
+            {/* Statistiques principales - Toutes avec la même couleur grise */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <Card className="bg-gray-50 border-gray-200">
                 <CardContent className="p-4 sm:p-6 text-center">
@@ -265,7 +266,7 @@ const CampaignDetails = () => {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-100 border-gray-200">
+              <Card className="bg-gray-50 border-gray-200">
                 <CardContent className="p-4 sm:p-6 text-center">
                   <div className="flex items-center justify-center mb-3">
                     <XCircle className="h-6 w-6 sm:h-8 sm:w-8 text-gray-600" />
@@ -285,7 +286,7 @@ const CampaignDetails = () => {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gray-100 border-gray-200">
+              <Card className="bg-gray-50 border-gray-200">
                 <CardContent className="p-4 sm:p-6 text-center">
                   <div className="flex items-center justify-center mb-3">
                     <RotateCcw className="h-6 w-6 sm:h-8 sm:w-8 text-gray-600" />
