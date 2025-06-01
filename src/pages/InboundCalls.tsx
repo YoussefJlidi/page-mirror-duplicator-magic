@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, PhoneIncoming, Clock, Users, TrendingUp, AlertCircle, CheckCircle, XCircle, RotateCcw, Play, Phone, Settings, Plus } from 'lucide-react';
@@ -119,6 +118,10 @@ const InboundCalls = () => {
     setIsConfigDialogOpen(true);
   };
 
+  const handleCampaignClick = (campaignId: number) => {
+    navigate(`/inbound-campaign/${campaignId}/calls`);
+  };
+
   const getCurrentCampaignData = () => {
     if (editingCampaignId) {
       const campaign = configuredInboundCampaigns.find(c => c.id === editingCampaignId);
@@ -203,7 +206,11 @@ const InboundCalls = () => {
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Campagnes configurées</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {configuredInboundCampaigns.map((campaign) => (
-                  <Card key={campaign.id} className="hover:shadow-md transition-shadow">
+                  <Card 
+                    key={campaign.id} 
+                    className="hover:shadow-md hover:bg-gray-100 transition-all cursor-pointer"
+                    onClick={() => handleCampaignClick(campaign.id)}
+                  >
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-2">
@@ -216,7 +223,10 @@ const InboundCalls = () => {
                           variant="ghost" 
                           size="icon" 
                           className="h-8 w-8"
-                          onClick={() => handleCampaignSettings(campaign.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCampaignSettings(campaign.id);
+                          }}
                         >
                           <Settings className="h-4 w-4" />
                         </Button>

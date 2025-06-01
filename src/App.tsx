@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import CampaignDetails from "./pages/CampaignDetails";
 import CallDetails from "./pages/CallDetails";
 import InboundCalls from "./pages/InboundCalls";
+import InboundCampaignCalls from "./pages/InboundCampaignCalls";
 import Integrations from "./pages/Integrations";
 import Instructions from "./pages/Instructions";
 import NotFound from "./pages/NotFound";
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/campaign/:campaignId" element={<CampaignDetails />} />
           <Route path="/campaign/:campaignId/calls" element={<CallDetails />} />
           <Route path="/inbound-calls" element={<InboundCalls />} />
+          <Route path="/inbound-campaign/:campaignId/calls" element={<InboundCampaignCalls />} />
           <Route path="/integrations" element={<Integrations />} />
           <Route path="/instructions" element={<Instructions />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
