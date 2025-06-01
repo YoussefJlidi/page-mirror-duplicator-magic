@@ -253,45 +253,45 @@ const CampaignDetails = () => {
               </div>
             </div>
 
-            {/* Statistiques principales */}
+            {/* Statistiques principales - Couleurs neutres */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              <Card className="bg-green-50 border-green-200">
+              <Card className="bg-gray-50 border-gray-200">
                 <CardContent className="p-4 sm:p-6 text-center">
                   <div className="flex items-center justify-center mb-3">
-                    <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8 text-green-600" />
+                    <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8 text-gray-600" />
                   </div>
-                  <p className="text-xs sm:text-sm font-medium text-green-600 mb-1">Appels réussis</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-green-900">{stats.successful}</p>
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 mb-1">Appels réussis</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.successful}</p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-red-50 border-red-200">
+              <Card className="bg-gray-100 border-gray-200">
                 <CardContent className="p-4 sm:p-6 text-center">
                   <div className="flex items-center justify-center mb-3">
-                    <XCircle className="h-6 w-6 sm:h-8 sm:w-8 text-red-600" />
+                    <XCircle className="h-6 w-6 sm:h-8 sm:w-8 text-gray-600" />
                   </div>
-                  <p className="text-xs sm:text-sm font-medium text-red-600 mb-1">Appels échoués</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-red-900">{stats.failed}</p>
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 mb-1">Appels échoués</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.failed}</p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-blue-50 border-blue-200">
+              <Card className="bg-gray-50 border-gray-200">
                 <CardContent className="p-4 sm:p-6 text-center">
                   <div className="flex items-center justify-center mb-3">
-                    <Phone className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+                    <Phone className="h-6 w-6 sm:h-8 sm:w-8 text-gray-600" />
                   </div>
-                  <p className="text-xs sm:text-sm font-medium text-blue-600 mb-1">À appeler</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-blue-900">{stats.toCall}</p>
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 mb-1">À appeler</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.toCall}</p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-orange-50 border-orange-200">
+              <Card className="bg-gray-100 border-gray-200">
                 <CardContent className="p-4 sm:p-6 text-center">
                   <div className="flex items-center justify-center mb-3">
-                    <RotateCcw className="h-6 w-6 sm:h-8 sm:w-8 text-orange-600" />
+                    <RotateCcw className="h-6 w-6 sm:h-8 sm:w-8 text-gray-600" />
                   </div>
-                  <p className="text-xs sm:text-sm font-medium text-orange-600 mb-1">À relancer</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-orange-900">{stats.toRetry}</p>
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 mb-1">À relancer</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stats.toRetry}</p>
                 </CardContent>
               </Card>
             </div>
@@ -302,12 +302,12 @@ const CampaignDetails = () => {
               <Card>
                 <CardHeader className="pb-4">
                   <CardTitle className="text-lg flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-green-600" />
+                    <TrendingUp className="h-5 w-5 text-gray-600" />
                     Taux de réussite
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <div className="text-3xl sm:text-4xl font-bold text-green-600 mb-2">{successRate}%</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">{successRate}%</div>
                   <p className="text-sm text-gray-600 mb-4">des appels connectés</p>
                   <Progress value={successRate} className="h-3 mb-4" />
                   <div className="flex justify-between text-sm text-gray-600">
@@ -321,12 +321,12 @@ const CampaignDetails = () => {
               <Card>
                 <CardHeader className="pb-4">
                   <CardTitle className="text-lg flex items-center gap-2">
-                    <AlertCircle className="h-5 w-5 text-blue-600" />
+                    <AlertCircle className="h-5 w-5 text-gray-600" />
                     Progression
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <div className="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">{completionRate}%</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">{completionRate}%</div>
                   <p className="text-sm text-gray-600 mb-4">de la campagne</p>
                   <Progress value={completionRate} className="h-3 mb-4" />
                   <div className="flex justify-between text-sm text-gray-600">
