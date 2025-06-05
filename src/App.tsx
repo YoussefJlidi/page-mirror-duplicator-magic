@@ -11,6 +11,7 @@ import InboundCalls from "./pages/InboundCalls";
 import InboundCampaignCalls from "./pages/InboundCampaignCalls";
 import Integrations from "./pages/Integrations";
 import Instructions from "./pages/Instructions";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/campaign/:campaignId" element={<CampaignDetails />} />
           <Route path="/campaign/:campaignId/calls" element={<CallDetails />} />
           <Route path="/inbound-calls" element={<InboundCalls />} />
