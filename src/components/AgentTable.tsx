@@ -96,7 +96,7 @@ const AgentTable: React.FC<AgentTableProps> = ({ agents, onAgentClick, onDelete,
                     className="text-blue-600 hover:text-blue-700"
                   >
                     <MessageCircle className="h-4 w-4 mr-1" />
-                    Chatter
+                    Discuter
                   </Button>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
