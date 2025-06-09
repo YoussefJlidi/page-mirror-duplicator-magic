@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Send, Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
@@ -33,6 +32,16 @@ const AgentChat = () => {
   // Mock agent name - in real app, this would come from API
   const agentName = 'Restaurant Order Taking';
 
+  // Suggestions pré-configurées
+  const suggestions = [
+    "Faire un résumé des campagnes inbound",
+    "Faire un résumé des appels outbound", 
+    "Réaliser un bilan de tous les appels",
+    "Analyser les performances des agents",
+    "Générer un rapport d'activité mensuel",
+    "Optimiser les scripts d'appels"
+  ];
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -41,12 +50,13 @@ const AgentChat = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleSendMessage = () => {
-    if (!inputMessage.trim()) return;
+  const handleSendMessage = (messageText?: string) => {
+    const textToSend = messageText || inputMessage;
+    if (!textToSend.trim()) return;
 
     const newMessage: Message = {
       id: messages.length + 1,
-      text: inputMessage,
+      text: textToSend,
       sender: 'user',
       timestamp: new Date()
     };
@@ -64,6 +74,10 @@ const AgentChat = () => {
       };
       setMessages(prev => [...prev, agentResponse]);
     }, 1000);
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    handleSendMessage(suggestion);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -167,6 +181,23 @@ const AgentChat = () => {
             <div ref={messagesEndRef} />
           </div>
 
+          {/* Suggestions Section */}
+          {messages.length <= 1 && (
+            <div className="px-6 pb-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {suggestions.map((suggestion, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleSuggestionClick(suggestion)}
+                    className="text-left p-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors text-sm text-gray-700 hover:text-gray-900"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Input Area */}
           <div className="bg-white border-t border-gray-200 p-6">
             <div className="flex items-center space-x-4">
@@ -188,7 +219,7 @@ const AgentChat = () => {
                 </Button>
               </div>
               <Button
-                onClick={handleSendMessage}
+                onClick={() => handleSendMessage()}
                 disabled={!inputMessage.trim()}
                 className="flex-shrink-0"
               >
