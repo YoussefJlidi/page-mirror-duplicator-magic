@@ -9,13 +9,14 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { MoreVertical, Play, Pause, Copy, Trash2 } from 'lucide-react';
+import { MoreVertical, Play, Pause, Copy, Trash2, MessageCircle } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useNavigate } from 'react-router-dom';
 
 interface Agent {
   id: number;
@@ -47,6 +48,13 @@ const statusLabels = {
 };
 
 const AgentTable: React.FC<AgentTableProps> = ({ agents, onAgentClick, onDelete, onDuplicate }) => {
+  const navigate = useNavigate();
+
+  const handleChatWithAgent = (agent: Agent) => {
+    console.log('Ouverture du chat avec l\'agent:', agent.name);
+    navigate(`/agent/${agent.id}/chat`);
+  };
+
   return (
     <div className="bg-white rounded-lg border border-gray-200">
       <Table>
@@ -56,7 +64,7 @@ const AgentTable: React.FC<AgentTableProps> = ({ agents, onAgentClick, onDelete,
             <TableHead>Statut</TableHead>
             <TableHead>Appels</TableHead>
             <TableHead>Temps d'appel</TableHead>
-            <TableHead className="w-[100px]">Actions</TableHead>
+            <TableHead className="w-[200px]">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -80,30 +88,41 @@ const AgentTable: React.FC<AgentTableProps> = ({ agents, onAgentClick, onDelete,
                 {agent.timeInCall}
               </TableCell>
               <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <MoreVertical className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => onAgentClick(agent)}>
-                      <Play className="h-4 w-4 mr-2" />
-                      Modifier
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onDuplicate(agent.id)}>
-                      <Copy className="h-4 w-4 mr-2" />
-                      Dupliquer
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => onDelete(agent.id)}
-                      className="text-red-600"
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Supprimer
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleChatWithAgent(agent)}
+                    className="text-blue-600 hover:text-blue-700"
+                  >
+                    <MessageCircle className="h-4 w-4 mr-1" />
+                    Discuter
+                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => onAgentClick(agent)}>
+                        <Play className="h-4 w-4 mr-2" />
+                        Modifier
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => onDuplicate(agent.id)}>
+                        <Copy className="h-4 w-4 mr-2" />
+                        Dupliquer
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => onDelete(agent.id)}
+                        className="text-red-600"
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Supprimer
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </TableCell>
             </TableRow>
           ))}
