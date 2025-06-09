@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Send, Mic, MicOff, Volume2, VolumeX, Bot, User } from 'lucide-react';
@@ -138,8 +137,8 @@ const AgentChat = () => {
                 <ArrowLeft className="w-5 h-5" />
               </Button>
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 bg-gray-100 border border-gray-200 rounded-full flex items-center justify-center">
+                  <Bot className="w-5 h-5 text-black" />
                 </div>
                 <div>
                   <h1 className="text-xl font-semibold text-gray-900">
@@ -177,12 +176,12 @@ const AgentChat = () => {
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                   message.sender === 'user' 
                     ? 'bg-gradient-to-br from-blue-500 to-blue-600' 
-                    : 'bg-gradient-to-br from-purple-500 to-pink-500'
+                    : 'bg-gray-100 border border-gray-200'
                 }`}>
                   {message.sender === 'user' ? (
                     <User className="w-4 h-4 text-white" />
                   ) : (
-                    <Bot className="w-4 h-4 text-white" />
+                    <Bot className="w-4 h-4 text-black" />
                   )}
                 </div>
                 
@@ -211,8 +210,8 @@ const AgentChat = () => {
             {/* Indicateur de frappe */}
             {isTyping && (
               <div className="flex items-start space-x-3 animate-fade-in">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
-                  <Bot className="w-4 h-4 text-white" />
+                <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center flex-shrink-0">
+                  <Bot className="w-4 h-4 text-black" />
                 </div>
                 <div className="bg-white border border-gray-100 px-4 py-3 rounded-2xl shadow-sm">
                   <div className="flex space-x-1">
