@@ -1,6 +1,7 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Send, Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
+import { ArrowLeft, Send, Mic, MicOff, Volume2, VolumeX, Bot, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Sidebar from '@/components/Sidebar';
@@ -27,10 +28,11 @@ const AgentChat = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Mock agent name - in real app, this would come from API
-  const agentName = 'Restaurant Order Taking';
+  const agentName = 'Assistant IA Voxama';
 
   // Suggestions pré-configurées
   const suggestions = [
@@ -63,9 +65,11 @@ const AgentChat = () => {
 
     setMessages([...messages, newMessage]);
     setInputMessage('');
+    setIsTyping(true);
 
     // Simuler une réponse de l'agent après un délai
     setTimeout(() => {
+      setIsTyping(false);
       const agentResponse: Message = {
         id: messages.length + 2,
         text: "Je comprends votre demande. Laissez-moi vous aider avec cela.",
@@ -73,7 +77,7 @@ const AgentChat = () => {
         timestamp: new Date()
       };
       setMessages(prev => [...prev, agentResponse]);
-    }, 1000);
+    }, 2000);
   };
 
   const handleSuggestionClick = (suggestion: string) => {
@@ -114,30 +118,35 @@ const AgentChat = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex w-full">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex w-full">
       <Sidebar 
         isCollapsed={isSidebarCollapsed}
         currentView="chat"
       />
       
       <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-6 py-4">
+        {/* Header amélioré */}
+        <div className="bg-white/80 backdrop-blur-lg border-b border-gray-200/50 px-6 py-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => navigate('/')}
-                className="text-gray-600 hover:text-gray-900"
+                className="text-gray-600 hover:text-gray-900 hover:bg-gray-100/80 transition-all duration-200"
               >
                 <ArrowLeft className="w-5 h-5" />
               </Button>
-              <div>
-                <h1 className="text-xl font-semibold text-gray-900">
-                  Conversation avec {agentName}
-                </h1>
-                <p className="text-sm text-gray-500">Agent ID: {agentId}</p>
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                  <Bot className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-semibold text-gray-900">
+                    {agentName}
+                  </h1>
+                  <p className="text-sm text-gray-500">En ligne • Agent ID: {agentId}</p>
+                </div>
               </div>
             </div>
             <div className="flex items-center space-x-2">
@@ -145,7 +154,7 @@ const AgentChat = () => {
                 variant={isSpeaking ? "default" : "outline"}
                 size="sm"
                 onClick={toggleSpeech}
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-2 transition-all duration-200"
               >
                 {isSpeaking ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
                 <span>{isSpeaking ? 'Vocal ON' : 'Vocal OFF'}</span>
@@ -154,66 +163,112 @@ const AgentChat = () => {
           </div>
         </div>
 
-        {/* Chat Messages */}
+        {/* Chat Messages avec design amélioré */}
         <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full">
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                className={`flex items-start space-x-3 animate-fade-in ${
+                  message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
+                }`}
               >
-                <div
-                  className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                    message.sender === 'user'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-white border border-gray-200 text-gray-900'
-                  }`}
-                >
-                  <p className="text-sm">{message.text}</p>
-                  <p className={`text-xs mt-1 ${
-                    message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
+                {/* Avatar */}
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                  message.sender === 'user' 
+                    ? 'bg-gradient-to-br from-blue-500 to-blue-600' 
+                    : 'bg-gradient-to-br from-purple-500 to-pink-500'
+                }`}>
+                  {message.sender === 'user' ? (
+                    <User className="w-4 h-4 text-white" />
+                  ) : (
+                    <Bot className="w-4 h-4 text-white" />
+                  )}
+                </div>
+                
+                {/* Message bubble */}
+                <div className={`max-w-xs lg:max-w-md ${
+                  message.sender === 'user' ? 'text-right' : 'text-left'
+                }`}>
+                  <div
+                    className={`px-4 py-3 rounded-2xl shadow-sm transition-all duration-200 hover:shadow-md ${
+                      message.sender === 'user'
+                        ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
+                        : 'bg-white border border-gray-100 text-gray-900'
+                    }`}
+                  >
+                    <p className="text-sm leading-relaxed">{message.text}</p>
+                  </div>
+                  <p className={`text-xs mt-2 ${
+                    message.sender === 'user' ? 'text-gray-500' : 'text-gray-400'
                   }`}>
                     {formatTime(message.timestamp)}
                   </p>
                 </div>
               </div>
             ))}
+            
+            {/* Indicateur de frappe */}
+            {isTyping && (
+              <div className="flex items-start space-x-3 animate-fade-in">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+                  <Bot className="w-4 h-4 text-white" />
+                </div>
+                <div className="bg-white border border-gray-100 px-4 py-3 rounded-2xl shadow-sm">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse animation-delay-200"></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse animation-delay-400"></div>
+                  </div>
+                </div>
+              </div>
+            )}
+            
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Suggestions Section */}
+          {/* Suggestions Section améliorée */}
           {messages.length <= 1 && (
-            <div className="px-6 pb-4">
+            <div className="px-6 pb-6">
+              <div className="text-center mb-4">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">Suggestions</h3>
+                <p className="text-sm text-gray-600">Cliquez sur une suggestion pour commencer</p>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {suggestions.map((suggestion, index) => (
                   <button
                     key={index}
                     onClick={() => handleSuggestionClick(suggestion)}
-                    className="text-left p-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors text-sm text-gray-700 hover:text-gray-900"
+                    className="group text-left p-4 rounded-xl border border-gray-200 bg-white/80 backdrop-blur-sm hover:bg-white hover:shadow-md hover:border-blue-200 transition-all duration-200 text-sm text-gray-700 hover:text-blue-700"
                   >
-                    {suggestion}
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-blue-400 rounded-full group-hover:bg-blue-600 transition-colors duration-200"></div>
+                      <span className="font-medium">{suggestion}</span>
+                    </div>
                   </button>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Input Area */}
-          <div className="bg-white border-t border-gray-200 p-6">
+          {/* Input Area redesigné */}
+          <div className="bg-white/80 backdrop-blur-lg border-t border-gray-200/50 p-6">
             <div className="flex items-center space-x-4">
-              <div className="flex-1 flex items-center space-x-2">
+              <div className="flex-1 flex items-center space-x-3 bg-gray-50 rounded-full px-4 py-2 border border-gray-200 focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-100 transition-all duration-200">
                 <Input
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Tapez votre message..."
-                  className="flex-1"
+                  className="flex-1 border-0 bg-transparent focus:ring-0 focus:outline-none"
                 />
                 <Button
-                  variant={isRecording ? "destructive" : "outline"}
+                  variant={isRecording ? "destructive" : "ghost"}
                   size="icon"
                   onClick={toggleRecording}
-                  className="flex-shrink-0"
+                  className={`flex-shrink-0 rounded-full w-8 h-8 ${
+                    isRecording ? 'animate-pulse' : ''
+                  }`}
                 >
                   {isRecording ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
                 </Button>
@@ -221,12 +276,12 @@ const AgentChat = () => {
               <Button
                 onClick={() => handleSendMessage()}
                 disabled={!inputMessage.trim()}
-                className="flex-shrink-0"
+                className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:from-gray-300 disabled:to-gray-400 shadow-lg hover:shadow-xl transition-all duration-200"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-5 h-5" />
               </Button>
             </div>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 mt-3 text-center">
               Utilisez le bouton micro pour enregistrer un message vocal ou tapez votre message.
             </p>
           </div>
