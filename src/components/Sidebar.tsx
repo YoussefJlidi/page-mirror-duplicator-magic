@@ -20,6 +20,7 @@ interface SidebarProps {
 const sidebarItems = [
   { icon: Bot, label: 'Agents', view: 'agents', route: '/' },
   { icon: PhoneOutgoing, label: 'Passer un appel', view: 'call', route: '/' },
+  { icon: User, label: 'Humain', view: 'human', route: '/human-calls' },
   { icon: PhoneIncoming, label: 'Recevoir un appel', view: 'receive', route: '/inbound-calls' },
   { icon: Puzzle, label: 'Integrations', view: 'integrations', route: '/integrations' },
   { icon: BookOpen, label: 'Instructions', view: 'instructions', route: '/instructions' },
@@ -51,6 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
   // Déterminer la vue active basée sur l'URL actuelle
   const getActiveView = () => {
     if (location.pathname === '/inbound-calls') return 'receive';
+    if (location.pathname === '/human-calls') return 'human';
     if (location.pathname === '/integrations') return 'integrations';
     if (location.pathname === '/instructions') return 'instructions';
     // Pour la page d'accueil, utiliser la vue actuelle passée en props

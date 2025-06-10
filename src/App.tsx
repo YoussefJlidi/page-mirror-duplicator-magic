@@ -13,6 +13,7 @@ import Integrations from "./pages/Integrations";
 import Instructions from "./pages/Instructions";
 import Auth from "./pages/Auth";
 import AgentChat from "./pages/AgentChat";
+import HumanCalls from "./pages/HumanCalls";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/campaign/:campaignId/calls" element={<CallDetails />} />
           <Route path="/agent/:agentId/chat" element={<AgentChat />} />
           <Route path="/inbound-calls" element={<InboundCalls />} />
+          <Route path="/human-calls" element={<HumanCalls />} />
           <Route path="/inbound-campaign/:campaignId/calls" element={<InboundCampaignCalls />} />
           <Route path="/integrations" element={<Integrations />} />
           <Route path="/instructions" element={<Instructions />} />
