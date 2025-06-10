@@ -30,8 +30,6 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onNewAgent, onNewCampa
     switch (currentView) {
       case 'call':
         return 'Créer une campagne';
-      case 'human':
-        return 'Nouvel appel';
       case 'agents':
       default:
         return 'New agent';
@@ -59,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onNewAgent, onNewCampa
           <h1 className="text-2xl font-semibold text-gray-900">{getTitle()}</h1>
         </div>
         
-        {(currentView === 'agents' || currentView === 'call' || currentView === 'human') && (
+        {(currentView === 'agents' || currentView === 'call') && (
           <button 
             onClick={handleButtonClick}
             className="bg-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors flex items-center space-x-2"
