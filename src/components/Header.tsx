@@ -18,9 +18,31 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onNewAgent, onNewCampa
         return 'Intégrations';
       case 'instructions':
         return 'Instructions';
+      case 'human':
+        return 'Appels Humain';
       case 'agents':
       default:
         return 'Agents';
+    }
+  };
+
+  const getButtonText = () => {
+    switch (currentView) {
+      case 'call':
+        return 'Créer une campagne';
+      case 'human':
+        return 'Nouvel appel';
+      case 'agents':
+      default:
+        return 'New agent';
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (currentView === 'call' && onNewCampaign) {
+      onNewCampaign();
+    } else {
+      onNewAgent();
     }
   };
 
@@ -37,23 +59,13 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onNewAgent, onNewCampa
           <h1 className="text-2xl font-semibold text-gray-900">{getTitle()}</h1>
         </div>
         
-        {currentView === 'agents' && (
+        {(currentView === 'agents' || currentView === 'call' || currentView === 'human') && (
           <button 
-            onClick={onNewAgent}
+            onClick={handleButtonClick}
             className="bg-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors flex items-center space-x-2"
           >
             <Plus className="w-4 h-4" />
-            <span>New agent</span>
-          </button>
-        )}
-
-        {currentView === 'call' && onNewCampaign && (
-          <button 
-            onClick={onNewCampaign}
-            className="bg-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors flex items-center space-x-2"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Créer une campagne</span>
+            <span>{getButtonText()}</span>
           </button>
         )}
       </div>
