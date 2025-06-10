@@ -9,14 +9,22 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { MoreVertical, Play, Pause, Copy, Trash2, MessageCircle } from 'lucide-react';
+import { MoreVertical, Play, Copy, Trash2, Plus } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
 } from '@/components/ui/dropdown-menu';
-import { useNavigate } from 'react-router-dom';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface Agent {
   id: number;
@@ -47,12 +55,19 @@ const statusLabels = {
   finished: 'Terminé'
 };
 
-const AgentTable: React.FC<AgentTableProps> = ({ agents, onAgentClick, onDelete, onDuplicate }) => {
-  const navigate = useNavigate();
+// Liste des campagnes en cours (exemple)
+const currentCampaigns = [
+  { id: 1, name: 'Campagne Commerciale Q4' },
+  { id: 2, name: 'Support Client Premium' },
+  { id: 3, name: 'Prospection Nouveaux Clients' },
+  { id: 4, name: 'Campagne de Relance' }
+];
 
-  const handleChatWithAgent = (agent: Agent) => {
-    console.log('Ouverture du chat avec l\'agent:', agent.name);
-    navigate(`/agent/${agent.id}/chat`);
+const AgentTable: React.FC<AgentTableProps> = ({ agents, onAgentClick, onDelete, onDuplicate }) => {
+  const handleAddToCampaign = (agent: Agent, campaignId: string) => {
+    const campaign = currentCampaigns.find(c => c.id.toString() === campaignId);
+    console.log(`Ajout de l'agent ${agent.name} à la campagne ${campaign?.name}`);
+    // Logique pour ajouter l'agent à la campagne
   };
 
   return (
@@ -89,15 +104,24 @@ const AgentTable: React.FC<AgentTableProps> = ({ agents, onAgentClick, onDelete,
               </TableCell>
               <TableCell>
                 <div className="flex items-center space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleChatWithAgent(agent)}
-                    className="text-blue-600 hover:text-blue-700"
-                  >
-                    <MessageCircle className="h-4 w-4 mr-1" />
-                    Discuter
-                  </Button>
+                  <Select onValueChange={(value) => handleAddToCampaign(agent, value)}>
+                    <SelectTrigger className="w-[140px] h-8">
+                      <div className="flex items-center">
+                        <Plus className="h-4 w-4 mr-2" />
+                        <SelectValue placeholder="Ajouter à..." />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="" disabled>
+                        Sélectionner une campagne
+                      </SelectItem>
+                      {currentCampaigns.map((campaign) => (
+                        <SelectItem key={campaign.id} value={campaign.id.toString()}>
+                          {campaign.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" size="icon" className="h-8 w-8">
