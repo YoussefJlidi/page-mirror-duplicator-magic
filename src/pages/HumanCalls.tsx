@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { User, Plus } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
@@ -100,6 +99,19 @@ const HumanCalls = () => {
   const getPendingAgentsCount = () => humanAgents.filter(agent => agent.status === 'pending').length;
   const getTotalCalls = () => humanAgents.reduce((total, agent) => total + agent.calls, 0);
 
+  // Données fictives pour les campagnes et agents (pour le chat)
+  const mockAgents = [
+    { id: 1, name: 'Agent IA Support' },
+    { id: 2, name: 'Agent IA Commercial' },
+    { id: 3, name: 'Agent IA Technique' }
+  ];
+
+  const mockCampaigns = [
+    { id: 1, name: 'Campagne Commerciale Q4' },
+    { id: 2, name: 'Support Client Premium' },
+    { id: 3, name: 'Prospection Nouveaux Clients' }
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <Sidebar 
@@ -112,6 +124,8 @@ const HumanCalls = () => {
           onToggleSidebar={toggleSidebar} 
           onNewAgent={handleNewHumanAgent}
           currentView="human"
+          agents={mockAgents}
+          campaigns={mockCampaigns}
         />
         
         <main className="flex-1 p-6">

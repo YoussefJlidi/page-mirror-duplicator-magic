@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
@@ -218,6 +217,8 @@ const Index = () => {
           onNewAgent={handleNewAgent}
           onNewCampaign={handleNewCampaign}
           currentView={currentView}
+          agents={agents}
+          campaigns={campaigns}
         />
         
         <main className="flex-1 p-6">
