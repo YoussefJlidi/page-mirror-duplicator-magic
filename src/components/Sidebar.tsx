@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
-import { Bot, PhoneOutgoing, Puzzle, LayoutDashboard, BookOpen, CreditCard, Zap, PhoneIncoming, LogOut, Settings, User, ChevronUp } from 'lucide-react';
+import { Bot, PhoneOutgoing, Puzzle, LayoutDashboard, BookOpen, CreditCard, Zap, PhoneIncoming, LogOut, Settings, User, ChevronUp, MessageCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useNavigate, useLocation } from 'react-router-dom';
 import RechargeModal from './RechargeModal';
+import AgentChatModal from './AgentChatModal';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +17,8 @@ interface SidebarProps {
   isCollapsed: boolean;
   onViewChange?: (view: string) => void;
   currentView?: string;
+  agents?: Array<{ id: number; name: string; }>;
+  campaigns?: Array<{ id: number; name: string; }>;
 }
 
 const sidebarItems = [
@@ -28,10 +31,17 @@ const sidebarItems = [
   { icon: LayoutDashboard, label: 'Dashboard', view: 'dashboard', route: '/' },
 ];
 
-const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentView = 'agents' }) => {
+const Sidebar: React.FC<SidebarProps> = ({ 
+  isCollapsed, 
+  onViewChange, 
+  currentView = 'agents',
+  agents = [],
+  campaigns = []
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isRechargeModalOpen, setIsRechargeModalOpen] = useState(false);
+  const [isChatModalOpen, setIsChatModalOpen] = useState(false);
 
   const handleItemClick = (view: string, route: string) => {
     console.log(`Navigation vers: ${view} - ${route}`);
@@ -66,6 +76,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
   const handleRecharge = () => {
     console.log('Ouverture de la modal de recharge');
     setIsRechargeModalOpen(true);
+  };
+
+  const handleChatModalOpen = () => {
+    setIsChatModalOpen(true);
+  };
+
+  const handleChatModalClose = () => {
+    setIsChatModalOpen(false);
   };
 
   const handleLogout = () => {
@@ -120,6 +138,19 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
                 </button>
               </li>
             ))}
+            
+            {/* Chat Button */}
+            <li>
+              <button
+                onClick={handleChatModalOpen}
+                className={cn(
+                  "w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left bg-black text-white hover:bg-gray-800 active:bg-gray-900"
+                )}
+              >
+                <MessageCircle className="w-5 h-5 flex-shrink-0" />
+                {!isCollapsed && <span>Discuter avec un agent</span>}
+              </button>
+            </li>
           </ul>
         </nav>
 
@@ -190,6 +221,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onViewChange, currentVie
       <RechargeModal 
         isOpen={isRechargeModalOpen} 
         onClose={() => setIsRechargeModalOpen(false)} 
+      />
+
+      <AgentChatModal
+        isOpen={isChatModalOpen}
+        onClose={handleChatModalClose}
+        agents={agents}
+        campaigns={campaigns}
       />
     </>
   );
