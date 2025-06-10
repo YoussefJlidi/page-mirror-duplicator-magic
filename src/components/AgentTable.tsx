@@ -112,9 +112,6 @@ const AgentTable: React.FC<AgentTableProps> = ({ agents, onAgentClick, onDelete,
                       </div>
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="" disabled>
-                        Sélectionner une campagne
-                      </SelectItem>
                       {currentCampaigns.map((campaign) => (
                         <SelectItem key={campaign.id} value={campaign.id.toString()}>
                           {campaign.name}
