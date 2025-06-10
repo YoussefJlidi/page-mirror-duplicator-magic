@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Bot, PhoneOutgoing, Puzzle, LayoutDashboard, BookOpen, CreditCard, Zap, PhoneIncoming, LogOut, Settings, User, ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -19,8 +20,8 @@ interface SidebarProps {
 
 const sidebarItems = [
   { icon: Bot, label: 'Agents', view: 'agents', route: '/' },
-  { icon: PhoneOutgoing, label: 'Passer un appel', view: 'call', route: '/' },
   { icon: User, label: 'Humain', view: 'human', route: '/human-calls' },
+  { icon: PhoneOutgoing, label: 'Passer un appel', view: 'call', route: '/' },
   { icon: PhoneIncoming, label: 'Recevoir un appel', view: 'receive', route: '/inbound-calls' },
   { icon: Puzzle, label: 'Integrations', view: 'integrations', route: '/integrations' },
   { icon: BookOpen, label: 'Instructions', view: 'instructions', route: '/instructions' },
