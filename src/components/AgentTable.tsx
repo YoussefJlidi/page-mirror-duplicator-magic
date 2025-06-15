@@ -79,7 +79,7 @@ const AgentTable: React.FC<AgentTableProps> = ({ agents, onAgentClick, onDelete,
             <TableHead>Statut</TableHead>
             <TableHead>Appels</TableHead>
             <TableHead>Temps d'appel</TableHead>
-            <TableHead className="w-[200px]">Actions</TableHead>
+            <TableHead className="w-[220px]">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -105,7 +105,7 @@ const AgentTable: React.FC<AgentTableProps> = ({ agents, onAgentClick, onDelete,
               <TableCell>
                 <div className="flex items-center space-x-2">
                   <Select onValueChange={(value) => handleAddToCampaign(agent, value)}>
-                    <SelectTrigger className="w-[140px] h-8">
+                    <SelectTrigger className="w-[160px] h-8">
                       <div className="flex items-center truncate">
                         <Plus className="h-4 w-4 mr-2" />
                         <SelectValue placeholder="Ajouter à..." />

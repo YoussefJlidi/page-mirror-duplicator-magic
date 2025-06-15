@@ -124,8 +124,6 @@ const HumanCalls = () => {
           onToggleSidebar={toggleSidebar} 
           onNewAgent={handleNewHumanAgent}
           currentView="human"
-          agents={mockAgents}
-          campaigns={mockCampaigns}
         />
         
         <main className="flex-1 p-6">
