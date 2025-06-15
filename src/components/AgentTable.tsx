@@ -106,7 +106,7 @@ const AgentTable: React.FC<AgentTableProps> = ({ agents, onAgentClick, onDelete,
                 <div className="flex items-center space-x-2">
                   <Select onValueChange={(value) => handleAddToCampaign(agent, value)}>
                     <SelectTrigger className="w-[140px] h-8">
-                      <div className="flex items-center">
+                      <div className="flex items-center truncate">
                         <Plus className="h-4 w-4 mr-2" />
                         <SelectValue placeholder="Ajouter à..." />
                       </div>
