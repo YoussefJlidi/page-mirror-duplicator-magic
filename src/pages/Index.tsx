@@ -209,8 +209,6 @@ const Index = () => {
         isCollapsed={sidebarCollapsed} 
         onViewChange={handleViewChange}
         currentView={currentView}
-        agents={agents}
-        campaigns={campaigns}
       />
       
       <div className="flex-1 flex flex-col min-w-0">
