@@ -94,11 +94,16 @@ const Sidebar: React.FC<SidebarProps> = ({
         {/* Logo */}
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">V</span>
-            </div>
-            {!isCollapsed && (
-              <span className="font-semibold text-lg text-gray-900">Voxama</span>
+            {!isCollapsed ? (
+              <img 
+                src="/lovable-uploads/68fd42be-4a97-4397-81bb-c56764275f65.png" 
+                alt="Little Big Call" 
+                className="h-8 w-auto"
+              />
+            ) : (
+              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">L</span>
+              </div>
             )}
           </div>
         </div>
